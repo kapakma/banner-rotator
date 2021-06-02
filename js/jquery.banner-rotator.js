@@ -2,8 +2,8 @@ import { BarTimer } from './BarTimer.js';
 import { PieTimer } from './PieTimer.js';
 
 /**
- * jQuery Banner Rotator v4.1.2
- * Copyright (c) 2015 Allan Ma (http://codecanyon.net/user/webtako)
+ * jQuery Banner Rotator v5.0
+ * Copyright (c) 2021 Allan Ma (http://codecanyon.net/user/webtako)
  */
 (function($) {
     var PRESETS = {};
@@ -932,16 +932,16 @@ import { PieTimer } from './PieTimer.js';
                 flip = ('downLeft' === order || 'upRight' === order);
 
             while (start != end) {
-                i = Math.min(this._rows - 1, start);
+                var i = Math.min(this._rows - 1, start);
                 while(i >= 0) {
                     if (flip) {
-                        j = (this._columns - 1) - Math.abs(i - start);
+                        var j = (this._columns - 1) - Math.abs(i - start);
                         if (j < 0) {
                             break;
                         }
                     }
                     else {
-                        j = Math.abs(i - start);
+                        var j = Math.abs(i - start);
                         if (j >= this._columns) {
                             break;
                         }
@@ -2865,7 +2865,7 @@ import { PieTimer } from './PieTimer.js';
                                     })
                                     .on('mousemove' + this._namespace, $.proxy(function(e) {
                                         var pct = (e[pagePos] - this._$thumbPanel.offset()[pos])/this._$thumbPanel[dim]();
-                                            prop = {};
+                                        var prop = {};
                                         prop[pos] = this._$thumbPanel.data('range') * pct;
                                         this._$thumbList.animate(prop, {duration:Rotator.ANIMATE_SPEED, easing:easing, queue:false});
                                     }, this));
