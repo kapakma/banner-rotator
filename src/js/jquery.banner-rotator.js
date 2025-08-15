@@ -1,7 +1,11 @@
 /**
  * jQuery Banner Rotator v4.1.2
  */
+import '../styles/banner-rotator.css';
+
 (function($) {
+	"use strict"
+
 	var PRESETS = {};
 
 	(function() {
@@ -1089,8 +1093,9 @@
 				flip = ('downLeft' === order || 'upRight' === order);
 
 			while (start != end) {
-				i = Math.min(this._rows - 1, start);
+				let i = Math.min(this._rows - 1, start);
 				while(i >= 0) {
+					let j;
 					if (flip) {
 						j = (this._columns - 1) - Math.abs(i - start);
 						if (j < 0) {
