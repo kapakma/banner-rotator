@@ -1,3 +1,5 @@
+import { SUPPORT } from "../constants/support";
+
 //shuffle elements
 export function shuffleElements($el) {
     var items = $el.children().toArray();
