@@ -1,5 +1,5 @@
 import { isNone, getRandomItem, getNonNegInt, getValue } from '../../util/helpers';
-import { SUPPORT } from '../../constants/support';
+import { SUPPORT } from '../../util/support';
 
 //KBurns Class
 function KBurns($img, effect, opts) {

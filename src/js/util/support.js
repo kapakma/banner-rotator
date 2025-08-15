@@ -1,4 +1,5 @@
-import { camelToDash } from "../util/helpers";
+import { camelToDash } from "./helpers";
+
 export const SUPPORT = {};
 export let PREFIX;
 export let PREFIXES;
