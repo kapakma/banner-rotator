@@ -1,4 +1,5 @@
 import { SUPPORT, PREFIXES } from "./support";
+import { CUBIC_BEZIER } from "../constants";
 
 //shuffle elements
 export function shuffleElements($el) {
