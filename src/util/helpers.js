@@ -1,12 +1,12 @@
 //shuffle elements
-function shuffleElements($el) {
+export function shuffleElements($el) {
     var items = $el.children().toArray();
     shuffleArray(items);
     $el.append(items);
 }
 
 //get position
-function getPosition(val) {
+export function getPosition(val) {
     var props = {},
         arr = val.split(' ', 2);
     
@@ -21,7 +21,7 @@ function getPosition(val) {
 }
 
 //get valid easing
-function getEasing(easing, css) {
+export function getEasing(easing, css) {
     if (css) {
         if (!(easing in CUBIC_BEZIER)) {
             return 'ease';
@@ -34,79 +34,79 @@ function getEasing(easing, css) {
 }
 
 //get random array element
-function getRandomItem(arr) {
+export function getRandomItem(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
 //test number within range
-function withinRange(val, min, max) {
+export function withinRange(val, min, max) {
     return ($.isNumeric(val) && min <= val && val <= max);
 }
 
 //test for none
-function isNone(val) {
+export function isNone(val) {
     return (typeof val === 'undefined' || false === val || 'none' === val);
 }
 
 //check if empty string
-function isEmptyStr(val) {
+export function isEmptyStr(val) {
     return (typeof val === 'undefined' || '' === $.trim(val));
 }
 
 //get integer
-function getInt(val, defaultVal) {
+export function getInt(val, defaultVal) {
     val = parseInt(val, 10);
     return ($.isNumeric(val) ? val : defaultVal);
 }
 
 //get positive integer
-function getPosInt(val, defaultVal) {
+export function getPosInt(val, defaultVal) {
     val = parseInt(val, 10);
     return ($.isNumeric(val) && 0 < val ? val : defaultVal);
 }
 
 //get non-negative integer
-function getNonNegInt(val, defaultVal) {
+export function getNonNegInt(val, defaultVal) {
     val = parseInt(val, 10);
     return ($.isNumeric(val) && 0 <= val ? val : defaultVal);
 }
 
 //get float
-function getFloat(val, defaultVal) {
+export function getFloat(val, defaultVal) {
     val = parseFloat(val);
     return ($.isNumeric(val) ? val : defaultVal);
 }
 
 //get value
-function getValue(val, defaultVal) {
+export function getValue(val, defaultVal) {
     return (typeof val !== 'undefined' ? val : defaultVal);
 }
 
 //get enum value
-function getEnum(val, list, defaultVal) {
+export function getEnum(val, list, defaultVal) {
     return (-1 < $.inArray(val, list) ? val : defaultVal);
 }
 
 //check for percent
-function isPercent(val) {
+export function isPercent(val) {
     val += '';
     var last = val.length - 1;
     return '%' === val.charAt(last) && $.isNumeric(val.substring(0, last));
 }
 
 //round to
-function roundTo(val, digits) {
+export function roundTo(val, digits) {
     var num = Math.pow(10, digits);
     return Math.round(val * num)/num;
 }
 
 //check for image file
-function isImage(val) {
+export function isImage(val) {
     return /[^\s]+\.(bmp|gif|jpg|jpeg|png|tiff)$/i.test(val);
 }
 
 //check style property support
-function styleSupport(prop) {
+export function styleSupport(prop) {
     var el = document.createElement('div'),
         style = el.style,
         supported = false;
@@ -133,7 +133,7 @@ function styleSupport(prop) {
 }
 
 //is android check
-function isAndroid(version) {
+export function isAndroid(version) {
     var android = 'android',
         ua = navigator.userAgent.toLowerCase(),
         index = ua.indexOf(android);
@@ -142,24 +142,24 @@ function isAndroid(version) {
 }
 
 //is chrome check
-function isChrome() {
+export function isChrome() {
     return /Chrome|CriOS/.test(navigator.userAgent);
 }
 
 //convert camel case to dash
-function camelToDash(str) {
+export function camelToDash(str) {
     return (str + '').replace(/([A-Za-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 //convert dash to camel case
-function dashToCamel(str) {
+export function dashToCamel(str) {
     return (str + '').replace(/([A-Za-z])(-)([A-Za-z])/g, function(match, p1, p2, p3) {
         return (p1 + p3.toUpperCase());
     });
 }
 
 //check css property support
-function propertySupport(prop, val) {
+export function propertySupport(prop, val) {
     if (false === prop) {
         return false;
     }
@@ -176,7 +176,7 @@ function propertySupport(prop, val) {
 }
 
 //check css filter support
-function filterSupport() {
+export function filterSupport() {
     var el = document.createElement('div'),
         prefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
         cssText = prefixes.join('filter:blur(2px); ');
@@ -186,7 +186,7 @@ function filterSupport() {
 }
 
 //shuffle array
-function shuffleArray(arr) {
+export function shuffleArray(arr) {
     var i = arr.length;
     while(0 < --i) {
         var ri = Math.floor(Math.random() * (i + 1)),
@@ -197,23 +197,23 @@ function shuffleArray(arr) {
 }
 
 //capitalize string
-function capitalize(str) {
+export function capitalize(str) {
     str += '';
     return str.charAt(0).toUpperCase() + str.substring(1);
 }
 
 //convert degrees to radians
-function degreesToRadians(degrees) {
+export function degreesToRadians(degrees) {
     return (degrees * Math.PI/180);
 }
 
 //get transform property
-function getTransformProperty(transform) {
+export function getTransformProperty(transform) {
     return PREFIXES.concat(['', '']).join('transform:' + transform + ';');
 }
 
 //debounce
-function debounce(fn, wait, immediate) {
+export function debounce(fn, wait, immediate) {
     var timeout;
     return function() {
         var context = this, 
@@ -234,14 +234,14 @@ function debounce(fn, wait, immediate) {
 }
 
 //get object keys
-function getKeys(obj) {
+export function getKeys(obj) {
     return $.map(obj, function(val, key) {
         return key;
     });
 }
 
 //add effect presets
-function addPresets(presets, effects, directions, orders) {
+export function addPresets(presets, effects, directions, orders) {
     $.each(effects, function(i, effect) {
         $.each(directions, function(j, direction) {
             $.each(orders, function(k, order) {
@@ -252,7 +252,7 @@ function addPresets(presets, effects, directions, orders) {
 }
 
 //create wrapper
-function createWrapper($el) {
+export function createWrapper($el) {
     var size = {width:$el.width(), height:$el.height()},
     $wrapper = $('<div/>', {
         'class':'br-effect-wrapper',
@@ -280,21 +280,21 @@ function createWrapper($el) {
 }
     
 //remove wrapper
-function removeWrapper($el) {
+export function removeWrapper($el) {
     if ($el.parent().hasClass('br-effect-wrapper')) {
         $el.unwrap();
     }
 }
     
 //save element style
-function saveStyle($el, props) {
+export function saveStyle($el, props) {
     $.each(props, function(i, val) {
         $el.data('style-' + val, $el[0].style[val]);
     });
 }
     
 //restore element style
-function restoreStyle($el, props) {
+export function restoreStyle($el, props) {
     $.each(props, function(i, val) {
         var style = $el.data('style-' + val);
         $el.css(val, (typeof style === 'undefined' ? '' : style));
