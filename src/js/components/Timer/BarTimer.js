@@ -8,7 +8,7 @@ class BarTimer extends Timer {
         this._$bar = $('<div/>');
         this._$timer.addClass('br-bar-timer')
             .addClass(/bottom/i.test(opts.position) ? 'br-bottom' : 'br-top')
-            .append(this._$bar);   
+            .append(this._$bar);
     }
 
     start(delay) {
@@ -33,7 +33,7 @@ class BarTimer extends Timer {
         this._$bar.stopTransition(true);
         this._elapsed += (Date.now() - this._startTime);
         this._$bar.width(`${this._elapsed/this._delay * 101 }%`);
-        
+
         super.pause();
     }
 }

@@ -10,5 +10,5 @@ export const TO_KEYFRAME = `10${ FROM_KEYFRAME}`;
         requestAnimationFrame = function(callback) {
             callback.call(null);
         };
-    } 	
+    }
 }());

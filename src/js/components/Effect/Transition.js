@@ -20,13 +20,13 @@ class Transition {
         let total = this._rows * this._columns,
             inner = this._is3D ? Transition.CUBOID : Transition.PLANE,
             content = '';
-        
+
         while (total--) {
             content += `<div class="br-effect">${ inner }</div>`;
         }
         this._$container.toggleClass('br-2d', !this._is3D).html(content);
         this._$el = this._$container.children();
-        
+
         if (this._shapeColor) {
             this._$el.find('>.br-shape').children().css({ backgroundColor: this._shapeColor });
         }
@@ -38,7 +38,7 @@ class Transition {
             currTop = $curr.position().top,
             currLeft = $curr.position().left,
             $prev = this.getPrevImage(),
-            prevTop, 
+            prevTop,
             prevLeft;
 
         if ($prev) {
@@ -58,11 +58,11 @@ class Transition {
                     left = j * this._width,
                     $el = this._$el.eq(i * this._columns + j),
                     $shape = $($el[0].firstChild);
-                    
+
                 $el.css({ top: top, left: left, width: width, height: height });
                 $shape.find('>.br-prev-side>img').css({ left: (prevLeft - left), top: (prevTop - top) }).end()
                     .find('>.br-active-side>img').css({ left: (currLeft - left), top: (currTop - top) });
-                
+
                 if (this._is3D) {
                     this.setCuboid($shape, width, height, $el.data('depth'));
                 }
@@ -149,7 +149,7 @@ class Transition {
 
     //add element's image
     addImage() {
-        $.each({ '>.br-active-side': this.getCurrImage(), '>.br-prev-side': this.getPrevImage() }, 
+        $.each({ '>.br-active-side': this.getCurrImage(), '>.br-prev-side': this.getPrevImage() },
             $.proxy(function(selector, $img) {
                 if ($img && $img.length) {
                     const rect = $img[0].getBoundingClientRect(),
@@ -169,7 +169,7 @@ class Transition {
             left = (width - depth)/2,
             top = (height - depth)/2,
             invert = $cuboid.find('>.br-face-back').hasClass('br-inverted') ? 'rotate(180deg) ' : '';
-        
+
         $cuboid.find('>.br-face-front').css({ transform: depthZ }).end()
             .find('>.br-face-back').css({ transform: `rotateY(180deg) ${ invert }${depthZ}` }).end()
             .find('>.br-face-left').css({ width: depth, left: left, transform: `rotateY(-90deg) ${ widthZ}` }).end()
@@ -184,7 +184,7 @@ class Transition {
             index = this._context._activeIndex,
             size, arr, pct,
             offset = 0;
-        
+
         if ($.isNumeric(this._depth)) {
             size = this._depth;
             arr = [0, 1, 0];
@@ -213,7 +213,7 @@ class Transition {
             rule += (`${pct[i] } { ${ getTransformProperty(`translateZ(${ Math.min(0, offset - val) }px)`) } } `);
         }
         rule += '} ';
-        
+
         try {
             sheet.deleteRule(index);
             sheet.insertRule(rule, index);
@@ -227,11 +227,11 @@ class Transition {
     animate(elArray, duration, easing) {
         if (this._is3D) {
             this.updateKeyframes();
-                
+
             if (this._shapeShading) {
                 const shadeDuration = (this._effect === 'flip' ? duration/2 : duration);
                 this._$el.find('>.br-shape>.br-prev-side').each(function() {
-                    $('<div/>', { 'class': 'br-shading' }).animation('br-shade-in', 
+                    $('<div/>', { 'class': 'br-shading' }).animation('br-shade-in',
                         { duration: shadeDuration, easing: easing, playState: 'paused', complete: function(e) {
                             e.stopPropagation();
                         } }).appendTo($(this));
@@ -252,14 +252,14 @@ class Transition {
             $active = (selector ? $el.find(selector) : $el),
             promises = [],
             isLast = !elArray.length;
-        
+
         if (this._is3D) {
             const opts = $.extend({}, options);
             if (isLast) {
                 const d2 = $.Deferred();
                 promises.push(d2.promise());
-                opts.complete = function() { 
-                    d2.resolve(); 
+                opts.complete = function() {
+                    d2.resolve();
                 };
             }
             $el.animation(`br-${ this._context._uid }-${ this._context._activeIndex}`, opts)
@@ -269,19 +269,19 @@ class Transition {
         if (isLast) {
             const d1 = $.Deferred();
             promises.push(d1.promise());
-            options.complete = function() { 
-                d1.resolve(); 
+            options.complete = function() {
+                d1.resolve();
             };
-            
+
             $.when.apply(null, promises).always($.proxy(function() {
                 this._context.activateItem(false);
                 this._$container.empty();
                 this._progress = false;
             }, this));
         }
-        
+
         $active.transition($el.data('to'), options);
-        
+
         if (!isLast) {
             this._timeout = setTimeout($.proxy(function() {
                 this._requestId = requestAnimationFrame($.proxy(function() {
@@ -310,12 +310,12 @@ class Transition {
 
                 const deferred = $.Deferred();
                 promises.push(deferred.promise());
-                $img.brHandleImage($img.attr('src'), { 
+                $img.brHandleImage($img.attr('src'), {
                     complete: function() {
                         deferred.resolve();
                     },
-                    error: function() { 
-                        deferred.reject(); 
+                    error: function() {
+                        deferred.reject();
                     },
                 });
             }
@@ -365,12 +365,12 @@ class Transition {
         if (this._isReverse) {
             elements.reverse();
         }
-        
+
         return elements;
     }
 
     setFn(fn, dir) {
-        let setter = `set${ capitalize(fn)}`, 
+        let setter = `set${ capitalize(fn)}`,
             name = setter + capitalize(dir);
 
         if (!$.isFunction(this[name])) {
@@ -388,13 +388,13 @@ class Transition {
         if (!directions) {
             directions = ['up', 'down', 'left', 'right'];
         }
-        
+
         $el.each(function() {
-            $(this).data({ dir: getRandomItem(directions) }); 
+            $(this).data({ dir: getRandomItem(directions) });
         });
-        
+
         $.each(directions, $.proxy(function(i, dir) {
-            const $items = $el.filter(function() { 
+            const $items = $el.filter(function() {
                 return $(this).data('dir') === dir;
             });
             this[this.setFn(fn, dir)]($items);
@@ -444,11 +444,11 @@ class Transition {
     }
 
     setPush($el, visibility, axis, fwd) {
-        let active = 'front', 
+        let active = 'front',
             prev = 'back',
             dim = (axis === 'Y' ? 'height' : 'width'),
             from, to;
-            
+
         if (this._transform) {
             const translate = `translate${ axis}`;
             from = { transform: `${translate }(-50%)` };
@@ -585,13 +585,13 @@ class Transition {
     setFlip($el, axis, positive) {
         const transform = `translateZ(${ -$el.data('depth')/2 }px) rotate${ axis}`,
             sign = positive ? '' : '-';
-        
+
         $el.data({ to: { transform: `${transform }(${ sign }180deg)` } })
             .find('>.br-shape').css({ transform: `${transform }(0deg)` })
             .find('>.br-face-front').addClass('br-prev-side').end()
             .find('>.br-face-back').addClass('br-active-side').toggleClass('br-inverted', axis === 'X');
     }
-    
+
     //fade effect
     fade() {
         const selector = '>.br-shape';
@@ -603,7 +603,7 @@ class Transition {
 
     //zoom effect
     zoom() {
-        let front = 'br-active-side', 
+        let front = 'br-active-side',
             back = 'br-prev-side',
             from = { opacity: 1, transform: 'scale(1)' },
             to = { opacity: 0, transform: 'scale(2)' };
@@ -617,7 +617,7 @@ class Transition {
             front = back;
             back = temp;
         }
-        
+
         this._$el.data({ selector: '>.br-shape>.br-back', to: to })
             .find('>.br-shape').addClass('br-stack')
             .find('>.br-front').addClass(front).end()
@@ -628,7 +628,7 @@ class Transition {
     expand() {
         let selector = '>.br-shape',
             from, to;
-        
+
         if (this._transform) {
             from = { transform: 'scale(0)' };
             to = { transform: 'scale(1)' };
@@ -637,13 +637,13 @@ class Transition {
             from = { width: 0, height: 0 };
             to = { width: this._width, height: this._height };
         }
-        
+
         this._$el.data({ selector: selector, to: to })
             .find(selector).css(from)
             .find('>.br-front').addClass('br-active-side').end()
             .find('>.br-back').hide();
     }
-    
+
     //push effect
     push() {
         if (this._alternate) {
@@ -652,7 +652,7 @@ class Transition {
         else {
             this[this.setFn('push', this._direction)](this._$el);
         }
-        
+
         this._$el.data({ selector: '>.br-shape' });
     }
 
@@ -664,7 +664,7 @@ class Transition {
         else {
             this[this.setFn('cover', this._direction)](this._$el);
         }
-        
+
         this._$el.data({ selector: '>.br-shape' });
     }
 
@@ -672,7 +672,7 @@ class Transition {
     slide() {
         this._autoReverse = true;
         this._direction = this.getOpposite(this._direction);
-        
+
         if (this._alternate) {
             this.setAlternate('push');
         }
@@ -688,7 +688,7 @@ class Transition {
         this._isReverse = !this._isReverse;
         this[this.setFn('move', this._direction)](this._$el);
     }
-    
+
     //flip transition
     flip() {
         this._$el.data({ selector: '>.br-shape', depth: this._shapeDepth });
@@ -717,12 +717,12 @@ class Transition {
         $.each(Transition.DATA, $.proxy(function(i, val) {
             this[`_${ val}`] = opts[val];
         }, this));
-                    
+
         this._columns = getPosInt(this._columns, 1);
         this._rows = getPosInt(this._rows, 1);
         this._width = Math.ceil(this._$container.width()/this._columns);
         this._height = Math.ceil(this._$container.height()/this._rows);
-        
+
         if (this._effect === 'random') {
             this.setRandomEffect();
         }
@@ -754,7 +754,7 @@ class Transition {
     setRandomEffect() {
         const type = this.getType(),
             preset = getRandomItem(PRESETS[type]);
-        
+
         $.each(['effect', 'direction', 'order'], $.proxy(function(i, val) {
             this[`_${ val}`] = preset[val];
         }, this));
@@ -763,7 +763,7 @@ class Transition {
     //get diagonal array
     getDiagonalArray(order) {
         let elArray = [],
-            start = 0, 
+            start = 0,
             end = (this._rows - 1) + (this._columns - 1) + 1,
             flip = (order === 'downLeft' || order === 'upRight');
 
@@ -789,30 +789,30 @@ class Transition {
             }
             start++;
         }
-        
+
         return elArray;
     }
 
     //get zig-zag array
     getZigZagArray(order) {
-        let i = 0, 
-            j = 0, 
+        let i = 0,
+            j = 0,
             fwd = true,
             elArray = [],
             total = this._$el.length,
             count;
-        
+
         if (order === 'zigZagUp' || order === 'zigZagDown') {
             for (count = 0; count < total; count++) {
                 elArray[count] = this._$el.eq(i * this._columns + j);
-                
-                if (fwd) { 
+
+                if (fwd) {
                     j++;
                 }
                 else {
                     j--;
                 }
-                    
+
                 if (j === this._columns || j < 0) {
                     fwd = !fwd;
                     j = (fwd ? 0 : this._columns - 1);
@@ -823,14 +823,14 @@ class Transition {
         else {
             for (count = 0; count < total; count++) {
                 elArray[count] = this._$el.eq(i * this._columns + j);
-                
-                if (fwd) { 
+
+                if (fwd) {
                     i++;
                 }
                 else {
                     i--;
                 }
-                
+
                 if (i === this._rows || i < 0) {
                     fwd = !fwd;
                     i = (fwd ? 0 : this._rows - 1);
@@ -838,10 +838,10 @@ class Transition {
                 }
             }
         }
-        
+
         return elArray;
     }
-    
+
     //get directional array
     getDirectionalArray(order) {
         let elArray;
@@ -856,23 +856,23 @@ class Transition {
         else {
             elArray = this._$el.toArray();
         }
-        
+
         return elArray;
     }
-    
+
     //get spiral array
     getSpiralArray() {
-        let i = 0, 
+        let i = 0,
             j = 0,
             rowCount = this._rows - 1,
             colCount = this._columns - 1,
             dir = 0,
             limit = colCount,
             elArray = [];
-        
+
         while (rowCount >= 0 && colCount >=0) {
-            let count = 0; 
-            while(true) { 
+            let count = 0;
+            while(true) {
                 elArray.push(this._$el.eq(i * this._columns + j));
                 if ((++count) > limit) {
                     break;
@@ -891,7 +891,7 @@ class Transition {
                     i--;
                     break;
                 }
-            } 
+            }
             switch(dir) {
             case 0:
                 dir = 1;
@@ -915,7 +915,7 @@ class Transition {
                 break;
             }
         }
-            
+
         return elArray;
     }
 }
@@ -971,7 +971,7 @@ Transition.OPPOSITE = {
     let num = 20,
         radian = Math.PI,
         step = radian/num;
-    
+
     for (let i = 0; i <= num; i++) {
         Transition.FLIP_PCT[i] = `${Math.round(i/num * 100) }%`;
         Transition.SINES[i] = roundTo(Math.sin(radian), 5);
@@ -985,7 +985,7 @@ Transition.OPPOSITE = {
     let num = 45,
         radian = degreesToRadians(45),
         step = radian/(num/2);
-    
+
     for (let i = 0; i <= num; i++) {
         Transition.ROTATE_PCT[i] = `${Math.round(i/num * 100) }%`;
         Transition.COSINES[i] = roundTo(Math.cos(radian), 5);

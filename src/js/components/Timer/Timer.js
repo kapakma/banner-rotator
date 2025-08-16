@@ -7,7 +7,7 @@ class Timer {
             this._running = false;
             this._complete = true;
             this._$timer = $('<div/>').appendTo(context._$screen).addTransitionClass('br-element-transition');
-            
+
             if (isFunction(opts.click)) {
                 this._$timer.css({ cursor: 'pointer' }).on('click', opts.click);
             }

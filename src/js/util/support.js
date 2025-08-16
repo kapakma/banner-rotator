@@ -5,12 +5,12 @@ export let PREFIX;
 export let PREFIXES;
 export let CSS_TRANSITION_END;
 export let CSS_ANIMATION_END;
-	
+
 (function() {
     $.each(['transform', 'transition', 'transformStyle', 'animation', 'backgroundSize', 'pointerEvents'], function(i, val) {
         styleSupport(val);
     });
-    
+
     SUPPORT.transform3d = propertySupport(SUPPORT.transform, 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)');
     SUPPORT.preserve3d = propertySupport(SUPPORT.transformStyle, 'preserve-3d');
     SUPPORT.cssFilter = filterSupport();
@@ -57,11 +57,11 @@ export function propertySupport(prop, val) {
     let dashProp = camelToDash(prop).replace(/^(moz-|webkit-|o-|ms-)/, '-$1'),
         el = document.createElement('div'),
         support;
-    
+
     el.style[dashProp] = val;
     support = (`${el.style[dashProp] }`).indexOf(val) > -1;
     el = null;
-    
+
     return support;
 }
 
@@ -87,7 +87,7 @@ export function styleSupport(prop) {
     else {
         const capProp = capitalize(prop),
             prefixes = ['Moz', 'Webkit', 'O', 'ms'];
-        
+
         for (let i = 0; i < prefixes.length; i++) {
             const prefixProp = prefixes[i] + capProp;
             if (prefixProp in style) {
@@ -96,7 +96,7 @@ export function styleSupport(prop) {
             }
         }
     }
-    
+
     el = null;
     SUPPORT[prop] = supported;
     return supported;

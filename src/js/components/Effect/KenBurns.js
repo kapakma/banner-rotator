@@ -10,23 +10,23 @@ class KenBurns {
 
         if (SUPPORT.animation && !isNone(this._effect)) {
             opts = opts || {};
-            
+
             if (/^random/.test(this._effect)) {
                 this._effect = this.getRandom();
             }
             else {
                 this._effect = camelToDash(this._effect);
             }
-            
+
             if (this._effect in KenBurns.REVERSES) {
                 this._effect = KenBurns.REVERSES[this._effect];
                 opts.direction = 'reverse';
             }
-            
+
             this._effect = `br-${ this._effect}`;
             this._options = {
                 duration: getNonNegInt(opts.duration, 5000),
-                easing: getValue(opts.easing, 'linear'), 
+                easing: getValue(opts.easing, 'linear'),
                 playState: 'paused',
                 direction: opts.direction,
             };
@@ -55,7 +55,7 @@ class KenBurns {
     getRandom() {
         let name = this._effect.substring('random'.length).toUpperCase(),
             effects = KenBurns[name];
-        
+
         if (!$.isArray(effects)) {
             effects = KenBurns.EFFECTS;
         }
@@ -66,9 +66,9 @@ class KenBurns {
 
 (function() {
     KenBurns.PAN = ['up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'];
-    
+
     KenBurns.ZOOMIN = ['zoom-in'];
-    
+
     KenBurns.ZOOMOUT = ['zoom-out'];
 
     $.each(KenBurns.PAN, function(i, val) {
@@ -78,13 +78,13 @@ class KenBurns {
     });
 
     KenBurns.ZOOM = KenBurns.ZOOMIN.concat(KenBurns.ZOOMOUT);
-    
+
     KenBurns.EFFECTS = KenBurns.PAN.concat(KenBurns.ZOOM);
-    
+
     KenBurns.REVERSES = {
         'pan-left': 'pan-right',
         'pan-up': 'pan-down',
-        'pan-up-left': 'pan-down-right', 
+        'pan-up-left': 'pan-down-right',
         'pan-up-right': 'pan-down-left',
         'zoom-out': 'zoom-in',
         'zoom-out-left': 'zoom-in-right',

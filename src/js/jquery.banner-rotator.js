@@ -5,9 +5,9 @@ import '../styles/banner-rotator.css';
 
 import { CUBIC_BEZIER, SIDES } from './constants';
 import { SUPPORT, CSS_ANIMATION_END, CSS_TRANSITION_END } from './util/support';
-import { 
-    isAndroid, capitalize, 
-    isEmptyStr, getValue, 
+import {
+    isAndroid, capitalize,
+    isEmptyStr, getValue,
     saveStyle, createWrapper,
     restoreStyle, removeWrapper,
 } from './util/helpers';
@@ -25,17 +25,17 @@ import Rotator from './BannerRotator';
             isHorizontal = opts.direction === 'left' || opts.direction === 'right',
             inverse = (opts.direction === 'right' || opts.direction === 'down' ? -1 : 1),
             hide = opts.mode === 'hide';
-		
+
         return this.each(function() {
             const $el = $(this),
                 from = {},
                 to = {};
-			
+
             if (opts.transform) {
                 let translate = `translate${ isHorizontal ? 'X' : 'Y'}`,
                     begin = inverse * 100,
                     end = 0;
-				
+
                 if (hide) {
                     end = -begin;
                     begin = 0;
@@ -57,7 +57,7 @@ import Rotator from './BannerRotator';
 
                 from[pos] = inverse * dist;
                 to[pos] = 0;
-				
+
                 if (hide) {
                     to[pos] = -from[pos];
                     from[pos] = 0;
@@ -78,7 +78,7 @@ import Rotator from './BannerRotator';
     };
 
     $.each(['width', 'height'], function(i, val) {
-        const natural = `natural${ capitalize(val)}`; 
+        const natural = `natural${ capitalize(val)}`;
         $.fn[natural] = function() {
             let el = this[0],
                 size;
@@ -101,13 +101,13 @@ import Rotator from './BannerRotator';
             $(this).css({ top: (winHeight - $(this).naturalHeight())/2, left: (winWidth - $(this).naturalWidth())/2 });
         });
     };
-	
+
     //fill (cover) content to viewpoint
     $.fn.brFill = function(winWidth, winHeight) {
         return this.each(function() {
             const imgRatio = $(this).naturalWidth()/$(this).naturalHeight(),
                 winRatio = winWidth/winHeight;
-			
+
             if (imgRatio < winRatio) {
                 $(this).css({ width: winWidth, height: winWidth / imgRatio });
             }
@@ -123,7 +123,7 @@ import Rotator from './BannerRotator';
         return this.each(function() {
             const imgRatio = $(this).naturalWidth()/$(this).naturalHeight(),
                 winRatio = winWidth/winHeight;
-			
+
             if (imgRatio < winRatio) {
                 $(this).css({ width: winHeight * imgRatio, height: winHeight });
             }
@@ -171,13 +171,13 @@ import Rotator from './BannerRotator';
         });
         return height;
     };
-		
+
     //bind image handler
     $.fn.brHandleImage = function(src, settings) {
-        let complete = $.isFunction(settings.complete) ? settings.complete : $.noop, 
+        let complete = $.isFunction(settings.complete) ? settings.complete : $.noop,
             error = $.isFunction(settings.error) ? settings.error : $.noop,
             loadEvent = 'load';
-			
+
         if (!isEmptyStr(settings.namespace)) {
             loadEvent += `.${ settings.namespace}`;
         }
@@ -222,7 +222,7 @@ import Rotator from './BannerRotator';
     $.fn.brCopyBorder = function($el) {
         const props = ['width', 'style', 'color'],
             corners = ['TopLeft', 'TopRight', 'BottomLeft', 'BottomRight'];
-		
+
         return this.each(function() {
             for (let i = 0; i < SIDES.length; i++) {
                 for (let j = 0; j < props.length; j++) {
@@ -230,7 +230,7 @@ import Rotator from './BannerRotator';
                     $(this).css(name, $el.css(name));
                 }
             }
-			
+
             for (let k = 0; k < corners.length; k++) {
                 const radius = `border${ corners[k] }Radius`;
                 $(this).css(radius, $el.css(radius));
@@ -240,7 +240,7 @@ import Rotator from './BannerRotator';
 
     //animation
     $.fn.animation = function() {
-        let name = arguments[0], duration, easing, 
+        let name = arguments[0], duration, easing,
             direction, playState, fillMode,
             complete, always;
 
@@ -264,7 +264,7 @@ import Rotator from './BannerRotator';
         direction = getValue(direction, 'normal');
         playState = getValue(playState, 'running');
         fillMode = getValue(fillMode, 'forwards');
-		
+
         const timingFn = (easing in CUBIC_BEZIER ? CUBIC_BEZIER[easing] : easing),
             props = { animationName: name, animationDuration: `${duration }ms`, animationTimingFunction: timingFn, animationDirection: direction, animationPlayState: playState, animationFillMode: fillMode };
 
@@ -274,15 +274,15 @@ import Rotator from './BannerRotator';
                 if ($.isFunction(complete)) {
                     $el.one(CSS_ANIMATION_END, complete);
                 }
-				
+
                 if ($.isFunction(always)) {
                     $el.one(`${CSS_ANIMATION_END }.always`, always);
                 }
-				
+
                 $el.one(CSS_ANIMATION_END, function() {
                     $el.dequeue();
                 });
-				
+
                 $el.reflow().css(props);
             });
         });
@@ -295,16 +295,16 @@ import Rotator from './BannerRotator';
             if (clearQueue) {
                 $el.clearQueue();
             }
-			
+
             clearTimeout($el.data('timeout'));
-			
+
             if (jumpToEnd) {
                 $el.trigger(CSS_ANIMATION_END);
             }
             else {
                 $el.trigger(`${CSS_ANIMATION_END }.always`).off(CSS_ANIMATION_END);
             }
-			
+
             $el.css({ animation: 'none' }).dequeue();
         });
     };
@@ -312,9 +312,9 @@ import Rotator from './BannerRotator';
     //transition
     $.fn.transition = function() {
         let props = arguments[0],
-            duration, easing, delay, 
+            duration, easing, delay,
             complete, always;
-		
+
         if (typeof arguments[1] === 'object') {
             const opts = arguments[1];
             duration = opts.duration;
@@ -339,20 +339,20 @@ import Rotator from './BannerRotator';
                 if ($.isFunction(complete)) {
                     $el.one(CSS_TRANSITION_END, complete);
                 }
-				
+
                 if ($.isFunction(always)) {
                     $el.one(`${CSS_TRANSITION_END }.always`, always);
                 }
-				
-                $el.one(CSS_TRANSITION_END, function() { 
+
+                $el.one(CSS_TRANSITION_END, function() {
                     $el.dequeue();
                 });
-				
+
                 $el.forceEnd(CSS_TRANSITION_END, duration).reflow().css(props);
             });
         });
     };
-	
+
     //stop transition
     $.fn.stopTransition = function(clearQueue, jumpToEnd) {
         return this.each(function() {
@@ -360,35 +360,35 @@ import Rotator from './BannerRotator';
             if (clearQueue) {
                 $el.clearQueue();
             }
-			
+
             clearTimeout($el.data('timeout'));
-			
+
             if (jumpToEnd) {
                 $el.trigger(CSS_TRANSITION_END);
             }
             else {
                 $el.trigger(`${CSS_TRANSITION_END }.always`).off(CSS_TRANSITION_END);
             }
-			
+
             $el.css({ transition: 'none', transitionDuration: '0s' }).dequeue();
         });
     };
-	
+
     //force reflow
     $.fn.reflow = function() {
         return this.each(function() {
             const reflow = this.offsetWidth;
         });
     };
-	
+
     //force transition end
     $.fn.forceEnd = function(endEvent, duration) {
         return this.each(function() {
             let $el = $(this),
                 called = false;
-			
-            $el.one(endEvent, function() { 
-                called = true; 
+
+            $el.one(endEvent, function() {
+                called = true;
             }).data('timeout', setTimeout(function() {
                 if (!called) {
                     $el.trigger(endEvent);
@@ -396,7 +396,7 @@ import Rotator from './BannerRotator';
             }, duration + 50));
         });
     };
-	
+
     //add transition class
     $.fn.addTransitionClass = function(className) {
         return this.each(function() {
@@ -405,7 +405,7 @@ import Rotator from './BannerRotator';
             }
         });
     };
-	
+
     const METHODS = {
   		play: 'play',
   		pause: 'pause',
@@ -416,17 +416,17 @@ import Rotator from './BannerRotator';
         option: 'getOption',
         destroy: 'destroy',
  	};
-		
+
     $.fn.bannerRotator = function() {
         const args = arguments,
             params = args[0];
-		
+
         if (params in METHODS) {
             let method = METHODS[params],
                 val;
 
             this.each(function(n, el) {
-                const instance = $(el).data(Rotator.PLUGIN); 
+                const instance = $(el).data(Rotator.PLUGIN);
                 if (instance) {
                     val = instance[method].apply(instance, Array.prototype.slice.call(args, 1));
                     if (typeof val !== 'undefined') {
@@ -434,7 +434,7 @@ import Rotator from './BannerRotator';
                     }
                 }
             });
-			
+
             return (typeof val !== 'undefined' ? val : this);
         }
         else if (typeof params === 'object' || !params) {

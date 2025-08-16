@@ -12,7 +12,7 @@ export function shuffleElements($el) {
 export function getPosition(val) {
     let props = {},
         arr = val.split(' ', 2);
-    
+
     if (arr.length !== 2) {
         arr = camelToDash(val).split('-');
     }
@@ -120,7 +120,7 @@ export function styleSupport(prop) {
     else {
         const capProp = capitalize(prop),
             prefixes = ['Moz', 'Webkit', 'O', 'ms'];
-        
+
         for (let i = 0; i < prefixes.length; i++) {
             const prefixProp = prefixes[i] + capProp;
             if (prefixProp in style) {
@@ -129,7 +129,7 @@ export function styleSupport(prop) {
             }
         }
     }
-    
+
     el = null;
     SUPPORT[prop] = supported;
     return supported;
@@ -140,7 +140,7 @@ export function isAndroid(version) {
     const android = 'android',
         ua = navigator.userAgent.toLowerCase(),
         index = ua.indexOf(android);
-    
+
     return (index > -1 && (typeof version === 'undefined' || parseFloat(ua.substring(index + android.length)) <= version));
 }
 
@@ -170,11 +170,11 @@ export function propertySupport(prop, val) {
     let dashProp = camelToDash(prop).replace(/^(moz-|webkit-|o-|ms-)/, '-$1'),
         el = document.createElement('div'),
         support;
-    
+
     el.style[dashProp] = val;
     support = (`${el.style[dashProp] }`).indexOf(val) > -1;
     el = null;
-    
+
     return support;
 }
 
@@ -219,7 +219,7 @@ export function getTransformProperty(transform) {
 export function debounce(fn, wait, immediate) {
     let timeout;
     return function() {
-        const context = this, 
+        const context = this,
             args = arguments;
         const later = function() {
             timeout = null;
@@ -271,7 +271,7 @@ export function createWrapper($el) {
                 right: $el[0].style.right,
             },
         });
-    
+
     $el.wrap($wrapper).css({
         display: 'block',
         position: 'relative',
@@ -281,21 +281,21 @@ export function createWrapper($el) {
         right: 'auto',
     }).css(size);
 }
-    
+
 //remove wrapper
 export function removeWrapper($el) {
     if ($el.parent().hasClass('br-effect-wrapper')) {
         $el.unwrap();
     }
 }
-    
+
 //save element style
 export function saveStyle($el, props) {
     $.each(props, function(i, val) {
         $el.data(`style-${ val}`, $el[0].style[val]);
     });
 }
-    
+
 //restore element style
 export function restoreStyle($el, props) {
     $.each(props, function(i, val) {
