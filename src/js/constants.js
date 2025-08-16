@@ -31,3 +31,29 @@ export const CUBIC_BEZIER = {
     'easeOutBack':		'cubic-bezier(.175,.885,.32,1.275)',
     'easeInOutBack':	'cubic-bezier(.68,-.55,.265,1.55)'
 };
+
+export const SIDES = ['top', 'left', 'bottom', 'right'];
+
+export const OPPOSITE_SIDE = {
+    "top": "bottom",
+    "left": "right",
+    "bottom": "top",
+    "right": "left"
+};
+
+export const OPPOSITE_LAYER = {
+    "zoomIn": "zoomOut",
+    "flipDown": "flipUp",
+    "flipRight": "flipLeft",
+    "moveDown": "moveUp",
+    "moveRight": "moveLeft",
+    "spinInRight": "spinOutLeft",
+    "spinInLeft": "spinOutRight",
+    "zoomOut": "zoomIn",
+    "flipUp": "flipDown",
+    "flipLeft": "flipRight",
+    "moveUp": "moveDown",
+    "moveLeft": "moveRight",
+    "spinOutLeft": "spinInRight",
+    "spinOutRight": "spinInLeft"
+};
