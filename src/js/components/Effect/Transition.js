@@ -2,8 +2,8 @@ import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize
 import { SUPPORT, PREFIX, } from "../../util/support";
 import PRESETS from '../../util/presets';
 
-//Effect Class
-class Effect {
+//Transition Class
+class Transition {
     constructor(context) {
         if (context) {
             this._timeout = null;
@@ -18,7 +18,7 @@ class Effect {
     //create elements
     createElements() {
         var total = this._rows * this._columns,
-            inner = this._is3D ? Effect.CUBOID : Effect.PLANE,
+            inner = this._is3D ? Transition.CUBOID : Transition.PLANE,
             content = '';
         
         while (total--) {
@@ -90,14 +90,14 @@ class Effect {
     getType() {
         if (1 < this._rows) {
             if (1 < this._columns) {
-                return Effect.GRID;
+                return Transition.GRID;
             }
             else {
-                return Effect.ROW;
+                return Transition.ROW;
             }
         }
         else if (1 < this._columns) {
-            return Effect.COLUMN;
+            return Transition.COLUMN;
         }
 
         return 'none';
@@ -105,7 +105,7 @@ class Effect {
 
     //init order
     initOrder() {
-        if (0 > $.inArray(this._order, Effect.ORDERS)) {
+        if (0 > $.inArray(this._order, Transition.ORDERS)) {
             this._order = 'right';
         }
 
@@ -127,8 +127,8 @@ class Effect {
 
     //get opposite
     getOpposite(val) {
-        if (val in Effect.OPPOSITE) {
-            return Effect.OPPOSITE[val];
+        if (val in Transition.OPPOSITE) {
+            return Transition.OPPOSITE[val];
         }
         return val;
     }
@@ -193,15 +193,15 @@ class Effect {
         else {
             if ('flip' === this._effect) {
                 size = ('up' === this._direction || 'down' === this._direction ? this._height : this._width)/2;
-                arr = Effect.SINES;
-                pct = Effect.FLIP_PCT;
+                arr = Transition.SINES;
+                pct = Transition.FLIP_PCT;
             }
             else {
                 size = this._$el.data('depth')/2;
                 offset = size;
                 size /= Math.cos(degreesToRadians(45));
-                arr = Effect.COSINES;
-                pct = Effect.ROTATE_PCT;
+                arr = Transition.COSINES;
+                pct = Transition.ROTATE_PCT;
             }
         }
 
@@ -713,7 +713,7 @@ class Effect {
     start(opts) {
         this._progress = true;
 
-        $.each(Effect.DATA, $.proxy(function(i, val) {
+        $.each(Transition.DATA, $.proxy(function(i, val) {
             this['_' + val] = opts[val];
         }, this));
                     
@@ -736,7 +736,7 @@ class Effect {
         this._shapeDepth = getNonNegInt(this._shapeDepth, 0);
         this.initDirection();
         this.initOrder();
-        this._isReverse = -1 < $.inArray(this._order, Effect.REVERSE);
+        this._isReverse = -1 < $.inArray(this._order, Transition.REVERSE);
         this._hideItems = -1 < $.inArray(this._effect, ['flip', 'push', 'rotate', 'slide', 'zoom']);
 
         this.createElements();
@@ -919,9 +919,9 @@ class Effect {
     }
 }
 
-Effect.DATA = ['effect', 'columns', 'rows', 'interval', 'direction', 'order', 'alternate', 'autoReverse', 'depth', 'shapeColor', 'shapeShading', 'shapeDepth'];
+Transition.DATA = ['effect', 'columns', 'rows', 'interval', 'direction', 'order', 'alternate', 'autoReverse', 'depth', 'shapeColor', 'shapeShading', 'shapeDepth'];
 
-Effect.CUBOID= '<div class="br-cuboid br-shape">\
+Transition.CUBOID= '<div class="br-cuboid br-shape">\
                     <div class="br-face-front"></div>\
                     <div class="br-face-back"></div>\
                     <div class="br-face-left"></div>\
@@ -930,20 +930,20 @@ Effect.CUBOID= '<div class="br-cuboid br-shape">\
                     <div class="br-face-bottom"></div>\
                 </div>';
 
-Effect.PLANE = '<div class="br-plane br-shape">\
+Transition.PLANE = '<div class="br-plane br-shape">\
                     <div class="br-front"></div>\
                     <div class="br-back"></div>\
                 </div>';
 
-Effect.COLUMN = 'column';
+Transition.COLUMN = 'column';
 
-Effect.ROW = 'row';
+Transition.ROW = 'row';
 
-Effect.GRID = 'grid';
+Transition.GRID = 'grid';
 
-Effect.EFFECTS = ['cover', 'expand', 'fade', 'flip', 'move', 'push', 'rotate', 'slide', 'zoom'];
+Transition.EFFECTS = ['cover', 'expand', 'fade', 'flip', 'move', 'push', 'rotate', 'slide', 'zoom'];
 
-Effect.OPPOSITE = {
+Transition.OPPOSITE = {
     down:'up',
     right:'left',
     downLeft:'upRight',
@@ -954,40 +954,40 @@ Effect.OPPOSITE = {
 };
 
 (function() {
-    Effect.REVERSE = [];
-    $.each(Effect.OPPOSITE, function(key, val) {
-        Effect.OPPOSITE[val] = key;
-        Effect.REVERSE.push(val);
+    Transition.REVERSE = [];
+    $.each(Transition.OPPOSITE, function(key, val) {
+        Transition.OPPOSITE[val] = key;
+        Transition.REVERSE.push(val);
     });
 
-    Effect.ORDERS = getKeys(Effect.OPPOSITE);
-    Effect.ORDERS.push('random');
+    Transition.ORDERS = getKeys(Transition.OPPOSITE);
+    Transition.ORDERS.push('random');
 }());
 
 (function() {
-    Effect.SINES = [];
-    Effect.FLIP_PCT = [];
+    Transition.SINES = [];
+    Transition.FLIP_PCT = [];
     var num = 20,
         radian = Math.PI,
         step = radian/num;
     
     for (var i = 0; i <= num; i++) {
-        Effect.FLIP_PCT[i] = Math.round(i/num * 100) + '%';
-        Effect.SINES[i] = roundTo(Math.sin(radian), 5);
+        Transition.FLIP_PCT[i] = Math.round(i/num * 100) + '%';
+        Transition.SINES[i] = roundTo(Math.sin(radian), 5);
         radian -= step;
     }
 }());
 
 (function() {
-    Effect.COSINES = [];
-    Effect.ROTATE_PCT = [];
+    Transition.COSINES = [];
+    Transition.ROTATE_PCT = [];
     var num = 45,
         radian = degreesToRadians(45),
         step = radian/(num/2);
     
     for (var i = 0; i <= num; i++) {
-        Effect.ROTATE_PCT[i] = Math.round(i/num * 100) + '%';
-        Effect.COSINES[i] = roundTo(Math.cos(radian), 5);
+        Transition.ROTATE_PCT[i] = Math.round(i/num * 100) + '%';
+        Transition.COSINES[i] = roundTo(Math.cos(radian), 5);
         radian -= step;
         if (0 >= radian) {
             step = -step;
@@ -995,4 +995,4 @@ Effect.OPPOSITE = {
     }
 }());
 
-export default Effect;
+export default Transition;

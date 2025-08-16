@@ -1,7 +1,7 @@
 import BarTimer from './components/Timer/BarTimer';
 import PieTimer from './components/Timer/PieTimer';
 import KenBurns from './components/Effect/KenBurns';
-import Effect from './components/Effect/Transition';
+import Transition from './components/Effect/Transition';
 import { PREFIX, SUPPORT } from './util/support';
 import { SIDES, OPPOSITE_SIDE, OPPOSITE_LAYER } from './constants';
 import { FROM_KEYFRAME, TO_KEYFRAME } from './util/keyframes';
@@ -196,7 +196,7 @@ Rotator.prototype = {
         this.createBorder();
         
         //init screen
-        this._effects = new Effect(this);
+        this._effects = new Transition(this);
         this._$screen.append('<div class="br-preloader"></div><div class="br-links"></div><div class="br-layers"></div>');
         this._$preloader = this._$screen.find('>.br-preloader');
         this._$linkWrapper = this._$screen.find('>.br-links');
@@ -1398,7 +1398,7 @@ Rotator.prototype = {
 
         //activate
         var effectOff = (!this._options.effectOnInteraction && this._interact) || (!this._options.effectOnStart && !this._$prevItem);
-        if (effectOff || (0 > $.inArray(data.effect, Effect.EFFECTS) && 'random' !== data.effect)) {
+        if (effectOff || (0 > $.inArray(data.effect, Transition.EFFECTS) && 'random' !== data.effect)) {
             this.activateItem(false);
         }
         else {
