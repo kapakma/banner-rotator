@@ -4,6 +4,10 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src --ext .js,.mjs,.cjs --fix",
+    "lint:file": "eslint --fix",
+    "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,17 +25,18 @@
   "devDependencies": {
     "@babel/core": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
+    "@eslint/js": "^9.33.0",
     "babel-loader": "^10.0.0",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.2",
+    "eslint": "^9.33.0",
+    "eslint-webpack-plugin": "^5.0.2",
+    "globals": "^16.3.0",
     "html-webpack-plugin": "^5.6.4",
     "mini-css-extract-plugin": "^2.9.4",
     "path": "^0.12.7",
     "webpack": "^5.101.1",
     "webpack-cli": "^6.0.1"
-  },
-  "dependencies": {
-    "jquery": "^3.7.1"
   }
 }
