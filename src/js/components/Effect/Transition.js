@@ -1,5 +1,5 @@
-import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize, getTransformProperty, getRandomItem } from "../../util/helpers";
-import { SUPPORT, PREFIX, } from "../../util/support";
+import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize, getTransformProperty, getRandomItem, shuffleArray } from "../../util/helpers";
+import { SUPPORT, PREFIX } from "../../util/support";
 import PRESETS from '../../util/presets';
 
 //Transition Class
@@ -88,15 +88,15 @@ class Transition {
 
     //get type
     getType() {
-        if (1 < this._rows) {
-            if (1 < this._columns) {
+        if (this._rows > 1) {
+            if (this._columns > 1) {
                 return Transition.GRID;
             }
             else {
                 return Transition.ROW;
             }
         }
-        else if (1 < this._columns) {
+        else if (this._columns > 1) {
             return Transition.COLUMN;
         }
 
@@ -105,7 +105,7 @@ class Transition {
 
     //init order
     initOrder() {
-        if (0 > $.inArray(this._order, Transition.ORDERS)) {
+        if ($.inArray(this._order, Transition.ORDERS) < 0) {
             this._order = 'right';
         }
 
@@ -116,7 +116,7 @@ class Transition {
 
     //init direction
     initDirection() {
-        if (0 > $.inArray(this._direction, ['up', 'down', 'left', 'right', 'random'])) {
+        if ($.inArray(this._direction, ['up', 'down', 'left', 'right', 'random']) < 0) {
             this._direction = 'right';
         }
 
@@ -191,8 +191,8 @@ class Transition {
             pct = ['0%', '50%', '100%'];
         }
         else {
-            if ('flip' === this._effect) {
-                size = ('up' === this._direction || 'down' === this._direction ? this._height : this._width)/2;
+            if (this._effect === 'flip') {
+                size = (this._direction === 'up' || this._direction === 'down' ? this._height : this._width)/2;
                 arr = Transition.SINES;
                 pct = Transition.FLIP_PCT;
             }
@@ -218,7 +218,8 @@ class Transition {
             sheet.deleteRule(index);
             sheet.insertRule(rule, index);
         }
-        catch (err) {
+        catch (error) {
+            throw new Error(`Failed to update rule: ${error.message}`);
         }
     }
 
@@ -228,7 +229,7 @@ class Transition {
             this.updateKeyframes();
                 
             if (this._shapeShading) {
-                var shadeDuration = ('flip' === this._effect ? duration/2 : duration);
+                var shadeDuration = (this._effect === 'flip' ? duration/2 : duration);
                 this._$el.find('>.br-shape>.br-prev-side').each(function() {
                     $('<div/>', {'class':'br-shading'}).animation('br-shade-in', 
                         {duration:shadeDuration, easing:easing, playState:'paused', complete:function(e) {
@@ -299,7 +300,7 @@ class Transition {
                     img = $img[0];
 
                 if (typeof img.readyState !== 'undefined') {
-                    if ('complete' === img.readyState) {
+                    if (img.readyState === 'complete') {
                         return false;
                     }
                 }
@@ -315,7 +316,7 @@ class Transition {
                     },
                     error: function() { 
                         deferred.reject(); 
-                    }
+                    },
                 });
             }
         });
@@ -445,7 +446,7 @@ class Transition {
     setPush($el, visibility, axis, fwd) {
         var active  = 'front', 
             prev = 'back',
-            dim = ('Y' === axis ? 'height' : 'width'),
+            dim = (axis === 'Y' ? 'height' : 'width'),
             from, to;
             
         if (this._transform) {
@@ -454,7 +455,7 @@ class Transition {
             to = {transform:translate + '(0)'};
         }
         else {
-            var pos = ('Y' === axis ? 'top' : 'left');
+            var pos = (axis === 'Y' ? 'top' : 'left');
             from = {};
             to = {};
             from[pos] = -this['_' + dim];
@@ -505,7 +506,7 @@ class Transition {
             to = {transform:translate + '(0)'};
         }
         else {
-            if ('Y' === axis) {
+            if (axis === 'Y') {
                 from = {marginTop:dist};
                 to = {marginTop:0};
             }
@@ -607,7 +608,7 @@ class Transition {
             from = {opacity:1, transform:'scale(1)'},
             to = {opacity:0, transform:'scale(2)'};
 
-        if ('out' === this._direction) {
+        if (this._direction === 'out') {
             var temp = from;
             from = to;
             to = temp;
@@ -701,7 +702,7 @@ class Transition {
 
     //rotate transition
     rotate() {
-        this._$el.data({selector:'>.br-shape', depth:('left' === this._direction || 'right' === this._direction ? this._width : this._height)});
+        this._$el.data({selector:'>.br-shape', depth:(this._direction === 'left' || this._direction === 'right' ? this._width : this._height)});
         if (this._alternate) {
             this.setAlternate('rotate');
         }
@@ -722,11 +723,11 @@ class Transition {
         this._width = Math.ceil(this._$container.width()/this._columns);
         this._height = Math.ceil(this._$container.height()/this._rows);
         
-        if ('random' === this._effect) {
+        if (this._effect === 'random') {
             this.setRandomEffect();
         }
 
-        this._is3D = -1 < $.inArray(this._effect, ['flip', 'rotate']);
+        this._is3D = $.inArray(this._effect, ['flip', 'rotate']) > -1;
         if (this._is3D && !this._support3d) {
             this._effect = 'push';
             this._is3D = false;
@@ -736,8 +737,8 @@ class Transition {
         this._shapeDepth = getNonNegInt(this._shapeDepth, 0);
         this.initDirection();
         this.initOrder();
-        this._isReverse = -1 < $.inArray(this._order, Transition.REVERSE);
-        this._hideItems = -1 < $.inArray(this._effect, ['flip', 'push', 'rotate', 'slide', 'zoom']);
+        this._isReverse = $.inArray(this._order, Transition.REVERSE) > -1;
+        this._hideItems = $.inArray(this._effect, ['flip', 'push', 'rotate', 'slide', 'zoom']) > -1;
 
         this.createElements();
         this[this._effect]();
@@ -764,9 +765,9 @@ class Transition {
         var elArray = [],
             start = 0, 
             end = (this._rows - 1) + (this._columns - 1) + 1,
-            flip = ('downLeft' === order || 'upRight' === order);
+            flip = (order === 'downLeft' || order === 'upRight');
 
-        while (start != end) {
+        while (start !== end) {
             let i = Math.min(this._rows - 1, start);
             while(i >= 0) {
                 let j;
@@ -801,7 +802,7 @@ class Transition {
             total = this._$el.length,
             count;
         
-        if ('zigZagUp' === order || 'zigZagDown' === order) {
+        if (order === 'zigZagUp' || order === 'zigZagDown') {
             for (count = 0; count < total; count++) {
                 elArray[count] = this._$el.eq(i * this._columns + j);
                 
@@ -812,7 +813,7 @@ class Transition {
                     j--;
                 }
                     
-                if (j == this._columns || j < 0) {
+                if (j === this._columns || j < 0) {
                     fwd = !fwd;
                     j = (fwd ? 0 : this._columns - 1);
                     i++;
@@ -830,7 +831,7 @@ class Transition {
                     i--;
                 }
                 
-                if (i == this._rows || i < 0) {
+                if (i === this._rows || i < 0) {
                     fwd = !fwd;
                     i = (fwd ? 0 : this._rows - 1);
                     j++;
@@ -844,7 +845,7 @@ class Transition {
     //get directional array
     getDirectionalArray(order) {
         var elArray;
-        if ('right' === order || 'left' === order) {
+        if (order === 'right' || order === 'left') {
             elArray = [];
             for (var j = 0; j < this._columns; j++) {
                 for (var i = 0; i < this._rows; i++) {
@@ -950,7 +951,7 @@ Transition.OPPOSITE = {
     downRight:'upLeft',
     spiralIn:'spiralOut',
     zigZagDown:'zigZagUp',
-    zigZagRight:'zigZagLeft'
+    zigZagRight:'zigZagLeft',
 };
 
 (function() {
@@ -989,7 +990,7 @@ Transition.OPPOSITE = {
         Transition.ROTATE_PCT[i] = Math.round(i/num * 100) + '%';
         Transition.COSINES[i] = roundTo(Math.cos(radian), 5);
         radian -= step;
-        if (0 >= radian) {
+        if (radian <= 0) {
             step = -step;
         }
     }

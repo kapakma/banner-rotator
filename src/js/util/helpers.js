@@ -13,7 +13,7 @@ export function getPosition(val) {
     var props = {},
         arr = val.split(' ', 2);
     
-    if (2 !== arr.length) {
+    if (arr.length !== 2) {
         arr = camelToDash(val).split('-');
     }
 
@@ -48,12 +48,12 @@ export function withinRange(val, min, max) {
 
 //test for none
 export function isNone(val) {
-    return (typeof val === 'undefined' || false === val || 'none' === val);
+    return (typeof val === 'undefined' || val === false || val === 'none');
 }
 
 //check if empty string
 export function isEmptyStr(val) {
-    return (typeof val === 'undefined' || '' === $.trim(val));
+    return (typeof val === 'undefined' || $.trim(val) === '');
 }
 
 //get integer
@@ -65,13 +65,13 @@ export function getInt(val, defaultVal) {
 //get positive integer
 export function getPosInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return ($.isNumeric(val) && 0 < val ? val : defaultVal);
+    return ($.isNumeric(val) && val > 0 ? val : defaultVal);
 }
 
 //get non-negative integer
 export function getNonNegInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return ($.isNumeric(val) && 0 <= val ? val : defaultVal);
+    return ($.isNumeric(val) && val >= 0 ? val : defaultVal);
 }
 
 //get float
@@ -87,14 +87,14 @@ export function getValue(val, defaultVal) {
 
 //get enum value
 export function getEnum(val, list, defaultVal) {
-    return (-1 < $.inArray(val, list) ? val : defaultVal);
+    return ($.inArray(val, list) > -1 ? val : defaultVal);
 }
 
 //check for percent
 export function isPercent(val) {
     val += '';
     var last = val.length - 1;
-    return '%' === val.charAt(last) && $.isNumeric(val.substring(0, last));
+    return val.charAt(last) === '%' && $.isNumeric(val.substring(0, last));
 }
 
 //round to
@@ -141,7 +141,7 @@ export function isAndroid(version) {
         ua = navigator.userAgent.toLowerCase(),
         index = ua.indexOf(android);
     
-    return (-1 < index && (typeof version === 'undefined' || parseFloat(ua.substring(index + android.length)) <= version));
+    return (index > -1 && (typeof version === 'undefined' || parseFloat(ua.substring(index + android.length)) <= version));
 }
 
 //is chrome check
@@ -163,7 +163,7 @@ export function dashToCamel(str) {
 
 //check css property support
 export function propertySupport(prop, val) {
-    if (false === prop) {
+    if (prop === false) {
         return false;
     }
 
@@ -172,7 +172,7 @@ export function propertySupport(prop, val) {
         support;
     
     el.style[dashProp] = val;
-    support = -1 < (el.style[dashProp] + '').indexOf(val);
+    support = (el.style[dashProp] + '').indexOf(val) > -1;
     el = null;
     
     return support;
@@ -191,7 +191,7 @@ export function filterSupport() {
 //shuffle array
 export function shuffleArray(arr) {
     var i = arr.length;
-    while(0 < --i) {
+    while(--i > 0) {
         var ri = Math.floor(Math.random() * (i + 1)),
             temp = arr[i];
         arr[i] = arr[ri];
@@ -268,8 +268,8 @@ export function createWrapper($el) {
             top:$el[0].style.top,
             left:$el[0].style.left,
             bottom:$el[0].style.bottom,
-            right:$el[0].style.right
-        }
+            right:$el[0].style.right,
+        },
     });
     
     $el.wrap($wrapper).css({
@@ -278,7 +278,7 @@ export function createWrapper($el) {
         top:0,
         bottom:'auto',
         left:0,
-        right:'auto'
+        right:'auto',
     }).css(size);
 }
     
@@ -302,4 +302,9 @@ export function restoreStyle($el, props) {
         var style = $el.data('style-' + val);
         $el.css(val, (typeof style === 'undefined' ? '' : style));
     });
+}
+
+//check if object is function
+export function isFunction(obj) {
+  return (typeof obj === "function");
 }

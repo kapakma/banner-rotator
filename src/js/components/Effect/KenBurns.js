@@ -1,4 +1,4 @@
-import { isNone, getRandomItem, getNonNegInt, getValue } from '../../util/helpers';
+import { isNone, getRandomItem, getNonNegInt, getValue, camelToDash } from '../../util/helpers';
 import { SUPPORT } from '../../util/support';
 
 //KenBurns Class
@@ -28,7 +28,7 @@ class KenBurns {
                 duration:getNonNegInt(opts.duration, 5000),
                 easing:getValue(opts.easing, 'linear'), 
                 playState:'paused',
-                direction:opts.direction
+                direction:opts.direction,
             };
 
             this.set();
@@ -94,7 +94,7 @@ class KenBurns {
         'zoom-out-up-left':'zoom-in-down-right',
         'zoom-out-up-right':'zoom-in-down-left',
         'zoom-out-down-left':'zoom-in-up-right',
-        'zoom-out-down-right':'zoom-in-up-left'
+        'zoom-out-down-right':'zoom-in-up-left',
     };
 }());
 

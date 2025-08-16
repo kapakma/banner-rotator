@@ -29,7 +29,7 @@ export const CUBIC_BEZIER = {
     'easeInOutCirc':	'cubic-bezier(.785,.135,.15,.86)',
     'easeInBack':		'cubic-bezier(.60,-.28,.735,.045)',
     'easeOutBack':		'cubic-bezier(.175,.885,.32,1.275)',
-    'easeInOutBack':	'cubic-bezier(.68,-.55,.265,1.55)'
+    'easeInOutBack':	'cubic-bezier(.68,-.55,.265,1.55)',
 };
 
 export const SIDES = ['top', 'left', 'bottom', 'right'];
@@ -38,7 +38,7 @@ export const OPPOSITE_SIDE = {
     "top": "bottom",
     "left": "right",
     "bottom": "top",
-    "right": "left"
+    "right": "left",
 };
 
 export const OPPOSITE_LAYER = {
@@ -55,5 +55,5 @@ export const OPPOSITE_LAYER = {
     "moveUp": "moveDown",
     "moveLeft": "moveRight",
     "spinOutLeft": "spinInRight",
-    "spinOutRight": "spinInLeft"
+    "spinOutRight": "spinInLeft",
 };

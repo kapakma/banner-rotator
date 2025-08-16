@@ -67,7 +67,7 @@ class Rotator {
         this._$items = this._$list.children().addClass('br-item');
         this._numItems = this._$items.length;
         
-        if ('random' === this._options.startIndex) {
+        if (this._options.startIndex === 'random') {
             this._activeIndex = Math.floor(Math.random() * this._numItems);
         }
         else {
@@ -116,7 +116,7 @@ class Rotator {
         
         if (IS_TOUCH) {
             if (!isNone(this._options.swipe)) {
-                if ('reverse' === this._options.swipeDirection) {
+                if (this._options.swipeDirection === 'reverse') {
                     this.swipeFwd = this.prevSlide;
                     this.swipeBack = this.nextSlide;
                 }
@@ -193,10 +193,10 @@ class Rotator {
         //init timer
         if (!isNone(this._options.timer)) {
             var settings = {position:this._options.timerPosition, click:$.proxy(this.togglePlay, this)};
-            if ('bar' === this._options.timer) {
+            if (this._options.timer === 'bar') {
                 this._timer = new BarTimer(this, settings);
             }
-            else if ('pie' === this._options.timer && SUPPORT.animation && this._transform) {
+            else if (this._options.timer === 'pie' && SUPPORT.animation && this._transform) {
                 this._timer = new PieTimer(this, settings);
             }
         }
@@ -233,7 +233,7 @@ class Rotator {
         if ($wrapper.brHasBorder()) {
             $wrapper.toggleClass('br-flat-shadow', this._hasShadow).css({overflow:'hidden'});
         }
-        else if (this._hasShadow && 'horizontal' === this._orientation && 'bottom' === this._cpPosition.y) {
+        else if (this._hasShadow && this._orientation === 'horizontal' && this._cpPosition.y === 'bottom') {
             this._$rotator.find('>.br-3d-shadow').remove();
             this._$extPanel.addClass('br-flat-shadow');
         }
@@ -265,11 +265,11 @@ class Rotator {
             });
 
             //set tooltip
-            if ('image' === this._options.tooltip) {
+            if (this._options.tooltip === 'image') {
                 $img.data('tooltip', $img.data('tooltip') || $img.data('thumb'));
                 $item.prepend($('<img/>', {alt:'', 'class':'tooltip', src:$img.data('tooltip')}));
             }
-            else if ('text' === this._options.tooltip) {
+            else if (this._options.tooltip === 'text') {
                 $item.data({tooltip:$item.find('>.tooltip').html() || $img.attr('title')});
             }
             
@@ -328,15 +328,15 @@ class Rotator {
         this._$cpanel = $('<div/>', {'class':'br-cpanel'});
         this._cpPosition = getPosition(this._options.cpanelPosition);
 
-        if ('vertical' === this._options.cpanelOrientation) {
+        if (this._options.cpanelOrientation === 'vertical') {
             this._orientation = 'vertical';
-            if ('center' === this._cpPosition.x) {
+            if (this._cpPosition.x === 'center') {
                 this._cpPosition.x = 'left';
             }
         }
         else {
             this._orientation = 'horizontal';
-            if ('center' === this._cpPosition.y) {
+            if (this._cpPosition.y === 'center') {
                 this._cpPosition.y = 'bottom';
             }
         }
@@ -350,8 +350,8 @@ class Rotator {
             this._$cpanel.appendTo(this._$rotator);
         }
         
-        if (this._options.groupButtons && 'bullet' !== this._options.thumbnails) {
-            var size = ('vertical' === this._orientation ? 'Width' : 'Height');
+        if (this._options.groupButtons && this._options.thumbnails !== 'bullet') {
+            var size = (this._orientation === 'vertical' ? 'Width' : 'Height');
             this._$cpanel.addClass('br-button-group');
             this._options['thumb' + size] = this._options['button' + size] = Math.max(this._options['thumb' + size], this._options['button' + size]);
         }
@@ -364,7 +364,7 @@ class Rotator {
             this._$cpWrapper = this._$cpanel.wrap('<div class="br-cpanel-wrapper"></div>').parent();
             this.initButtonGroup();
 
-            if ('vertical' === this._orientation) {
+            if (this._orientation === 'vertical') {
                 this._$cpanel.data({pos:'top', coord:'y', dim:'height', outerDim:'outerHeight'});
 
                 //set size
@@ -390,7 +390,7 @@ class Rotator {
                 outerDim = data.outerDim;
 
             //position control panel
-            if ('center' === this._cpPosition[data.coord]) {
+            if (this._cpPosition[data.coord] === 'center') {
                 this._$cpWrapper.css(data.pos, '50%');
                 this._$cpanel.css(data.pos, -this._$cpanel[outerDim](true)/2);
             }
@@ -428,13 +428,13 @@ class Rotator {
     
     setNavOffset() {
         var margin = this._$cpWrapper.width(),
-            direction = ('left' === this._cpPosition.x ? 'prev' : 'next'),
+            direction = (this._cpPosition.x === 'left' ? 'prev' : 'next'),
             selector = '>.br-' + direction + '-wrapper';
 
         if (this._$outmost.hasClass('br-outer-navs')) {
             this._$outmost.find(selector).css(this._cpPosition.x, '+=' + margin);
         }
-        else if ('large' === this._options.navButtons && !this._options.cpanelOutside) {
+        else if (this._options.navButtons === 'large' && !this._options.cpanelOutside) {
             var $container = this._$screen.find('>.br-nav-wrapper'),
                 prop = {};
             prop['margin-' + this._cpPosition.x] = '+=' + margin;
@@ -467,7 +467,7 @@ class Rotator {
 
     //set inner cpanel
     setInnerCPanel() {
-        this._$cpWrapper.css(this._cpPosition['vertical' === this._orientation ? 'x' : 'y'], 0);
+        this._$cpWrapper.css(this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y'], 0);
         
         if (this._options.cpanelOnHover) {
             this.addOnHover(this._$cpanel, 'br-transparent');
@@ -483,10 +483,10 @@ class Rotator {
             var $face = $('<div/>').toggleClass('white', this._$extPanel.hasClass('white'));
             $('<div/>', {
                 'class':'br-stage-bg',
-                html:$('<div/>').append($face)
+                html:$('<div/>').append($face),
             }).prependTo(this._$stage);
             
-            if ('vertical' === this._orientation) {
+            if (this._orientation === 'vertical') {
                 $face.addClass('br-face-' + this._cpPosition.x);
                 if (this._options.responsive) {
                     this._$rotator.on('resizeCPanel' + this._namespace, function() {
@@ -535,26 +535,26 @@ class Rotator {
             $playButton = $('<div/>', {
                 'class':'br-play-button',
                 title:this._rotate ? this._options.pauseText : this._options.playText,
-                html:'<div/>'
+                html:'<div/>',
             }).toggleClass('br-pause', this._rotate)
             .on('click' + this._namespace, $.proxy(this.togglePlay, this))
             .appendTo(this._$cpanel);
         }
         
         //init navigation buttons
-        if (true === this._options.navButtons || 'small' === this._options.navButtons) {
+        if (this._options.navButtons === true || this._options.navButtons === 'small') {
             $prevButton = $('<div/>', {
                 'class':'br-prev-button',
                 title:this._options.prevText,
-                html:'<div/>'
-            }).toggleClass('br-up', 'vertical' === this._orientation)
+                html:'<div/>',
+            }).toggleClass('br-up', this._orientation === 'vertical')
             .on('click' + this._namespace, $.proxy(this.prevSlide, this));
 
             $nextButton = $('<div/>', {
                 'class':'br-next-button',
                 title:this._options.nextText,
-                html:'<div/>'
-            }).toggleClass('br-down', 'vertical' === this._orientation)
+                html:'<div/>',
+            }).toggleClass('br-down', this._orientation === 'vertical')
             .on('click' + this._namespace, $.proxy(this.nextSlide, this));
 
             if ($playButton) {
@@ -573,19 +573,19 @@ class Rotator {
     
     //init side buttons
     initSideButtons() {
-        if ('large' === this._options.navButtons) {
+        if (this._options.navButtons === 'large') {
             var $wrapper = $('<div/>', {'class':'br-nav-wrapper'}).appendTo(this._$screen);
 
             var $prevButton = $('<div/>', {
                 'class':'br-side-prev',
                 title:this._options.prevText,
-                html:'<div/>'
+                html:'<div/>',
             }).on('click' + this._namespace, $.proxy(this.prevSlide, this));
 
             var $nextButton = $('<div/>', {
                 'class':'br-side-next',
                 title:this._options.nextText,
-                html:'<div/>'
+                html:'<div/>',
             }).on('click' + this._namespace, $.proxy(this.nextSlide, this));
 
             var $buttons = $prevButton.add($nextButton).appendTo($wrapper).find('>div').addTransitionClass('br-element-transition');
@@ -598,23 +598,23 @@ class Rotator {
 
     //init outer buttons
     initOuterButtons() {
-        if (-1 < $.inArray(this._options.navButtons, ['outside', 'outer'])) {
+        if ($.inArray(this._options.navButtons, ['outside', 'outer']) > -1) {
             this._$outmost = this._$rotator.wrap('<div class="br-outer-navs"></div>').parent();
             
             var $prevNav = $('<div/>', {
                 'class':'br-outer-prev',
                 title:this._options.prevText,
-                html:'<div/>'
+                html:'<div/>',
             }).on('click' + this._namespace, $.proxy(this.prevSlide, this)).appendTo(this._$outmost);
 
             var $nextNav = $('<div/>', {
                 'class':'br-outer-next',
                 title:this._options.nextText,
-                html:'<div/>'
+                html:'<div/>',
             }).on('click' + this._namespace, $.proxy(this.nextSlide, this)).appendTo(this._$outmost);
 
             var margin = getNonNegInt(this._options.sideButtonMargin, 0);
-            if (0 < margin) {
+            if (margin > 0) {
                 $prevNav.css({paddingRight:margin}).css({left:-$prevNav.outerWidth()}).find('>div').css({marginLeft:'-=' + margin/2});
                 $nextNav.css({paddingLeft:margin}).css({right:-$nextNav.outerWidth()}).find('>div').css({marginLeft:'+=' + margin/2});
             }
@@ -627,13 +627,13 @@ class Rotator {
 
     //init nav thumbs
     initNavThumbs() {
-        if (!IS_TOUCH && this._options.navThumbs && -1 < $.inArray(this._options.navButtons, ['large', 'outside', 'outer'])) {
+        if (!IS_TOUCH && this._options.navThumbs && $.inArray(this._options.navButtons, ['large', 'outside', 'outer']) > -1) {
             var $prevNav, $nextNav,
                 $prevWrapper = $('<div/>', {'class':'br-prev-wrapper', data:{pos:'left'}}),
                 $nextWrapper = $('<div/>', {'class':'br-next-wrapper', data:{pos:'right'}});
             
             //init wrappers
-            if ('large' === this._options.navButtons) {
+            if (this._options.navButtons === 'large') {
                 $prevWrapper = this._$screen.find('>.br-nav-wrapper>.br-side-prev').wrap($prevWrapper).parent();
                 $nextWrapper = this._$screen.find('>.br-nav-wrapper>.br-side-next').wrap($nextWrapper).parent();
             }
@@ -673,7 +673,7 @@ class Rotator {
             }, this)).toggleClass('white', this._isWhite || this._$rotator.hasClass('white-nav-thumb'));
                 
             //bind event handlers
-            if ('large' === this._options.navButtons) {
+            if (this._options.navButtons === 'large') {
                 $wrappers.each($.proxy(function(n, el) {
                     var $thumb = $(el).find('>.br-nav-thumb').addClass('br-transparent').addTransitionClass('br-opacity-transition'),
                         pos = $(el).data('pos');
@@ -729,7 +729,7 @@ class Rotator {
         $wrapper.animate(prop, {duration:Rotator.ANIMATE_SPEED, queue:false,
             complete:function() {
                 $(this).find('>.br-nav-thumb').removeClass('br-transparent');
-            }
+            },
         }).addClass('br-hover-on');
         this.startNavKB($wrapper);
     }
@@ -802,8 +802,8 @@ class Rotator {
                             .addTransitionClass('br-color-transition')
                             .on((this._options.selectOnHover ? 'mouseenter' : 'click') + this._namespace, $.proxy(this.selectSlide, this));
 
-            if ('bullet' !== this._options.thumbnails) {
-                if ('image' === this._options.thumbnails) {
+            if (this._options.thumbnails !== 'bullet') {
+                if (this._options.thumbnails === 'image') {
                     var $wrappers = this._$thumbs.children();
                     $wrappers.css({width:this._options.thumbWidth - ($wrappers.outerWidth(true) - $wrappers.width()), height:this._options.thumbHeight - ($wrappers.outerHeight(true) - $wrappers.height())});
                     this.loadNextThumb($wrappers.children().toArray(), true);
@@ -811,7 +811,7 @@ class Rotator {
                 this._$thumbs.css({width:this._options.thumbWidth, height:this._options.thumbHeight, margin:this._options.thumbMargin, lineHeight:this._options.thumbHeight + 'px'});
             }
             
-            this._$thumbList.css('vertical' === this._orientation ? {width:this._$thumbs.outerWidth(true)} : {height:this._$thumbs.outerHeight(true)});
+            this._$thumbList.css(this._orientation === 'vertical' ? {width:this._$thumbs.outerWidth(true)} : {height:this._$thumbs.outerHeight(true)});
             
             this._$rotator.on('rotatorChange', $.proxy(function() {
                 this._$thumbs.eq(this._activeIndex).addClass('br-active').siblings().removeClass('br-active');
@@ -828,14 +828,14 @@ class Rotator {
         $('<div/>', {
             id:'br-layers-' + $item.index(),
             'class':'br-layer-bin',
-            html:$layers
+            html:$layers,
         }).appendTo(this._$layerWrapper);
 
         $layers.each($.proxy(function(n, el) {
             var $el = $(el),
                 metric = {};
 
-            if ('auto' === el.style.width && 'auto' === el.style.height) {
+            if (el.style.width === 'auto' && el.style.height === 'auto') {
                 $el.css('white-space', 'nowrap');
             }
             
@@ -843,7 +843,7 @@ class Rotator {
                 var pos = el.style[side];
                 if ($.isNumeric(parseInt(pos, 10))) {
                     if (!isPercent(pos)) {
-                        var dim = (-1 < $.inArray(side, ['top', 'bottom']) ? this._stageHeight : this._stageWidth);
+                        var dim = ($.inArray(side, ['top', 'bottom']) > -1 ? this._stageHeight : this._stageWidth);
                         $el.css(side, (getInt(pos, 0)/dim * 100) + '%');
                     }
                     $el.css(OPPOSITE_SIDE[side], 'auto');
@@ -875,15 +875,15 @@ class Rotator {
         if (!IS_TOUCH && !isNone(this._options.tooltip)) {
             var $inner = $('<div/>', {
                 'class':'br-tooltip-inner',
-                css:{width:this._options.tooltipWidth, height:this._options.tooltipHeight}
+                css:{width:this._options.tooltipWidth, height:this._options.tooltipHeight},
             });
 
             this._$tooltip = $('<div/>', {
-                'class':'br-tooltip br-tooltip-' + OPPOSITE_SIDE[this._cpPosition['vertical' === this._orientation ? 'x' : 'y']],
-                html:$inner.add('<div class="br-tail"/>')
+                'class':'br-tooltip br-tooltip-' + OPPOSITE_SIDE[this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y']],
+                html:$inner.add('<div class="br-tail"/>'),
             }).toggleClass('white', this._isWhite || this._$rotator.hasClass('white-tooltip')).prependTo($('body'));
             
-            if ('image' === this._options.tooltip) {
+            if (this._options.tooltip === 'image') {
                 this._$items.each($.proxy(function(n, el) {
                     var $thumb = this._$thumbs.eq(n),
                         $img = $(el).find('>img.tooltip');
@@ -899,7 +899,7 @@ class Rotator {
                                 if (CHROME) {
                                     $thumb.data('tooltip-kb', new KenBurns($content, $(el).data('kb-effect')));
                                 }
-                            }, this)
+                            }, this),
                         });
 
                         $thumb.on('mouseenter' + this._namespace, $.proxy(function(e) {
@@ -938,9 +938,9 @@ class Rotator {
         var $base = (this._options.cpanelOutside ? this._$extPanel : $thumb),
             top, left;
         
-        if ('vertical' === this._orientation) {
+        if (this._orientation === 'vertical') {
             left = $base.offset().left;
-            if ('left' === this._cpPosition.x) {
+            if (this._cpPosition.x === 'left') {
                 left += $base.width();
             }
             else {
@@ -950,7 +950,7 @@ class Rotator {
         }
         else {
             top = $base.offset().top;
-            if ('top' === this._cpPosition.y) {
+            if (this._cpPosition.y === 'top') {
                 top += $base.height();
             }
             else {
@@ -1016,7 +1016,7 @@ class Rotator {
     
     prev(triggerEvent) {
         this._backward = true;
-        this._activeIndex = (0 < this._activeIndex ? (this._activeIndex - 1) : (this._numItems - 1));
+        this._activeIndex = (this._activeIndex > 0 ? (this._activeIndex - 1) : (this._numItems - 1));
         if (triggerEvent) {
             this.triggerEvent('prev', {index:this._activeIndex});
         }
@@ -1144,14 +1144,14 @@ class Rotator {
                 var match = effect.match(/^(move|shift)/);
                 props = this['get' + capitalize(match[0]) + 'Props']($layer, effect.substring(match[0].length).toLowerCase());
             }
-            else if ('none' === effect) {
+            else if (effect === 'none') {
                 opts.complete.call(this);
                 return;
             }
             else {
                 props = {
                     from:{opacity:0},
-                    to:{opacity:data.opacity}
+                    to:{opacity:data.opacity},
                 };
             }
 
@@ -1165,7 +1165,7 @@ class Rotator {
 
     queueLayerOut($layer) {
         var delay = getNonNegInt($layer.data('delayOut'), 0);
-        if (0 < delay) {
+        if (delay > 0) {
             $layer.promise().done($.proxy(function() {
                 this._layerIds.push(setTimeout($.proxy(function() { 
                     this.hideLayer($layer);
@@ -1205,9 +1205,9 @@ class Rotator {
     
     //get move property
     getMoveProps($el, direction) {
-        var isHorizontal = ('left' === direction || 'right' === direction),
+        var isHorizontal = (direction === 'left' || direction === 'right'),
             dim = isHorizontal ? 'outerWidth' : 'outerHeight',
-            fwd = ('right' === direction || 'down' === direction),
+            fwd = (direction === 'right' || direction === 'down'),
             from = {},
             to = {},
             pos, translate, side;
@@ -1247,8 +1247,8 @@ class Rotator {
 
     //get shift property
     getShiftProps($el, direction) {
-        var isHorizontal = ('left' === direction || 'right' === direction),
-            inverse = ('right' === direction || 'down' === direction ? -1 : 1),
+        var isHorizontal = (direction === 'left' || direction === 'right'),
+            inverse = (direction === 'right' || direction === 'down' ? -1 : 1),
             from = {opacity:0},
             to = {opacity:1};
         
@@ -1283,7 +1283,7 @@ class Rotator {
 
     //deferred load
     deferredLoad(fn, args) {
-        if (!this._promise || 'pending' !== this._promise.state()) {
+        if (!this._promise || this._promise.state() !== 'pending') {
             this._$items.find('>img.br-img').off('load.display');
             this.resetTimer();
             this.stopLayers(false);
@@ -1295,7 +1295,7 @@ class Rotator {
 
                 $layers.each($.proxy(function(n, el) {
                     var promise = $(el).data('promise');
-                    if (!promise || 'pending' !== promise.state()) {
+                    if (!promise || promise.state() !== 'pending') {
                         this.hideLayer($(el));
                     }
                     promises.push($(el).data('promise'));
@@ -1329,7 +1329,7 @@ class Rotator {
         //trigger events
         var params = {index:this._activeIndex};
         this.triggerEvent('change', params);
-        if (0 === this._activeIndex) {
+        if (this._activeIndex === 0) {
             this.triggerEvent('first', params);
         }
         if (this._numItems - 1 === this._activeIndex) {
@@ -1351,7 +1351,7 @@ class Rotator {
                         this.processImage($item);
                     }
                     this.displayContent($item);
-                }, this)
+                }, this),
             });
         }
     }
@@ -1385,7 +1385,7 @@ class Rotator {
 
         //activate
         var effectOff = (!this._options.effectOnInteraction && this._interact) || (!this._options.effectOnStart && !this._$prevItem);
-        if (effectOff || (0 > $.inArray(data.effect, Transition.EFFECTS) && 'random' !== data.effect)) {
+        if (effectOff || ($.inArray(data.effect, Transition.EFFECTS) < 0 && data.effect !== 'random')) {
             this.activateItem(false);
         }
         else {
@@ -1442,7 +1442,7 @@ class Rotator {
             }, this),
             error: function() { 
                 deferred.reject();
-            }
+            },
         });
 
         return deferred.promise();
@@ -1478,7 +1478,7 @@ class Rotator {
             },
             error: function() { 
                 deferred.reject();
-            }
+            },
         });
 
         return deferred.promise();
@@ -1491,7 +1491,7 @@ class Rotator {
             position = $item.data('imagePosition'),
             arr = (position + '').split(' ', 2);
             
-        if (2 === arr.length) {
+        if (arr.length === 2) {
             $.each(['left', 'top'], function(i, val) {
                 var pos = arr[i];
                 if ($.isNumeric(parseInt(pos, 10))) {
@@ -1499,7 +1499,7 @@ class Rotator {
                 }
             });
         }
-        else if (-1 < $.inArray(position, ['fill', 'fit', 'stretch', 'center'])) {
+        else if ($.inArray(position, ['fill', 'fit', 'stretch', 'center']) > -1) {
             var fn = 'br' + capitalize(position);
             if ($.isFunction($img[fn])) {
                 $img[fn](this._stageWidth, this._stageHeight);
@@ -1527,7 +1527,7 @@ class Rotator {
     
     //resume timer
     resumeTimer() {
-        if (this._rotate && 0 < this._delay) {
+        if (this._rotate && this._delay > 0) {
             this._start = $.now();
             this._timeout = setTimeout($.proxy(this.rotateSlide, this), this._delay);
             
@@ -1643,7 +1643,7 @@ class Rotator {
         this._$thumbList.stop().css(pos, Math.max(this._$thumbPanel.data('range'), this._$thumbList.position()[pos]));
         this._$rotator.find('>.br-ext-cp').css(dim, this._$screen[dim]());
 
-        if ('center' === this._cpPosition[data.coord]) {
+        if (this._cpPosition[data.coord] === 'center') {
             this._$cpanel.css(pos, -this._$cpanel[data.outerDim](true)/2);
         }
     }
@@ -1651,7 +1651,7 @@ class Rotator {
     //touch start
     touchStart(e) {
         this._swipeMove = 0;
-        if (1 === e.originalEvent.touches.length) {
+        if (e.originalEvent.touches.length === 1) {
             this._swipeStart = new Date();
             this._startX = e.originalEvent.touches[0].pageX;
             this._startY = e.originalEvent.touches[0].pageY;
@@ -1665,7 +1665,7 @@ class Rotator {
         var xDist = this._startX - e.originalEvent.touches[0].pageX,
             yDist = this._startY - e.originalEvent.touches[0].pageY;
             
-        if ('vertical' === this._options.swipe) {
+        if (this._options.swipe === 'vertical') {
             this._swipeMove = yDist;
             this._isSwipe = Math.abs(this._swipeMove) > Math.abs(xDist);
         }
@@ -1699,7 +1699,7 @@ class Rotator {
     mousescroll(e) {
         e.preventDefault();
         var delta = (e.originalEvent.wheelDelta ?  e.originalEvent.wheelDelta : -e.originalEvent.detail);
-        if (0 < delta) {
+        if (delta > 0) {
             this.prevSlide();
         }
         else {

@@ -7,7 +7,7 @@ export const TO_KEYFRAME = '10' + FROM_KEYFRAME;
     cancelAnimationFrame  = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame || $.noop;
 
     if (!requestAnimationFrame) {
-        requestAnimationFrame = function(callback, element) {
+        requestAnimationFrame = function(callback) {
             callback.call(null);
         };
     } 	

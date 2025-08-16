@@ -1,4 +1,4 @@
-import { camelToDash } from "./helpers";
+import { camelToDash, capitalize } from "./helpers";
 
 export const SUPPORT = {};
 export let PREFIX;
@@ -50,7 +50,7 @@ export let CSS_ANIMATION_END;
 
 //check css property support
 export function propertySupport(prop, val) {
-    if (false === prop) {
+    if (prop === false) {
         return false;
     }
 
@@ -59,7 +59,7 @@ export function propertySupport(prop, val) {
         support;
     
     el.style[dashProp] = val;
-    support = -1 < (el.style[dashProp] + '').indexOf(val);
+    support = (el.style[dashProp] + '').indexOf(val) > -1;
     el = null;
     
     return support;

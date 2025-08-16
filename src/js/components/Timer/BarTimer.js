@@ -4,8 +4,11 @@ import Timer from "./Timer";
 class BarTimer extends Timer {
     constructor(context, opts) {
         super(context, opts);
+
         this._$bar = $('<div/>');
-        this._$timer.addClass('br-bar-timer').addClass(/bottom/i.test(opts.position) ? 'br-bottom' : 'br-top').append(this._$bar);   
+        this._$timer.addClass('br-bar-timer')
+            .addClass(/bottom/i.test(opts.position) ? 'br-bottom' : 'br-top')
+            .append(this._$bar);   
     }
 
     start(delay) {
@@ -13,8 +16,9 @@ class BarTimer extends Timer {
             this._delay = delay;
         }
 
-        this._startTime = $.now();
-        this._$bar.transition({width:'101%'}, delay, 'linear');
+        this._startTime = Date.now();
+        this._$bar.transition({width: '101%'}, delay, 'linear');
+
         super.start();
     }
 
@@ -27,7 +31,7 @@ class BarTimer extends Timer {
 
     pause() {
         this._$bar.stopTransition(true);
-        this._elapsed += ($.now() - this._startTime);
+        this._elapsed += (Date.now() - this._startTime);
         this._$bar.width((this._elapsed/this._delay * 101) + '%');
         
         super.pause();

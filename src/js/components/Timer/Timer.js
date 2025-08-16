@@ -1,3 +1,5 @@
+import { isFunction } from '../../util/helpers';
+
 //Timer Class
 class Timer {
     constructor(context, opts) {
@@ -6,8 +8,8 @@ class Timer {
             this._complete = true;
             this._$timer = $('<div/>').appendTo(context._$screen).addTransitionClass('br-element-transition');
             
-            if ($.isFunction(opts.click)) {
-                this._$timer.css({cursor:'pointer'}).on('click', opts.click);
+            if (isFunction(opts.click)) {
+                this._$timer.css({cursor: 'pointer'}).on('click', opts.click);
             }
 
             this.addOnHover(context._$outmost, context._namespace);
@@ -43,8 +45,8 @@ class Timer {
     }
 
     addOnHover($parent, namespace) {
-        $parent.on('mouseenter' + namespace, $.proxy(function() { this.wake(); }, this))
-                .on('mouseleave' + namespace, $.proxy(function() { this.sleep(); }, this));
+        $parent.on(`mouseenter${namespace}`, this.wake.bind(this))
+               .on(`mouseleave${namespace}`, this.sleep.bind(this));
     }
 }
 

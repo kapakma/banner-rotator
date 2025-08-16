@@ -6,27 +6,25 @@ import '../styles/banner-rotator.css';
 import { CUBIC_BEZIER, SIDES } from './constants';
 import { SUPPORT, CSS_ANIMATION_END, CSS_TRANSITION_END } from './util/support';
 import { 
-	isAndroid, isChrome, capitalize, 
+	isAndroid, capitalize, 
 	isEmptyStr, getValue, 
 	saveStyle, createWrapper,
-	restoreStyle, removeWrapper
+	restoreStyle, removeWrapper,
 } from './util/helpers';
 
 import Rotator from './BannerRotator';
 
 (function($) {
-	"use strict"
+	"use strict";
 
-	var IS_TOUCH = 'ontouchstart' in window,
-		ANDROID2 = isAndroid(2.9),
-		CHROME = isChrome();
+	const ANDROID2 = isAndroid(2.9);
 
 	//slide effect
 	$.fn.brSlideEffect = function(opts) {
 		var props = ['display', 'position', 'top', 'left', 'bottom', 'right', 'width', 'height'],
-			isHorizontal = 'left' === opts.direction || 'right' === opts.direction,
-			inverse = ('right' === opts.direction || 'down' === opts.direction ? -1 : 1),
-			hide = 'hide' === opts.mode;
+			isHorizontal = opts.direction === 'left' || opts.direction === 'right',
+			inverse = (opts.direction === 'right' || opts.direction === 'down' ? -1 : 1),
+			hide = opts.mode === 'hide';
 		
 		return this.each(function() {
 			var $el = $(this),
@@ -189,7 +187,7 @@ import Rotator from './BannerRotator';
 			if ($img.is('img')) {
 				$img.attr('src', '').one(loadEvent, complete).error(error).attr('src', src);
 				if (typeof img.readyState !== 'undefined') {
-					if ('complete' === img.readyState) {
+					if (img.readyState === 'complete') {
 						$img.trigger('load');
 					}
 				}
@@ -213,7 +211,7 @@ import Rotator from './BannerRotator';
 	//check for border
 	$.fn.brHasBorder = function() {
 		for (var i = 0; i < SIDES.length; i++) {
-			if (0 < parseInt($(this).css('border-' + SIDES[i] + '-width'), 10)) {
+			if (parseInt($(this).css('border-' + SIDES[i] + '-width'), 10) > 0) {
 				return true;
 			}
 		}
@@ -416,7 +414,7 @@ import Rotator from './BannerRotator';
 		next:'nextSlide',
 		to:'selectSlide',
 		option:'getOption',
-		destroy:'destroy'
+		destroy:'destroy',
  	};
 		
 	$.fn.bannerRotator = function() {
@@ -525,6 +523,6 @@ import Rotator from './BannerRotator';
 		playText:'play',
 		pauseText:'pause',
 		prevText:'previous',
-		nextText:'next'
+		nextText:'next',
 	};
 })(jQuery);
