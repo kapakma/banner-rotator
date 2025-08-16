@@ -8,7 +8,7 @@ import { FROM_KEYFRAME, TO_KEYFRAME } from './util/keyframes';
 import { 
 	isAndroid, isChrome, getTransformProperty, capitalize, getNonNegInt,
 	withinRange, isEmptyStr, isNone, getValue, getEasing, isPercent, getInt, getFloat, 
-	getPosition, debounce, getPosInt, camelToDash,
+	getPosition, debounce, getPosInt, camelToDash, shuffleElements,
 } from './util/helpers';
 
 var IS_TOUCH = 'ontouchstart' in window,
@@ -318,7 +318,8 @@ class Rotator {
                                         TO_KEYFRAME + 
                                     '} ', rules.length);
         }
-        catch (err) {
+        catch (error) {
+            throw new Error(`Failed to inject keyframes: ${error.message}`);
         }
     }
 
@@ -822,12 +823,13 @@ class Rotator {
     
     //init layer
     initLayer($item) {
-        var	$layers = $item.children(':not(.tooltip, img.br-img)').addClass('br-layer'),
-            $bin = $('<div/>', {
-                id:'br-layers-' + $item.index(),
-                'class':'br-layer-bin',
-                html:$layers
-            }).appendTo(this._$layerWrapper);
+        var	$layers = $item.children(':not(.tooltip, img.br-img)').addClass('br-layer');
+        
+        $('<div/>', {
+            id:'br-layers-' + $item.index(),
+            'class':'br-layer-bin',
+            html:$layers
+        }).appendTo(this._$layerWrapper);
 
         $layers.each($.proxy(function(n, el) {
             var $el = $(el),
