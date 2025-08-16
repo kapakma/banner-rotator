@@ -151,12 +151,12 @@ export function isChrome() {
 
 //convert camel case to dash
 export function camelToDash(str) {
-    return (str + '').replace(/([A-Za-z])([A-Z])/g, '$1-$2').toLowerCase();
+    return (`${str }`).replace(/([A-Za-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 //convert dash to camel case
 export function dashToCamel(str) {
-    return (str + '').replace(/([A-Za-z])(-)([A-Za-z])/g, function(match, p1, p2, p3) {
+    return (`${str }`).replace(/([A-Za-z])(-)([A-Za-z])/g, function(match, p1, p2, p3) {
         return (p1 + p3.toUpperCase());
     });
 }
@@ -172,7 +172,7 @@ export function propertySupport(prop, val) {
         support;
     
     el.style[dashProp] = val;
-    support = (el.style[dashProp] + '').indexOf(val) > -1;
+    support = (`${el.style[dashProp] }`).indexOf(val) > -1;
     el = null;
     
     return support;
@@ -212,7 +212,7 @@ export function degreesToRadians(degrees) {
 
 //get transform property
 export function getTransformProperty(transform) {
-    return PREFIXES.concat(['', '']).join('transform:' + transform + ';');
+    return PREFIXES.concat(['', '']).join(`transform:${ transform };`);
 }
 
 //debounce
@@ -292,14 +292,14 @@ export function removeWrapper($el) {
 //save element style
 export function saveStyle($el, props) {
     $.each(props, function(i, val) {
-        $el.data('style-' + val, $el[0].style[val]);
+        $el.data(`style-${ val}`, $el[0].style[val]);
     });
 }
     
 //restore element style
 export function restoreStyle($el, props) {
     $.each(props, function(i, val) {
-        const style = $el.data('style-' + val);
+        const style = $el.data(`style-${ val}`);
         $el.css(val, (typeof style === 'undefined' ? '' : style));
     });
 }

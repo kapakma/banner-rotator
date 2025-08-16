@@ -32,7 +32,7 @@ class BarTimer extends Timer {
     pause() {
         this._$bar.stopTransition(true);
         this._elapsed += (Date.now() - this._startTime);
-        this._$bar.width((this._elapsed/this._delay * 101) + '%');
+        this._$bar.width(`${this._elapsed/this._delay * 101 }%`);
         
         super.pause();
     }

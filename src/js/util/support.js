@@ -38,7 +38,7 @@ export let CSS_ANIMATION_END;
     }
 
     if (SUPPORT.animation && /^(Moz|Webkit|O)/.test(SUPPORT.animation)) {
-        PREFIX = '-' + SUPPORT.animation.replace('Animation', '').toLowerCase() + '-';
+        PREFIX = `-${ SUPPORT.animation.replace('Animation', '').toLowerCase() }-`;
         PREFIXES = [PREFIX];
     }
     else {
@@ -59,7 +59,7 @@ export function propertySupport(prop, val) {
         support;
     
     el.style[dashProp] = val;
-    support = (el.style[dashProp] + '').indexOf(val) > -1;
+    support = (`${el.style[dashProp] }`).indexOf(val) > -1;
     el = null;
     
     return support;

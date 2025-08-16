@@ -32,7 +32,7 @@ import Rotator from './BannerRotator';
 				to = {};
 			
 			if (opts.transform) {
-				let translate = 'translate' + (isHorizontal ? 'X' : 'Y'),
+				let translate = `translate${ isHorizontal ? 'X' : 'Y'}`,
 					begin = inverse * 100,
 					end = 0;
 				
@@ -41,8 +41,8 @@ import Rotator from './BannerRotator';
 					begin = 0;
 				}
 
-				from.transform = translate + '(' + begin + '%)';
-				to.transform = translate + '(' + end + '%)';
+				from.transform = `${translate }(${ begin }%)`;
+				to.transform = `${translate }(${ end }%)`;
 			}
 			else {
 				let pos, dist;
@@ -78,7 +78,7 @@ import Rotator from './BannerRotator';
 	};
 
 	$.each(['width', 'height'], function(i, val) {
-		const natural = 'natural' + capitalize(val); 
+		const natural = `natural${ capitalize(val)}`; 
 		$.fn[natural] = function() {
 			let el = this[0],
 				size;
@@ -179,7 +179,7 @@ import Rotator from './BannerRotator';
 			loadEvent = 'load';
 			
 		if (!isEmptyStr(settings.namespace)) {
-			loadEvent += '.' + settings.namespace;
+			loadEvent += `.${ settings.namespace}`;
 		}
 
 		return this.each(function(n, img) {
@@ -211,7 +211,7 @@ import Rotator from './BannerRotator';
 	//check for border
 	$.fn.brHasBorder = function() {
 		for (let i = 0; i < SIDES.length; i++) {
-			if (parseInt($(this).css('border-' + SIDES[i] + '-width'), 10) > 0) {
+			if (parseInt($(this).css(`border-${ SIDES[i] }-width`), 10) > 0) {
 				return true;
 			}
 		}
@@ -226,13 +226,13 @@ import Rotator from './BannerRotator';
 		return this.each(function() {
 			for (let i = 0; i < SIDES.length; i++) {
 				for (let j = 0; j < props.length; j++) {
-					const name = 'border-' + SIDES[i] + '-' + props[j];
+					const name = `border-${ SIDES[i] }-${ props[j]}`;
 					$(this).css(name, $el.css(name));
 				}
 			}
 			
 			for (let k = 0; k < corners.length; k++) {
-				const radius = 'border' + corners[k] + 'Radius';
+				const radius = `border${ corners[k] }Radius`;
 				$(this).css(radius, $el.css(radius));
 			}
 		});
@@ -266,7 +266,7 @@ import Rotator from './BannerRotator';
 		fillMode = getValue(fillMode, 'forwards');
 		
 		const timingFn = (easing in CUBIC_BEZIER ? CUBIC_BEZIER[easing] : easing),
-			props = { animationName:name, animationDuration:duration + 'ms', animationTimingFunction:timingFn, animationDirection:direction, animationPlayState:playState, animationFillMode:fillMode };
+			props = { animationName:name, animationDuration:`${duration }ms`, animationTimingFunction:timingFn, animationDirection:direction, animationPlayState:playState, animationFillMode:fillMode };
 
 		return this.each(function() {
 			const $el = $(this);
@@ -276,7 +276,7 @@ import Rotator from './BannerRotator';
 				}
 				
 				if ($.isFunction(always)) {
-					$el.one(CSS_ANIMATION_END + '.always', always);
+					$el.one(`${CSS_ANIMATION_END }.always`, always);
 				}
 				
 				$el.one(CSS_ANIMATION_END, function() {
@@ -302,7 +302,7 @@ import Rotator from './BannerRotator';
 				$el.trigger(CSS_ANIMATION_END);
 			}
 			else {
-				$el.trigger(CSS_ANIMATION_END + '.always').off(CSS_ANIMATION_END);
+				$el.trigger(`${CSS_ANIMATION_END }.always`).off(CSS_ANIMATION_END);
 			}
 			
 			$el.css({ animation:'none' }).dequeue();
@@ -331,7 +331,7 @@ import Rotator from './BannerRotator';
 		duration = getValue(duration, 400);
 		easing = getValue(easing, 'ease');
 		delay = getValue(delay, 0);
-		props.transition = 'all ' + duration + 'ms ' + CUBIC_BEZIER[easing] + ' ' + delay + 'ms';
+		props.transition = `all ${ duration }ms ${ CUBIC_BEZIER[easing] } ${ delay }ms`;
 
 		return this.each(function() {
 			const $el = $(this);
@@ -341,7 +341,7 @@ import Rotator from './BannerRotator';
 				}
 				
 				if ($.isFunction(always)) {
-					$el.one(CSS_TRANSITION_END + '.always', always);
+					$el.one(`${CSS_TRANSITION_END }.always`, always);
 				}
 				
 				$el.one(CSS_TRANSITION_END, function() { 
@@ -367,7 +367,7 @@ import Rotator from './BannerRotator';
 				$el.trigger(CSS_TRANSITION_END);
 			}
 			else {
-				$el.trigger(CSS_TRANSITION_END + '.always').off(CSS_TRANSITION_END);
+				$el.trigger(`${CSS_TRANSITION_END }.always`).off(CSS_TRANSITION_END);
 			}
 			
 			$el.css({ transition:'none', transitionDuration:'0s' }).dequeue();

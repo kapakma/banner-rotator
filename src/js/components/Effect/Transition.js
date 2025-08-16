@@ -22,7 +22,7 @@ class Transition {
             content = '';
         
         while (total--) {
-            content += '<div class="br-effect">' + inner + '</div>';
+            content += `<div class="br-effect">${ inner }</div>`;
         }
         this._$container.toggleClass('br-2d', !this._is3D).html(content);
         this._$el = this._$container.children();
@@ -163,19 +163,19 @@ class Transition {
 
     //set cuboid
     setCuboid($cuboid, width, height, depth) {
-        const widthZ = 'translateZ(' + (width/2) + 'px)',
-            heightZ = 'translateZ(' + (height/2) + 'px)',
-            depthZ = 'translateZ(' + (depth/2) + 'px)',
+        const widthZ = `translateZ(${ width/2 }px)`,
+            heightZ = `translateZ(${ height/2 }px)`,
+            depthZ = `translateZ(${ depth/2 }px)`,
             left = (width - depth)/2,
             top = (height - depth)/2,
             invert = $cuboid.find('>.br-face-back').hasClass('br-inverted') ? 'rotate(180deg) ' : '';
         
         $cuboid.find('>.br-face-front').css({ transform:depthZ }).end()
-                .find('>.br-face-back').css({ transform:'rotateY(180deg) ' + invert + depthZ }).end()
-                .find('>.br-face-left').css({ width:depth, left:left, transform:'rotateY(-90deg) ' + widthZ }).end()
-                .find('>.br-face-right').css({ width:depth, left:left, transform:'rotateY(90deg) ' + widthZ }).end()
-                .find('>.br-face-top').css({ height:depth, top:top, transform:'rotateX(90deg) ' + heightZ }).end()
-                .find('>.br-face-bottom').css({ height:depth, top:top, transform:'rotateX(-90deg) ' + heightZ });
+                .find('>.br-face-back').css({ transform:`rotateY(180deg) ${ invert }${depthZ}` }).end()
+                .find('>.br-face-left').css({ width:depth, left:left, transform:`rotateY(-90deg) ${ widthZ}` }).end()
+                .find('>.br-face-right').css({ width:depth, left:left, transform:`rotateY(90deg) ${ widthZ}` }).end()
+                .find('>.br-face-top').css({ height:depth, top:top, transform:`rotateX(90deg) ${ heightZ}` }).end()
+                .find('>.br-face-bottom').css({ height:depth, top:top, transform:`rotateX(-90deg) ${ heightZ}` });
     }
 
     //update keyframes
@@ -206,11 +206,11 @@ class Transition {
         }
 
         let length = arr.length,
-            rule = '@' + PREFIX + 'keyframes ' + ('br-' + this._context._uid + '-' + index) + ' { ';
+            rule = `@${ PREFIX }keyframes ` + `br-${ this._context._uid }-${ index}` + ` { `;
 
         for (let i = 0; i < length; i++) {
             const val = (arr[i] * size);
-            rule += (pct[i] + ' { ' + getTransformProperty('translateZ(' + Math.min(0, offset - val) + 'px)') + ' } ');
+            rule += (`${pct[i] } { ${ getTransformProperty(`translateZ(${ Math.min(0, offset - val) }px)`) } } `);
         }
         rule += '} ';
         
@@ -262,7 +262,7 @@ class Transition {
                     d2.resolve(); 
                 };
             }
-            $el.animation('br-' + this._context._uid + '-' + this._context._activeIndex, opts)
+            $el.animation(`br-${ this._context._uid }-${ this._context._activeIndex}`, opts)
                 .find('>.br-shape>.br-prev-side>.br-shading').css({ animationPlayState:'running' });
         }
 
@@ -370,7 +370,7 @@ class Transition {
     }
 
     setFn(fn, dir) {
-        let setter = 'set' + capitalize(fn), 
+        let setter = `set${ capitalize(fn)}`, 
             name = setter + capitalize(dir);
 
         if (!$.isFunction(this[name])) {
@@ -450,15 +450,15 @@ class Transition {
             from, to;
             
         if (this._transform) {
-            const translate = 'translate' + axis;
-            from = { transform:translate + '(-50%)' };
-            to = { transform:translate + '(0)' };
+            const translate = `translate${ axis}`;
+            from = { transform:`${translate }(-50%)` };
+            to = { transform:`${translate }(0)` };
         }
         else {
             const pos = (axis === 'Y' ? 'top' : 'left');
             from = {};
             to = {};
-            from[pos] = -this['_' + dim];
+            from[pos] = -this[`_${ dim}`];
             to[pos] = 0;
         }
 
@@ -472,9 +472,9 @@ class Transition {
             active = temp;
         }
 
-        $el.data({ to:to }).find('>.br-shape').addClass('br-extend-' + dim).css(from)
-            .find('>.br-' + active).addClass('br-active-side').end()
-            .find('>.br-' + prev).addClass('br-prev-side').css('visibility', visibility);
+        $el.data({ to:to }).find('>.br-shape').addClass(`br-extend-${ dim}`).css(from)
+            .find(`>.br-${ active}`).addClass('br-active-side').end()
+            .find(`>.br-${ prev}`).addClass('br-prev-side').css('visibility', visibility);
     }
 
     //move helper
@@ -501,9 +501,9 @@ class Transition {
     setMove($el, axis, dist) {
         let from, to;
         if (this._transform) {
-            const translate = 'translate' + axis;
-            from = { transform:translate + '(' + dist + 'px)' };
-            to = { transform:translate + '(0)' };
+            const translate = `translate${ axis}`;
+            from = { transform:`${translate }(${ dist }px)` };
+            to = { transform:`${translate }(0)` };
         }
         else {
             if (axis === 'Y') {
@@ -543,7 +543,7 @@ class Transition {
     }
 
     setRotate($el, axis, positive) {
-        let transform = 'translateZ(' + (-$el.data('depth')/2) + 'px) rotate' + axis,
+        let transform = `translateZ(${ -$el.data('depth')/2 }px) rotate${ axis}`,
             sign, side;
 
         if (positive) {
@@ -555,9 +555,9 @@ class Transition {
             side = (axis === 'X' ? 'top' : 'right');
         }
 
-        $el.data({ to:{ transform:transform + '(' + sign + '90deg)' } })
-            .find('>.br-shape').css({ transform:transform + '(0deg)' })
-            .find('>.br-face-' + side).addClass('br-active-side').end()
+        $el.data({ to:{ transform:`${transform }(${ sign }90deg)` } })
+            .find('>.br-shape').css({ transform:`${transform }(0deg)` })
+            .find(`>.br-face-${ side}`).addClass('br-active-side').end()
             .find('>.br-face-front').addClass('br-prev-side');
     }
 
@@ -583,11 +583,11 @@ class Transition {
     }
 
     setFlip($el, axis, positive) {
-        const transform = 'translateZ(' + (-$el.data('depth')/2) + 'px) rotate' + axis,
+        const transform = `translateZ(${ -$el.data('depth')/2 }px) rotate${ axis}`,
             sign = positive ? '' : '-';
         
-        $el.data({ to:{ transform:transform + '(' + sign + '180deg)' } })
-            .find('>.br-shape').css({ transform:transform + '(0deg)' })
+        $el.data({ to:{ transform:`${transform }(${ sign }180deg)` } })
+            .find('>.br-shape').css({ transform:`${transform }(0deg)` })
             .find('>.br-face-front').addClass('br-prev-side').end()
             .find('>.br-face-back').addClass('br-active-side').toggleClass('br-inverted', axis === 'X');
     }
@@ -715,7 +715,7 @@ class Transition {
         this._progress = true;
 
         $.each(Transition.DATA, $.proxy(function(i, val) {
-            this['_' + val] = opts[val];
+            this[`_${ val}`] = opts[val];
         }, this));
                     
         this._columns = getPosInt(this._columns, 1);
@@ -756,7 +756,7 @@ class Transition {
             preset = getRandomItem(PRESETS[type]);
         
         $.each(['effect', 'direction', 'order'], $.proxy(function(i, val) {
-            this['_' + val] = preset[val];
+            this[`_${ val}`] = preset[val];
         }, this));
     }
 
@@ -973,7 +973,7 @@ Transition.OPPOSITE = {
         step = radian/num;
     
     for (let i = 0; i <= num; i++) {
-        Transition.FLIP_PCT[i] = Math.round(i/num * 100) + '%';
+        Transition.FLIP_PCT[i] = `${Math.round(i/num * 100) }%`;
         Transition.SINES[i] = roundTo(Math.sin(radian), 5);
         radian -= step;
     }
@@ -987,7 +987,7 @@ Transition.OPPOSITE = {
         step = radian/(num/2);
     
     for (let i = 0; i <= num; i++) {
-        Transition.ROTATE_PCT[i] = Math.round(i/num * 100) + '%';
+        Transition.ROTATE_PCT[i] = `${Math.round(i/num * 100) }%`;
         Transition.COSINES[i] = roundTo(Math.cos(radian), 5);
         radian -= step;
         if (radian <= 0) {

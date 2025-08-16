@@ -67,7 +67,7 @@ class PieTimer extends Timer {
         this._elapsed += (Date.now() - this._startTime);
         
         const degree = (this._elapsed/this._delay * 360);
-        this._$spinner.css({ transform: 'rotate(' + degree + 'deg)' });
+        this._$spinner.css({ transform: `rotate(${ degree }deg)` });
         if (this._elapsed < this._delay/2) {
             this._$fill.css({ opacity: 0 });
             this._$mask.css({ opacity: 1 });

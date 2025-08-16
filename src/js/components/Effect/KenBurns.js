@@ -23,7 +23,7 @@ class KenBurns {
                 opts.direction = 'reverse';
             }
             
-            this._effect = 'br-' + this._effect;
+            this._effect = `br-${ this._effect}`;
             this._options = {
                 duration:getNonNegInt(opts.duration, 5000),
                 easing:getValue(opts.easing, 'linear'), 
@@ -72,9 +72,9 @@ class KenBurns {
     KenBurns.ZOOMOUT = ['zoom-out'];
 
     $.each(KenBurns.PAN, function(i, val) {
-        KenBurns.PAN[i] = 'pan-' + val;
-        KenBurns.ZOOMIN.push('zoom-in-' + val);
-        KenBurns.ZOOMOUT.push('zoom-out-' + val);
+        KenBurns.PAN[i] = `pan-${ val}`;
+        KenBurns.ZOOMIN.push(`zoom-in-${ val}`);
+        KenBurns.ZOOMOUT.push(`zoom-out-${ val}`);
     });
 
     KenBurns.ZOOM = KenBurns.ZOOMIN.concat(KenBurns.ZOOMOUT);
