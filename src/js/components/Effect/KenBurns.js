@@ -1,9 +1,9 @@
 import { isNone, getRandomItem, getNonNegInt, getValue } from '../../util/helpers';
 import { SUPPORT } from '../../util/support';
 
-//KBurns Class
-function KBurns($img, effect, opts) {
-    if (this instanceof KBurns) {
+//KenBurns Class
+function KenBurns($img, effect, opts) {
+    if (this instanceof KenBurns) {
         this._$img = $img;
         this._effect = effect;
         this._options = {};
@@ -18,8 +18,8 @@ function KBurns($img, effect, opts) {
                 this._effect = camelToDash(this._effect);
             }
             
-            if (this._effect in KBurns.REVERSES) {
-                this._effect = KBurns.REVERSES[this._effect];
+            if (this._effect in KenBurns.REVERSES) {
+                this._effect = KenBurns.REVERSES[this._effect];
                 opts.direction = 'reverse';
             }
             
@@ -35,28 +35,28 @@ function KBurns($img, effect, opts) {
         }
     }
     else {
-        return new KBurns($img, effect, opts);
+        return new KenBurns($img, effect, opts);
     }
 }
 
 (function() {
-    KBurns.PAN = ['up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'];
+    KenBurns.PAN = ['up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'];
     
-    KBurns.ZOOMIN = ['zoom-in'];
+    KenBurns.ZOOMIN = ['zoom-in'];
     
-    KBurns.ZOOMOUT = ['zoom-out'];
+    KenBurns.ZOOMOUT = ['zoom-out'];
 
-    $.each(KBurns.PAN, function(i, val) {
-        KBurns.PAN[i] = 'pan-' + val;
-        KBurns.ZOOMIN.push('zoom-in-' + val);
-        KBurns.ZOOMOUT.push('zoom-out-' + val);
+    $.each(KenBurns.PAN, function(i, val) {
+        KenBurns.PAN[i] = 'pan-' + val;
+        KenBurns.ZOOMIN.push('zoom-in-' + val);
+        KenBurns.ZOOMOUT.push('zoom-out-' + val);
     });
 
-    KBurns.ZOOM = KBurns.ZOOMIN.concat(KBurns.ZOOMOUT);
+    KenBurns.ZOOM = KenBurns.ZOOMIN.concat(KenBurns.ZOOMOUT);
     
-    KBurns.EFFECTS = KBurns.PAN.concat(KBurns.ZOOM);
+    KenBurns.EFFECTS = KenBurns.PAN.concat(KenBurns.ZOOM);
     
-    KBurns.REVERSES = {
+    KenBurns.REVERSES = {
         'pan-left':'pan-right',
         'pan-up':'pan-down',
         'pan-up-left':'pan-down-right', 
@@ -73,8 +73,8 @@ function KBurns($img, effect, opts) {
     };
 }());
 
-KBurns.prototype = {
-    constructor: KBurns,
+KenBurns.prototype = {
+    constructor: KenBurns,
 
     set: function() {
         this._$img.stopAnimation(true).animation(this._effect, this._options);
@@ -95,14 +95,14 @@ KBurns.prototype = {
 
     getRandom: function() {
         var name = this._effect.substring('random'.length).toUpperCase(),
-            effects = KBurns[name];
+            effects = KenBurns[name];
         
         if (!$.isArray(effects)) {
-            effects = KBurns.EFFECTS;
+            effects = KenBurns.EFFECTS;
         }
 
         return getRandomItem(effects);
     }
 };
 
-export default KBurns;
+export default KenBurns;

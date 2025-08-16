@@ -1,6 +1,6 @@
 import BarTimer from './components/Timer/BarTimer';
 import PieTimer from './components/Timer/PieTimer';
-import KBurns from './components/Effect/KenBurns';
+import KenBurns from './components/Effect/KenBurns';
 import Effect from './components/Effect/Transition';
 import { PREFIX, SUPPORT } from './util/support';
 import { SIDES, OPPOSITE_SIDE, OPPOSITE_LAYER } from './constants';
@@ -716,12 +716,12 @@ Rotator.prototype = {
                 this.loadNavThumb($nextImg);
                 
                 if (CHROME) {
-                    $prevWrapper.data('thumb-kb', new KBurns($prevImg, $prevItem.data('kb-effect')));
+                    $prevWrapper.data('thumb-kb', new KenBurns($prevImg, $prevItem.data('kb-effect')));
                     if ($prevWrapper.add($prevNav).hasClass('br-hover-on')) {
                         this.startNavKB($prevWrapper);
                     }
                     
-                    $nextWrapper.data('thumb-kb', new KBurns($nextImg, $nextItem.data('kb-effect')));
+                    $nextWrapper.data('thumb-kb', new KenBurns($nextImg, $nextItem.data('kb-effect')));
                     if ($nextWrapper.add($nextNav).hasClass('br-hover-on')) {
                         this.startNavKB($nextWrapper);
                     }
@@ -910,7 +910,7 @@ Rotator.prototype = {
                                         .removeClass('br-transparent');
                                 $img.remove();
                                 if (CHROME) {
-                                    $thumb.data('tooltip-kb', new KBurns($content, $(el).data('kb-effect')));
+                                    $thumb.data('tooltip-kb', new KenBurns($content, $(el).data('kb-effect')));
                                 }
                             }, this)
                         });
@@ -1393,7 +1393,7 @@ Rotator.prototype = {
         
         //set ken burns
         if (CHROME || !IS_TOUCH) {
-            this._kBurns = new KBurns(this._$currItem.find('>img.br-img'), data.kbEffect, {duration:getPosInt(data.kbDuration, data.delay), easing:data.kbEasing});
+            this._kBurns = new KenBurns(this._$currItem.find('>img.br-img'), data.kbEffect, {duration:getPosInt(data.kbDuration, data.delay), easing:data.kbEasing});
         }
 
         //activate
