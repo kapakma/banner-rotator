@@ -1,6 +1,6 @@
 //Timer Class
-function Timer(context, opts) {
-    if (this instanceof Timer) {
+class Timer {
+    constructor(context, opts) {
         if (context) {
             this._running = false;
             this._complete = true;
@@ -13,46 +13,39 @@ function Timer(context, opts) {
             this.addOnHover(context._$outmost, context._namespace);
         }
     }
-    else {
-        return new Timer();
-    }
-}
 
-Timer.prototype = {
-    constructor: Timer,
-
-    start: function() {
+    start() {
         this._running = true;
         this._complete = false;
         this._$timer.addClass('br-on');
         this.wake();
-    },
+    }
 
-    stop: function() {
+    stop() {
         this._running = false;
         this._complete = true;
         this._$timer.removeClass('br-on');
-    },
+    }
 
-    pause: function() {
+    pause() {
         this._running = false;
         this.sleep();
-    },
+    }
 
-    wake: function() {
+    wake() {
         this._$timer.removeClass('br-timer-sleep');
-    },
+    }
 
-    sleep: function() {
+    sleep() {
         if (!this._running) {
             this._$timer.addClass('br-timer-sleep');
         }
-    },
+    }
 
-    addOnHover: function($parent, namespace) {
+    addOnHover($parent, namespace) {
         $parent.on('mouseenter' + namespace, $.proxy(function() { this.wake(); }, this))
                 .on('mouseleave' + namespace, $.proxy(function() { this.sleep(); }, this));
     }
-};
+}
 
 export default Timer;

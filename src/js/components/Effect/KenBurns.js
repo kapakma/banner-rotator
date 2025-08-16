@@ -2,8 +2,8 @@ import { isNone, getRandomItem, getNonNegInt, getValue } from '../../util/helper
 import { SUPPORT } from '../../util/support';
 
 //KenBurns Class
-function KenBurns($img, effect, opts) {
-    if (this instanceof KenBurns) {
+class KenBurns {
+    constructor($img, effect, opts) {
         this._$img = $img;
         this._effect = effect;
         this._options = {};
@@ -34,8 +34,33 @@ function KenBurns($img, effect, opts) {
             this.set();
         }
     }
-    else {
-        return new KenBurns($img, effect, opts);
+
+    set() {
+        this._$img.stopAnimation(true).animation(this._effect, this._options);
+    }
+
+    start() {
+        this._$img.css({animationPlayState:'running'});
+    }
+
+    stop() {
+        this._$img.css({animationPlayState:'paused'});
+    }
+
+    restart() {
+        this.set();
+        this.start();
+    }
+
+    getRandom() {
+        var name = this._effect.substring('random'.length).toUpperCase(),
+            effects = KenBurns[name];
+        
+        if (!$.isArray(effects)) {
+            effects = KenBurns.EFFECTS;
+        }
+
+        return getRandomItem(effects);
     }
 }
 
@@ -72,37 +97,5 @@ function KenBurns($img, effect, opts) {
         'zoom-out-down-right':'zoom-in-up-left'
     };
 }());
-
-KenBurns.prototype = {
-    constructor: KenBurns,
-
-    set: function() {
-        this._$img.stopAnimation(true).animation(this._effect, this._options);
-    },
-
-    start: function() {
-        this._$img.css({animationPlayState:'running'});
-    },
-
-    stop: function() {
-        this._$img.css({animationPlayState:'paused'});
-    },
-
-    restart: function() {
-        this.set();
-        this.start();
-    },
-
-    getRandom: function() {
-        var name = this._effect.substring('random'.length).toUpperCase(),
-            effects = KenBurns[name];
-        
-        if (!$.isArray(effects)) {
-            effects = KenBurns.EFFECTS;
-        }
-
-        return getRandomItem(effects);
-    }
-};
 
 export default KenBurns;
