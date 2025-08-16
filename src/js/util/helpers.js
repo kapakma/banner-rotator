@@ -3,14 +3,14 @@ import { CUBIC_BEZIER } from "../constants";
 
 //shuffle elements
 export function shuffleElements($el) {
-    var items = $el.children().toArray();
+    const items = $el.children().toArray();
     shuffleArray(items);
     $el.append(items);
 }
 
 //get position
 export function getPosition(val) {
-    var props = {},
+    let props = {},
         arr = val.split(' ', 2);
     
     if (arr.length !== 2) {
@@ -93,13 +93,13 @@ export function getEnum(val, list, defaultVal) {
 //check for percent
 export function isPercent(val) {
     val += '';
-    var last = val.length - 1;
+    const last = val.length - 1;
     return val.charAt(last) === '%' && $.isNumeric(val.substring(0, last));
 }
 
 //round to
 export function roundTo(val, digits) {
-    var num = Math.pow(10, digits);
+    const num = Math.pow(10, digits);
     return Math.round(val * num)/num;
 }
 
@@ -110,7 +110,7 @@ export function isImage(val) {
 
 //check style property support
 export function styleSupport(prop) {
-    var el = document.createElement('div'),
+    let el = document.createElement('div'),
         style = el.style,
         supported = false;
 
@@ -118,11 +118,11 @@ export function styleSupport(prop) {
         supported = prop;
     }
     else {
-        var capProp = capitalize(prop),
+        const capProp = capitalize(prop),
             prefixes = ['Moz', 'Webkit', 'O', 'ms'];
         
-        for (var i = 0; i < prefixes.length; i++) {
-            var prefixProp = prefixes[i] + capProp;
+        for (let i = 0; i < prefixes.length; i++) {
+            const prefixProp = prefixes[i] + capProp;
             if (prefixProp in style) {
                 supported = prefixProp;
                 break;
@@ -137,7 +137,7 @@ export function styleSupport(prop) {
 
 //is android check
 export function isAndroid(version) {
-    var android = 'android',
+    const android = 'android',
         ua = navigator.userAgent.toLowerCase(),
         index = ua.indexOf(android);
     
@@ -167,7 +167,7 @@ export function propertySupport(prop, val) {
         return false;
     }
 
-    var dashProp = camelToDash(prop).replace(/^(moz-|webkit-|o-|ms-)/, '-$1'),
+    let dashProp = camelToDash(prop).replace(/^(moz-|webkit-|o-|ms-)/, '-$1'),
         el = document.createElement('div'),
         support;
     
@@ -180,7 +180,7 @@ export function propertySupport(prop, val) {
 
 //check css filter support
 export function filterSupport() {
-    var el = document.createElement('div'),
+    const el = document.createElement('div'),
         prefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
         cssText = prefixes.join('filter:blur(2px); ');
 
@@ -190,9 +190,9 @@ export function filterSupport() {
 
 //shuffle array
 export function shuffleArray(arr) {
-    var i = arr.length;
+    let i = arr.length;
     while(--i > 0) {
-        var ri = Math.floor(Math.random() * (i + 1)),
+        const ri = Math.floor(Math.random() * (i + 1)),
             temp = arr[i];
         arr[i] = arr[ri];
         arr[ri] = temp;
@@ -217,17 +217,17 @@ export function getTransformProperty(transform) {
 
 //debounce
 export function debounce(fn, wait, immediate) {
-    var timeout;
+    let timeout;
     return function() {
-        var context = this, 
+        const context = this, 
             args = arguments;
-        var later = function() {
+        const later = function() {
             timeout = null;
             if (!immediate) {
                 fn.apply(context, args);
             }
         };
-        var callNow = immediate && !timeout;
+        const callNow = immediate && !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
         if (callNow) {
@@ -248,7 +248,7 @@ export function addPresets(presets, effects, directions, orders) {
     $.each(effects, function(i, effect) {
         $.each(directions, function(j, direction) {
             $.each(orders, function(k, order) {
-                presets.push({effect:effect, direction:direction, order:order});
+                presets.push({ effect:effect, direction:direction, order:order });
             });
         });
     });
@@ -256,7 +256,7 @@ export function addPresets(presets, effects, directions, orders) {
 
 //create wrapper
 export function createWrapper($el) {
-    var size = {width:$el.width(), height:$el.height()},
+    const size = { width:$el.width(), height:$el.height() },
     $wrapper = $('<div/>', {
         'class':'br-effect-wrapper',
         css:{
@@ -299,7 +299,7 @@ export function saveStyle($el, props) {
 //restore element style
 export function restoreStyle($el, props) {
     $.each(props, function(i, val) {
-        var style = $el.data('style-' + val);
+        const style = $el.data('style-' + val);
         $el.css(val, (typeof style === 'undefined' ? '' : style));
     });
 }

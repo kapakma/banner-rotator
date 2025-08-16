@@ -9,7 +9,7 @@ class Timer {
             this._$timer = $('<div/>').appendTo(context._$screen).addTransitionClass('br-element-transition');
             
             if (isFunction(opts.click)) {
-                this._$timer.css({cursor: 'pointer'}).on('click', opts.click);
+                this._$timer.css({ cursor: 'pointer' }).on('click', opts.click);
             }
 
             this.addOnHover(context._$outmost, context._namespace);

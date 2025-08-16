@@ -21,18 +21,18 @@ import Rotator from './BannerRotator';
 
 	//slide effect
 	$.fn.brSlideEffect = function(opts) {
-		var props = ['display', 'position', 'top', 'left', 'bottom', 'right', 'width', 'height'],
+		const props = ['display', 'position', 'top', 'left', 'bottom', 'right', 'width', 'height'],
 			isHorizontal = opts.direction === 'left' || opts.direction === 'right',
 			inverse = (opts.direction === 'right' || opts.direction === 'down' ? -1 : 1),
 			hide = opts.mode === 'hide';
 		
 		return this.each(function() {
-			var $el = $(this),
+			const $el = $(this),
 				from = {},
 				to = {};
 			
 			if (opts.transform) {
-				var translate = 'translate' + (isHorizontal ? 'X' : 'Y'),
+				let translate = 'translate' + (isHorizontal ? 'X' : 'Y'),
 					begin = inverse * 100,
 					end = 0;
 				
@@ -42,10 +42,10 @@ import Rotator from './BannerRotator';
 				}
 
 				from.transform = translate + '(' + begin + '%)';
-				to.transform = translate + '(' + end   + '%)';
+				to.transform = translate + '(' + end + '%)';
 			}
 			else {
-				var pos, dist;
+				let pos, dist;
 				if (isHorizontal) {
 					pos = 'left';
 					dist = $el.outerWidth(true);
@@ -78,16 +78,16 @@ import Rotator from './BannerRotator';
 	};
 
 	$.each(['width', 'height'], function(i, val) {
-		var natural = 'natural' + capitalize(val); 
+		const natural = 'natural' + capitalize(val); 
 		$.fn[natural] = function() {
-			var el = this[0],
+			let el = this[0],
 				size;
 
 			if (typeof el[natural] !== 'undefined') {
 				size = el[natural];
 			}
 			else {
-				var img = document.createElement('img');
+				const img = document.createElement('img');
 				img.src = this.attr('src');
 				size = img[val];
 			}
@@ -98,56 +98,56 @@ import Rotator from './BannerRotator';
 	//center content to viewpoint
 	$.fn.brCenter = function(winWidth, winHeight) {
 		return this.each(function() {
-			$(this).css({top:(winHeight - $(this).naturalHeight())/2, left:(winWidth - $(this).naturalWidth())/2});
+			$(this).css({ top:(winHeight - $(this).naturalHeight())/2, left:(winWidth - $(this).naturalWidth())/2 });
 		});
 	};
 	
 	//fill (cover) content to viewpoint
 	$.fn.brFill = function(winWidth, winHeight) {
 		return this.each(function() {
-			var imgRatio = $(this).naturalWidth()/$(this).naturalHeight(),
+			const imgRatio = $(this).naturalWidth()/$(this).naturalHeight(),
 				winRatio = winWidth/winHeight;
 			
 			if (imgRatio < winRatio) {
-				$(this).css({width:winWidth, height:winWidth / imgRatio});
+				$(this).css({ width:winWidth, height:winWidth / imgRatio });
 			}
 			else {
-				$(this).css({width:winHeight * imgRatio, height:winHeight});
+				$(this).css({ width:winHeight * imgRatio, height:winHeight });
 			}
-			$(this).css({top:(winHeight - $(this).height())/2, left:(winWidth - $(this).width())/2});
+			$(this).css({ top:(winHeight - $(this).height())/2, left:(winWidth - $(this).width())/2 });
 		});
 	};
 
 	//fit (contain) content to viewpoint
 	$.fn.brFit = function(winWidth, winHeight) {
 		return this.each(function() {
-			var imgRatio = $(this).naturalWidth()/$(this).naturalHeight(),
+			const imgRatio = $(this).naturalWidth()/$(this).naturalHeight(),
 				winRatio = winWidth/winHeight;
 			
 			if (imgRatio < winRatio) {
-				$(this).css({width:winHeight * imgRatio, height:winHeight});
+				$(this).css({ width:winHeight * imgRatio, height:winHeight });
 			}
 			else {
-				$(this).css({width:winWidth, height:winWidth / imgRatio});
+				$(this).css({ width:winWidth, height:winWidth / imgRatio });
 			}
-			$(this).css({top:(winHeight - $(this).height())/2, left:(winWidth - $(this).width())/2});
+			$(this).css({ top:(winHeight - $(this).height())/2, left:(winWidth - $(this).width())/2 });
 		});
 	};
 
 	//stretch content to viewpoint
 	$.fn.brStretch = function(winWidth, winHeight) {
 		return this.each(function() {
-			$(this).css({top:0, left:0, width:winWidth, height:winHeight});
+			$(this).css({ top:0, left:0, width:winWidth, height:winHeight });
 		});
 	};
 
 	//map shorthand data
 	$.fn.brMapShorthand = function(key, props) {
 		return this.each(function() {
-			var val = $(this).data(key);
+			const val = $(this).data(key);
 			if (!isEmptyStr(val)) {
-				var values = val.split(' ');
-				for (var i = 0; i < values.length && i < props.length; i++) {
+				const values = val.split(' ');
+				for (let i = 0; i < values.length && i < props.length; i++) {
 					$(this).data(props[i], values[i]);
 				}
 			}
@@ -156,7 +156,7 @@ import Rotator from './BannerRotator';
 
 	//get total width of elements
 	$.fn.brTotalWidth = function(includeMargin) {
-		var width = 0;
+		let width = 0;
 		this.each(function() {
 			width += $(this).outerWidth(includeMargin);
 		});
@@ -165,7 +165,7 @@ import Rotator from './BannerRotator';
 
 	//get total height of elements
 	$.fn.brTotalHeight = function(includeMargin) {
-		var height = 0;
+		let height = 0;
 		this.each(function() {
 			height += $(this).outerHeight(includeMargin);
 		});
@@ -174,7 +174,7 @@ import Rotator from './BannerRotator';
 		
 	//bind image handler
 	$.fn.brHandleImage = function(src, settings) {
-		var complete = $.isFunction(settings.complete) ? settings.complete : $.noop, 
+		let complete = $.isFunction(settings.complete) ? settings.complete : $.noop, 
 			error = $.isFunction(settings.error) ? settings.error : $.noop,
 			loadEvent = 'load';
 			
@@ -183,7 +183,7 @@ import Rotator from './BannerRotator';
 		}
 
 		return this.each(function(n, img) {
-			var $img = $(img);
+			const $img = $(img);
 			if ($img.is('img')) {
 				$img.attr('src', '').one(loadEvent, complete).error(error).attr('src', src);
 				if (typeof img.readyState !== 'undefined') {
@@ -210,7 +210,7 @@ import Rotator from './BannerRotator';
 
 	//check for border
 	$.fn.brHasBorder = function() {
-		for (var i = 0; i < SIDES.length; i++) {
+		for (let i = 0; i < SIDES.length; i++) {
 			if (parseInt($(this).css('border-' + SIDES[i] + '-width'), 10) > 0) {
 				return true;
 			}
@@ -220,19 +220,19 @@ import Rotator from './BannerRotator';
 
 	//copy border
 	$.fn.brCopyBorder = function($el) {
-		var props = ['width', 'style', 'color'],
+		const props = ['width', 'style', 'color'],
 			corners = ['TopLeft', 'TopRight', 'BottomLeft', 'BottomRight'];
 		
 		return this.each(function() {
-			for (var i = 0; i < SIDES.length; i++) {
-				for (var j = 0; j < props.length; j++) {
-					var name = 'border-' + SIDES[i] + '-' + props[j];
+			for (let i = 0; i < SIDES.length; i++) {
+				for (let j = 0; j < props.length; j++) {
+					const name = 'border-' + SIDES[i] + '-' + props[j];
 					$(this).css(name, $el.css(name));
 				}
 			}
 			
-			for (var k = 0; k < corners.length; k++) {
-				var radius = 'border' + corners[k] + 'Radius';
+			for (let k = 0; k < corners.length; k++) {
+				const radius = 'border' + corners[k] + 'Radius';
 				$(this).css(radius, $el.css(radius));
 			}
 		});
@@ -240,12 +240,12 @@ import Rotator from './BannerRotator';
 
 	//animation
 	$.fn.animation = function() {
-		var name = arguments[0], duration, easing, 
+		let name = arguments[0], duration, easing, 
 			direction, playState, fillMode,
 			complete, always;
 
 		if (typeof arguments[1] === 'object') {
-			var opts = arguments[1];
+			const opts = arguments[1];
 			duration = opts.duration;
 			easing = opts.easing;
 			direction = opts.direction;
@@ -265,11 +265,11 @@ import Rotator from './BannerRotator';
 		playState = getValue(playState, 'running');
 		fillMode = getValue(fillMode, 'forwards');
 		
-		var timingFn = (easing in CUBIC_BEZIER ? CUBIC_BEZIER[easing] : easing),
-			props = {animationName:name, animationDuration:duration + 'ms', animationTimingFunction:timingFn, animationDirection:direction, animationPlayState:playState, animationFillMode:fillMode};
+		const timingFn = (easing in CUBIC_BEZIER ? CUBIC_BEZIER[easing] : easing),
+			props = { animationName:name, animationDuration:duration + 'ms', animationTimingFunction:timingFn, animationDirection:direction, animationPlayState:playState, animationFillMode:fillMode };
 
 		return this.each(function() {
-			var $el = $(this);
+			const $el = $(this);
 			$el.queue(function(){
 				if ($.isFunction(complete)) {
 					$el.one(CSS_ANIMATION_END, complete);
@@ -291,7 +291,7 @@ import Rotator from './BannerRotator';
 	//stop animation
 	$.fn.stopAnimation = function(clearQueue, jumpToEnd) {
 		return this.each(function() {
-			var $el = $(this);
+			const $el = $(this);
 			if (clearQueue) {
 				$el.clearQueue();
 			}
@@ -305,18 +305,18 @@ import Rotator from './BannerRotator';
 				$el.trigger(CSS_ANIMATION_END + '.always').off(CSS_ANIMATION_END);
 			}
 			
-			$el.css({animation:'none'}).dequeue();
+			$el.css({ animation:'none' }).dequeue();
 		});
 	};
 
 	//transition
 	$.fn.transition = function() {
-		var props = arguments[0],
+		let props = arguments[0],
 			duration, easing, delay, 
 			complete, always;
 		
 		if (typeof arguments[1] === 'object') {
-			var opts = arguments[1];
+			const opts = arguments[1];
 			duration = opts.duration;
 			easing = opts.easing;
 			delay = opts.delay;
@@ -334,7 +334,7 @@ import Rotator from './BannerRotator';
 		props.transition = 'all ' + duration + 'ms ' + CUBIC_BEZIER[easing] + ' ' + delay + 'ms';
 
 		return this.each(function() {
-			var $el = $(this);
+			const $el = $(this);
 			$el.queue(function() {
 				if ($.isFunction(complete)) {
 					$el.one(CSS_TRANSITION_END, complete);
@@ -356,7 +356,7 @@ import Rotator from './BannerRotator';
 	//stop transition
 	$.fn.stopTransition = function(clearQueue, jumpToEnd) {
 		return this.each(function() {
-			var $el = $(this);
+			const $el = $(this);
 			if (clearQueue) {
 				$el.clearQueue();
 			}
@@ -370,21 +370,21 @@ import Rotator from './BannerRotator';
 				$el.trigger(CSS_TRANSITION_END + '.always').off(CSS_TRANSITION_END);
 			}
 			
-			$el.css({transition:'none', transitionDuration:'0s'}).dequeue();
+			$el.css({ transition:'none', transitionDuration:'0s' }).dequeue();
 		});
 	};
 	
 	//force reflow
 	$.fn.reflow = function() {
 		return this.each(function() {
-			var reflow = this.offsetWidth;
+			const reflow = this.offsetWidth;
 		});
 	};
 	
 	//force transition end
 	$.fn.forceEnd = function(endEvent, duration) {
 		return this.each(function() {
-			var $el = $(this),
+			let $el = $(this),
 				called = false;
 			
 			$el.one(endEvent, function() { 
@@ -406,7 +406,7 @@ import Rotator from './BannerRotator';
 		});
 	};
 	
-	var METHODS = {
+	const METHODS = {
   		play:'play',
   		pause:'pause',
 		togglePlay:'togglePlay',
@@ -418,15 +418,15 @@ import Rotator from './BannerRotator';
  	};
 		
 	$.fn.bannerRotator = function() {
-		var args = arguments,
+		const args = arguments,
 			params = args[0];
 		
 		if (params in METHODS) {
-			var method = METHODS[params],
+			let method = METHODS[params],
 				val;
 
 			this.each(function(n, el) {
-				var instance = $(el).data(Rotator.PLUGIN); 
+				const instance = $(el).data(Rotator.PLUGIN); 
 				if (instance) {
 					val = instance[method].apply(instance, Array.prototype.slice.call(args, 1));
 					if (typeof val !== 'undefined') {
@@ -439,7 +439,7 @@ import Rotator from './BannerRotator';
 		}
 		else if (typeof params === 'object' || !params) {
 			return this.each(function(n, el) {
-				var opts = $.extend(true, {}, $.fn.bannerRotator.defaults, params),
+				const opts = $.extend(true, {}, $.fn.bannerRotator.defaults, params),
 					o = ($.metadata ? $.extend({}, opts, $.metadata.get(this)) : opts);
 
 				$(el).data(Rotator.PLUGIN, new Rotator(el, o));

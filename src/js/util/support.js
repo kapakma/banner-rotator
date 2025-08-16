@@ -54,7 +54,7 @@ export function propertySupport(prop, val) {
         return false;
     }
 
-    var dashProp = camelToDash(prop).replace(/^(moz-|webkit-|o-|ms-)/, '-$1'),
+    let dashProp = camelToDash(prop).replace(/^(moz-|webkit-|o-|ms-)/, '-$1'),
         el = document.createElement('div'),
         support;
     
@@ -67,7 +67,7 @@ export function propertySupport(prop, val) {
 
 //check css filter support
 export function filterSupport() {
-    var el = document.createElement('div'),
+    const el = document.createElement('div'),
         prefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
         cssText = prefixes.join('filter:blur(2px); ');
 
@@ -77,7 +77,7 @@ export function filterSupport() {
 
 //check style property support
 export function styleSupport(prop) {
-    var el = document.createElement('div'),
+    let el = document.createElement('div'),
         style = el.style,
         supported = false;
 
@@ -85,11 +85,11 @@ export function styleSupport(prop) {
         supported = prop;
     }
     else {
-        var capProp = capitalize(prop),
+        const capProp = capitalize(prop),
             prefixes = ['Moz', 'Webkit', 'O', 'ms'];
         
-        for (var i = 0; i < prefixes.length; i++) {
-            var prefixProp = prefixes[i] + capProp;
+        for (let i = 0; i < prefixes.length; i++) {
+            const prefixProp = prefixes[i] + capProp;
             if (prefixProp in style) {
                 supported = prefixProp;
                 break;

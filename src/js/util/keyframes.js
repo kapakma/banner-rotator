@@ -4,7 +4,7 @@ export const TO_KEYFRAME = '10' + FROM_KEYFRAME;
 
 (function() {
     requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-    cancelAnimationFrame  = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame || $.noop;
+    cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame || $.noop;
 
     if (!requestAnimationFrame) {
         requestAnimationFrame = function(callback) {

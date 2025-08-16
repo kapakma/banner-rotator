@@ -17,7 +17,7 @@ class BarTimer extends Timer {
         }
 
         this._startTime = Date.now();
-        this._$bar.transition({width: '101%'}, delay, 'linear');
+        this._$bar.transition({ width: '101%' }, delay, 'linear');
 
         super.start();
     }

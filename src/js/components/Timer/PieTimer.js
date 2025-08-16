@@ -37,7 +37,7 @@ class PieTimer extends Timer {
         }
 
         this._startTime = Date.now();
-        this._$spinner.transition({transform: 'rotate(360deg)'}, delay, 'linear');
+        this._$spinner.transition({ transform: 'rotate(360deg)' }, delay, 'linear');
         
         if (this._elapsed < this._delay/2) {
             const props = {
@@ -45,8 +45,8 @@ class PieTimer extends Timer {
                 easing: 'linear', 
                 delay: this._delay/2 - this._elapsed,
             };
-            this._$fill.transition({opacity: 1}, props);
-            this._$mask.transition({opacity: 0}, props);
+            this._$fill.transition({ opacity: 1 }, props);
+            this._$mask.transition({ opacity: 0 }, props);
         }
 
         super.start();
@@ -55,9 +55,9 @@ class PieTimer extends Timer {
     stop() {
         this._elapsed = 0;
         this._$el.stopTransition(true);
-        this._$fill.css({opacity:0});
-        this._$mask.css({opacity:1});
-        this._$spinner.css({transform:'rotate(0)'});
+        this._$fill.css({ opacity:0 });
+        this._$mask.css({ opacity:1 });
+        this._$spinner.css({ transform:'rotate(0)' });
 
         super.stop();
     }
@@ -67,10 +67,10 @@ class PieTimer extends Timer {
         this._elapsed += (Date.now() - this._startTime);
         
         const degree = (this._elapsed/this._delay * 360);
-        this._$spinner.css({transform: 'rotate(' + degree + 'deg)'});
+        this._$spinner.css({ transform: 'rotate(' + degree + 'deg)' });
         if (this._elapsed < this._delay/2) {
-            this._$fill.css({opacity: 0});
-            this._$mask.css({opacity: 1});
+            this._$fill.css({ opacity: 0 });
+            this._$mask.css({ opacity: 1 });
         }
 
         super.pause();

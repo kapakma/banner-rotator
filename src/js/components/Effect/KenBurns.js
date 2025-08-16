@@ -40,11 +40,11 @@ class KenBurns {
     }
 
     start() {
-        this._$img.css({animationPlayState:'running'});
+        this._$img.css({ animationPlayState:'running' });
     }
 
     stop() {
-        this._$img.css({animationPlayState:'paused'});
+        this._$img.css({ animationPlayState:'paused' });
     }
 
     restart() {
@@ -53,7 +53,7 @@ class KenBurns {
     }
 
     getRandom() {
-        var name = this._effect.substring('random'.length).toUpperCase(),
+        let name = this._effect.substring('random'.length).toUpperCase(),
             effects = KenBurns[name];
         
         if (!$.isArray(effects)) {
