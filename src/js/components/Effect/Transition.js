@@ -9,7 +9,7 @@ class Transition {
             this._timeout = null;
             this._requestId = null;
             this._context = context;
-            this._$container = $('<div/>', { 'class':'br-effects' }).appendTo(this._context._$screen);
+            this._$container = $('<div/>', { 'class': 'br-effects' }).appendTo(this._context._$screen);
             this._transform = this._context._transform;
             this._support3d = SUPPORT.transform3d && SUPPORT.preserve3d && this._context._cssTransition;
         }
@@ -28,7 +28,7 @@ class Transition {
         this._$el = this._$container.children();
         
         if (this._shapeColor) {
-            this._$el.find('>.br-shape').children().css({ backgroundColor:this._shapeColor });
+            this._$el.find('>.br-shape').children().css({ backgroundColor: this._shapeColor });
         }
     }
 
@@ -59,9 +59,9 @@ class Transition {
                     $el = this._$el.eq(i * this._columns + j),
                     $shape = $($el[0].firstChild);
                     
-                $el.css({ top:top, left:left, width:width, height:height });
-                $shape.find('>.br-prev-side>img').css({ left:(prevLeft - left), top:(prevTop - top) }).end()
-                        .find('>.br-active-side>img').css({ left:(currLeft - left), top:(currTop - top) });
+                $el.css({ top: top, left: left, width: width, height: height });
+                $shape.find('>.br-prev-side>img').css({ left: (prevLeft - left), top: (prevTop - top) }).end()
+                    .find('>.br-active-side>img').css({ left: (currLeft - left), top: (currTop - top) });
                 
                 if (this._is3D) {
                     this.setCuboid($shape, width, height, $el.data('depth'));
@@ -71,10 +71,10 @@ class Transition {
             }
         }
 
-        this._$el.css({ visibility:'visible' });
+        this._$el.css({ visibility: 'visible' });
 
         if (this._hideItems) {
-            this._context._$items.css({ visibility:'hidden' });
+            this._context._$items.css({ visibility: 'hidden' });
         }
     }
 
@@ -155,7 +155,7 @@ class Transition {
                     const rect = $img[0].getBoundingClientRect(),
                         width = rect.width || $img.width(),
                         height = rect.height || $img.height(),
-                        $newImg = $('<img/>', { src:$img.attr('src'), alt:'', css:{ width:width, height:height } });
+                        $newImg = $('<img/>', { src: $img.attr('src'), alt: '', css: { width: width, height: height } });
                     this._$el.find('>.br-shape').find(selector).html($newImg);
                 }
             }, this));
@@ -170,12 +170,12 @@ class Transition {
             top = (height - depth)/2,
             invert = $cuboid.find('>.br-face-back').hasClass('br-inverted') ? 'rotate(180deg) ' : '';
         
-        $cuboid.find('>.br-face-front').css({ transform:depthZ }).end()
-                .find('>.br-face-back').css({ transform:`rotateY(180deg) ${ invert }${depthZ}` }).end()
-                .find('>.br-face-left').css({ width:depth, left:left, transform:`rotateY(-90deg) ${ widthZ}` }).end()
-                .find('>.br-face-right').css({ width:depth, left:left, transform:`rotateY(90deg) ${ widthZ}` }).end()
-                .find('>.br-face-top').css({ height:depth, top:top, transform:`rotateX(90deg) ${ heightZ}` }).end()
-                .find('>.br-face-bottom').css({ height:depth, top:top, transform:`rotateX(-90deg) ${ heightZ}` });
+        $cuboid.find('>.br-face-front').css({ transform: depthZ }).end()
+            .find('>.br-face-back').css({ transform: `rotateY(180deg) ${ invert }${depthZ}` }).end()
+            .find('>.br-face-left').css({ width: depth, left: left, transform: `rotateY(-90deg) ${ widthZ}` }).end()
+            .find('>.br-face-right').css({ width: depth, left: left, transform: `rotateY(90deg) ${ widthZ}` }).end()
+            .find('>.br-face-top').css({ height: depth, top: top, transform: `rotateX(90deg) ${ heightZ}` }).end()
+            .find('>.br-face-bottom').css({ height: depth, top: top, transform: `rotateX(-90deg) ${ heightZ}` });
     }
 
     //update keyframes
@@ -231,15 +231,15 @@ class Transition {
             if (this._shapeShading) {
                 const shadeDuration = (this._effect === 'flip' ? duration/2 : duration);
                 this._$el.find('>.br-shape>.br-prev-side').each(function() {
-                    $('<div/>', { 'class':'br-shading' }).animation('br-shade-in', 
-                        { duration:shadeDuration, easing:easing, playState:'paused', complete:function(e) {
+                    $('<div/>', { 'class': 'br-shading' }).animation('br-shade-in', 
+                        { duration: shadeDuration, easing: easing, playState: 'paused', complete: function(e) {
                             e.stopPropagation();
                         } }).appendTo($(this));
                 });
             }
         }
 
-        const props = { duration:duration, easing:easing };
+        const props = { duration: duration, easing: easing };
         this._requestId = requestAnimationFrame($.proxy(function() {
             this.animateElement(elArray, props);
         }, this));
@@ -263,7 +263,7 @@ class Transition {
                 };
             }
             $el.animation(`br-${ this._context._uid }-${ this._context._activeIndex}`, opts)
-                .find('>.br-shape>.br-prev-side>.br-shading').css({ animationPlayState:'running' });
+                .find('>.br-shape>.br-prev-side>.br-shading').css({ animationPlayState: 'running' });
         }
 
         if (isLast) {
@@ -332,34 +332,34 @@ class Transition {
     getElementArray() {
         let elements;
         switch (this._order) {
-            case 'up':
-            case 'down':
-            case 'left':
-            case 'right':
-                elements = this.getDirectionalArray(this._order);
-                break;
-            case 'upLeft':
-            case 'upRight':
-            case 'downLeft':
-            case 'downRight':
-                elements = this.getDiagonalArray(this._order);
-                break;
-            case 'spiralIn':
-            case 'spiralOut':
-                elements = this.getSpiralArray();
-                break;
-            case 'zigZagUp':
-            case 'zigZagDown':
-            case 'zigZagLeft':
-            case 'zigZagRight':
-                elements = this.getZigZagArray(this._order);
-                break;
-            case 'random':
-                elements = this._$el.toArray();
-                shuffleArray(elements);
-                break;
-            default:
-                elements = this._$el.toArray();
+        case 'up':
+        case 'down':
+        case 'left':
+        case 'right':
+            elements = this.getDirectionalArray(this._order);
+            break;
+        case 'upLeft':
+        case 'upRight':
+        case 'downLeft':
+        case 'downRight':
+            elements = this.getDiagonalArray(this._order);
+            break;
+        case 'spiralIn':
+        case 'spiralOut':
+            elements = this.getSpiralArray();
+            break;
+        case 'zigZagUp':
+        case 'zigZagDown':
+        case 'zigZagLeft':
+        case 'zigZagRight':
+            elements = this.getZigZagArray(this._order);
+            break;
+        case 'random':
+            elements = this._$el.toArray();
+            shuffleArray(elements);
+            break;
+        default:
+            elements = this._$el.toArray();
         }
 
         if (this._isReverse) {
@@ -390,7 +390,7 @@ class Transition {
         }
         
         $el.each(function() {
-            $(this).data({ dir:getRandomItem(directions) }); 
+            $(this).data({ dir: getRandomItem(directions) }); 
         });
         
         $.each(directions, $.proxy(function(i, dir) {
@@ -451,8 +451,8 @@ class Transition {
             
         if (this._transform) {
             const translate = `translate${ axis}`;
-            from = { transform:`${translate }(-50%)` };
-            to = { transform:`${translate }(0)` };
+            from = { transform: `${translate }(-50%)` };
+            to = { transform: `${translate }(0)` };
         }
         else {
             const pos = (axis === 'Y' ? 'top' : 'left');
@@ -472,7 +472,7 @@ class Transition {
             active = temp;
         }
 
-        $el.data({ to:to }).find('>.br-shape').addClass(`br-extend-${ dim}`).css(from)
+        $el.data({ to: to }).find('>.br-shape').addClass(`br-extend-${ dim}`).css(from)
             .find(`>.br-${ active}`).addClass('br-active-side').end()
             .find(`>.br-${ prev}`).addClass('br-prev-side').css('visibility', visibility);
     }
@@ -502,21 +502,21 @@ class Transition {
         let from, to;
         if (this._transform) {
             const translate = `translate${ axis}`;
-            from = { transform:`${translate }(${ dist }px)` };
-            to = { transform:`${translate }(0)` };
+            from = { transform: `${translate }(${ dist }px)` };
+            to = { transform: `${translate }(0)` };
         }
         else {
             if (axis === 'Y') {
-                from = { marginTop:dist };
-                to = { marginTop:0 };
+                from = { marginTop: dist };
+                to = { marginTop: 0 };
             }
             else {
-                from = { marginLeft:dist };
-                to = { marginLeft:0 };
+                from = { marginLeft: dist };
+                to = { marginLeft: 0 };
             }
         }
 
-        $el.data({ to:to }).css(from).find('>.br-shape')
+        $el.data({ to: to }).css(from).find('>.br-shape')
             .find('>.br-front').addClass('br-active-side').end()
             .find('>.br-back').hide();
     }
@@ -555,8 +555,8 @@ class Transition {
             side = (axis === 'X' ? 'top' : 'right');
         }
 
-        $el.data({ to:{ transform:`${transform }(${ sign }90deg)` } })
-            .find('>.br-shape').css({ transform:`${transform }(0deg)` })
+        $el.data({ to: { transform: `${transform }(${ sign }90deg)` } })
+            .find('>.br-shape').css({ transform: `${transform }(0deg)` })
             .find(`>.br-face-${ side}`).addClass('br-active-side').end()
             .find('>.br-face-front').addClass('br-prev-side');
     }
@@ -586,8 +586,8 @@ class Transition {
         const transform = `translateZ(${ -$el.data('depth')/2 }px) rotate${ axis}`,
             sign = positive ? '' : '-';
         
-        $el.data({ to:{ transform:`${transform }(${ sign }180deg)` } })
-            .find('>.br-shape').css({ transform:`${transform }(0deg)` })
+        $el.data({ to: { transform: `${transform }(${ sign }180deg)` } })
+            .find('>.br-shape').css({ transform: `${transform }(0deg)` })
             .find('>.br-face-front').addClass('br-prev-side').end()
             .find('>.br-face-back').addClass('br-active-side').toggleClass('br-inverted', axis === 'X');
     }
@@ -595,18 +595,18 @@ class Transition {
     //fade effect
     fade() {
         const selector = '>.br-shape';
-        this._$el.data({ selector:selector, to:{ opacity:1 } })
-                    .find(selector).css({ opacity:0 })
-                    .find('>.br-front').addClass('br-active-side').end()
-                    .find('>.br-back').hide();
+        this._$el.data({ selector: selector, to: { opacity: 1 } })
+            .find(selector).css({ opacity: 0 })
+            .find('>.br-front').addClass('br-active-side').end()
+            .find('>.br-back').hide();
     }
 
     //zoom effect
     zoom() {
         let front = 'br-active-side', 
             back = 'br-prev-side',
-            from = { opacity:1, transform:'scale(1)' },
-            to = { opacity:0, transform:'scale(2)' };
+            from = { opacity: 1, transform: 'scale(1)' },
+            to = { opacity: 0, transform: 'scale(2)' };
 
         if (this._direction === 'out') {
             let temp = from;
@@ -618,10 +618,10 @@ class Transition {
             back = temp;
         }
         
-        this._$el.data({ selector:'>.br-shape>.br-back', to:to })
-                .find('>.br-shape').addClass('br-stack')
-                .find('>.br-front').addClass(front).end()
-                .find('>.br-back').addClass(back).css(from);
+        this._$el.data({ selector: '>.br-shape>.br-back', to: to })
+            .find('>.br-shape').addClass('br-stack')
+            .find('>.br-front').addClass(front).end()
+            .find('>.br-back').addClass(back).css(from);
     }
 
     //expand effect
@@ -630,18 +630,18 @@ class Transition {
             from, to;
         
         if (this._transform) {
-            from = { transform:'scale(0)' };
-            to = { transform:'scale(1)' };
+            from = { transform: 'scale(0)' };
+            to = { transform: 'scale(1)' };
         }
         else {
-            from = { width:0, height:0 };
-            to = { width:this._width, height:this._height };
+            from = { width: 0, height: 0 };
+            to = { width: this._width, height: this._height };
         }
         
-        this._$el.data({ selector:selector, to:to })
-                    .find(selector).css(from)
-                    .find('>.br-front').addClass('br-active-side').end()
-                    .find('>.br-back').hide();
+        this._$el.data({ selector: selector, to: to })
+            .find(selector).css(from)
+            .find('>.br-front').addClass('br-active-side').end()
+            .find('>.br-back').hide();
     }
     
     //push effect
@@ -653,7 +653,7 @@ class Transition {
             this[this.setFn('push', this._direction)](this._$el);
         }
         
-        this._$el.data({ selector:'>.br-shape' });
+        this._$el.data({ selector: '>.br-shape' });
     }
 
     //cover transition
@@ -665,7 +665,7 @@ class Transition {
             this[this.setFn('cover', this._direction)](this._$el);
         }
         
-        this._$el.data({ selector:'>.br-shape' });
+        this._$el.data({ selector: '>.br-shape' });
     }
 
     //slide transition
@@ -680,7 +680,7 @@ class Transition {
             this[this.setFn('push', this._direction)](this._$el);
         }
 
-        this._$el.data({ selector:'>.br-shape' });
+        this._$el.data({ selector: '>.br-shape' });
     }
 
     //move transition
@@ -691,7 +691,7 @@ class Transition {
     
     //flip transition
     flip() {
-        this._$el.data({ selector:'>.br-shape', depth:this._shapeDepth });
+        this._$el.data({ selector: '>.br-shape', depth: this._shapeDepth });
         if (this._alternate) {
             this.setAlternate('flip');
         }
@@ -702,7 +702,7 @@ class Transition {
 
     //rotate transition
     rotate() {
-        this._$el.data({ selector:'>.br-shape', depth:(this._direction === 'left' || this._direction === 'right' ? this._width : this._height) });
+        this._$el.data({ selector: '>.br-shape', depth: (this._direction === 'left' || this._direction === 'right' ? this._width : this._height) });
         if (this._alternate) {
             this.setAlternate('rotate');
         }
@@ -878,41 +878,41 @@ class Transition {
                     break;
                 }
                 switch(dir) {
-                    case 0:
-                        j++;
-                        break;
-                    case 1:
-                        i++;
-                        break;
-                    case 2:
-                        j--;
-                        break;
-                    case 3:
-                        i--;
-                        break;
+                case 0:
+                    j++;
+                    break;
+                case 1:
+                    i++;
+                    break;
+                case 2:
+                    j--;
+                    break;
+                case 3:
+                    i--;
+                    break;
                 }
             } 
             switch(dir) {
-                case 0:
-                    dir = 1;
-                    limit = (--rowCount);
-                    i++;
-                    break;
-                case 1:
-                    dir = 2;
-                    limit = (--colCount);
-                    j--;
-                    break;
-                case 2:
-                    dir = 3;
-                    limit = (--rowCount);
-                    i--;
-                    break;
-                case 3:
-                    dir = 0;
-                    limit = (--colCount);
-                    j++;
-                    break;
+            case 0:
+                dir = 1;
+                limit = (--rowCount);
+                i++;
+                break;
+            case 1:
+                dir = 2;
+                limit = (--colCount);
+                j--;
+                break;
+            case 2:
+                dir = 3;
+                limit = (--rowCount);
+                i--;
+                break;
+            case 3:
+                dir = 0;
+                limit = (--colCount);
+                j++;
+                break;
             }
         }
             
@@ -945,13 +945,13 @@ Transition.GRID = 'grid';
 Transition.EFFECTS = ['cover', 'expand', 'fade', 'flip', 'move', 'push', 'rotate', 'slide', 'zoom'];
 
 Transition.OPPOSITE = {
-    down:'up',
-    right:'left',
-    downLeft:'upRight',
-    downRight:'upLeft',
-    spiralIn:'spiralOut',
-    zigZagDown:'zigZagUp',
-    zigZagRight:'zigZagLeft',
+    down: 'up',
+    right: 'left',
+    downLeft: 'upRight',
+    downRight: 'upLeft',
+    spiralIn: 'spiralOut',
+    zigZagDown: 'zigZagUp',
+    zigZagRight: 'zigZagLeft',
 };
 
 (function() {

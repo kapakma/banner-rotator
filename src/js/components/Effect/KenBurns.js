@@ -25,10 +25,10 @@ class KenBurns {
             
             this._effect = `br-${ this._effect}`;
             this._options = {
-                duration:getNonNegInt(opts.duration, 5000),
-                easing:getValue(opts.easing, 'linear'), 
-                playState:'paused',
-                direction:opts.direction,
+                duration: getNonNegInt(opts.duration, 5000),
+                easing: getValue(opts.easing, 'linear'), 
+                playState: 'paused',
+                direction: opts.direction,
             };
 
             this.set();
@@ -40,11 +40,11 @@ class KenBurns {
     }
 
     start() {
-        this._$img.css({ animationPlayState:'running' });
+        this._$img.css({ animationPlayState: 'running' });
     }
 
     stop() {
-        this._$img.css({ animationPlayState:'paused' });
+        this._$img.css({ animationPlayState: 'paused' });
     }
 
     restart() {
@@ -82,19 +82,19 @@ class KenBurns {
     KenBurns.EFFECTS = KenBurns.PAN.concat(KenBurns.ZOOM);
     
     KenBurns.REVERSES = {
-        'pan-left':'pan-right',
-        'pan-up':'pan-down',
-        'pan-up-left':'pan-down-right', 
-        'pan-up-right':'pan-down-left',
-        'zoom-out':'zoom-in',
-        'zoom-out-left':'zoom-in-right',
-        'zoom-out-right':'zoom-in-left',
-        'zoom-out-up':'zoom-in-down',
-        'zoom-out-down':'zoom-in-up',
-        'zoom-out-up-left':'zoom-in-down-right',
-        'zoom-out-up-right':'zoom-in-down-left',
-        'zoom-out-down-left':'zoom-in-up-right',
-        'zoom-out-down-right':'zoom-in-up-left',
+        'pan-left': 'pan-right',
+        'pan-up': 'pan-down',
+        'pan-up-left': 'pan-down-right', 
+        'pan-up-right': 'pan-down-left',
+        'zoom-out': 'zoom-in',
+        'zoom-out-left': 'zoom-in-right',
+        'zoom-out-right': 'zoom-in-left',
+        'zoom-out-up': 'zoom-in-down',
+        'zoom-out-down': 'zoom-in-up',
+        'zoom-out-up-left': 'zoom-in-down-right',
+        'zoom-out-up-right': 'zoom-in-down-left',
+        'zoom-out-down-left': 'zoom-in-up-right',
+        'zoom-out-down-right': 'zoom-in-up-left',
     };
 }());
 

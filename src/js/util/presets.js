@@ -3,7 +3,7 @@ export function addPresets(presets, effects, directions, orders) {
     $.each(effects, function(i, effect) {
         $.each(directions, function(j, direction) {
             $.each(orders, function(k, order) {
-                presets.push({ effect:effect, direction:direction, order:order });
+                presets.push({ effect: effect, direction: direction, order: order });
             });
         });
     });

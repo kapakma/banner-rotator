@@ -248,7 +248,7 @@ export function addPresets(presets, effects, directions, orders) {
     $.each(effects, function(i, effect) {
         $.each(directions, function(j, direction) {
             $.each(orders, function(k, order) {
-                presets.push({ effect:effect, direction:direction, order:order });
+                presets.push({ effect: effect, direction: direction, order: order });
             });
         });
     });
@@ -256,29 +256,29 @@ export function addPresets(presets, effects, directions, orders) {
 
 //create wrapper
 export function createWrapper($el) {
-    const size = { width:$el.width(), height:$el.height() },
-    $wrapper = $('<div/>', {
-        'class':'br-effect-wrapper',
-        css:{
-            position:$el.css('position'),
-            'float':$el.css('float'),
-            width:$el.outerWidth(true),
-            height:$el.outerHeight(true),
-            'z-index':$el.css('z-index'),
-            top:$el[0].style.top,
-            left:$el[0].style.left,
-            bottom:$el[0].style.bottom,
-            right:$el[0].style.right,
-        },
-    });
+    const size = { width: $el.width(), height: $el.height() },
+        $wrapper = $('<div/>', {
+            'class': 'br-effect-wrapper',
+            css: {
+                position: $el.css('position'),
+                'float': $el.css('float'),
+                width: $el.outerWidth(true),
+                height: $el.outerHeight(true),
+                'z-index': $el.css('z-index'),
+                top: $el[0].style.top,
+                left: $el[0].style.left,
+                bottom: $el[0].style.bottom,
+                right: $el[0].style.right,
+            },
+        });
     
     $el.wrap($wrapper).css({
-        display:'block',
-        position:'relative',
-        top:0,
-        bottom:'auto',
-        left:0,
-        right:'auto',
+        display: 'block',
+        position: 'relative',
+        top: 0,
+        bottom: 'auto',
+        left: 0,
+        right: 'auto',
     }).css(size);
 }
     
@@ -306,5 +306,5 @@ export function restoreStyle($el, props) {
 
 //check if object is function
 export function isFunction(obj) {
-  return (typeof obj === "function");
+    return (typeof obj === "function");
 }

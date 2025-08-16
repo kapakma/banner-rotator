@@ -46,7 +46,7 @@ class Timer {
 
     addOnHover($parent, namespace) {
         $parent.on(`mouseenter${namespace}`, this.wake.bind(this))
-               .on(`mouseleave${namespace}`, this.sleep.bind(this));
+            .on(`mouseleave${namespace}`, this.sleep.bind(this));
     }
 }
 

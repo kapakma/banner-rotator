@@ -16,25 +16,25 @@ export let CSS_ANIMATION_END;
     SUPPORT.cssFilter = filterSupport();
 
     switch(SUPPORT.transition) {
-        case 'WebkitTransition':
-            CSS_TRANSITION_END = 'webkitTransitionEnd';
-            break;
-        case 'OTransition':
-            CSS_TRANSITION_END = 'otransitionend';
-            break;
-        default:
-            CSS_TRANSITION_END = 'transitionend';
+    case 'WebkitTransition':
+        CSS_TRANSITION_END = 'webkitTransitionEnd';
+        break;
+    case 'OTransition':
+        CSS_TRANSITION_END = 'otransitionend';
+        break;
+    default:
+        CSS_TRANSITION_END = 'transitionend';
     }
 
     switch(SUPPORT.animation) {
-        case 'WebkitAnimation':
-            CSS_ANIMATION_END = 'webkitAnimationEnd';
-            break;
-        case 'OAnimation':
-            CSS_ANIMATION_END = 'oanimationend';
-            break;
-        default:
-            CSS_ANIMATION_END = 'animationend';
+    case 'WebkitAnimation':
+        CSS_ANIMATION_END = 'webkitAnimationEnd';
+        break;
+    case 'OAnimation':
+        CSS_ANIMATION_END = 'oanimationend';
+        break;
+    default:
+        CSS_ANIMATION_END = 'animationend';
     }
 
     if (SUPPORT.animation && /^(Moz|Webkit|O)/.test(SUPPORT.animation)) {

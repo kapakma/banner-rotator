@@ -6,9 +6,9 @@ import { PREFIX, SUPPORT } from './util/support';
 import { SIDES, OPPOSITE_SIDE, OPPOSITE_LAYER } from './constants';
 import { FROM_KEYFRAME, TO_KEYFRAME } from './util/keyframes';
 import { 
-	isAndroid, isChrome, getTransformProperty, capitalize, getNonNegInt,
-	withinRange, isEmptyStr, isNone, getValue, getEasing, isPercent, getInt, getFloat, 
-	getPosition, debounce, getPosInt, camelToDash, shuffleElements,
+    isAndroid, isChrome, getTransformProperty, capitalize, getNonNegInt,
+    withinRange, isEmptyStr, isNone, getValue, getEasing, isPercent, getInt, getFloat, 
+    getPosition, debounce, getPosInt, camelToDash, shuffleElements,
 } from './util/helpers';
 
 const IS_TOUCH = 'ontouchstart' in window,
@@ -96,11 +96,11 @@ class Rotator {
             $(window).on(`resize${ this._namespace}`, debounce($.proxy(this.resize, this), 50));
         }
         else {
-            let $outer = this._$rotator.css({ width:this._stageWidth, height:this._stageHeight });
+            let $outer = this._$rotator.css({ width: this._stageWidth, height: this._stageHeight });
             $.each(['.br-wrapper', '.br-outer-navs'], function(i, selector) {
                 const $el = $outer.parent(selector);
                 if ($el.length) {
-                    $el.css({ width:$outer.outerWidth(true), height:$outer.outerHeight(true) });
+                    $el.css({ width: $outer.outerWidth(true), height: $outer.outerHeight(true) });
                     $outer = $el;
                 }
             });
@@ -129,7 +129,7 @@ class Rotator {
         }
         else if (this._options.pauseOnHover) {
             this._$outmost.on(`mouseenter${ this._namespace}`, $.proxy(this.pause, this))
-                            .on(`mouseleave${ this._namespace}`, $.proxy(this.play, this));
+                .on(`mouseleave${ this._namespace}`, $.proxy(this.play, this));
         }
         
         if (this._options.playOnce) {
@@ -156,8 +156,8 @@ class Rotator {
         }
         $hidden.addClass('br-hidden');
 
-        const $overlay = $('<div/>', { 'class':'br-load-screen' }).appendTo(this._$rotator);
-        this._$progressBar = $('<div/>', { 'class':'br-progress-bar', html:'<div/>' }).appendTo($overlay);
+        const $overlay = $('<div/>', { 'class': 'br-load-screen' }).appendTo(this._$rotator);
+        this._$progressBar = $('<div/>', { 'class': 'br-progress-bar', html: '<div/>' }).appendTo($overlay);
 
         this.loadNextImage(this._$items.toArray(), function() {
             setTimeout($.proxy(function() {
@@ -176,7 +176,7 @@ class Rotator {
         this._$stage = this._$screen.wrap('<div class="br-stage"></div>').parent();
         
         if (this._options.backgroundColor) {
-            this._$stage.css({ backgroundColor:this._options.backgroundColor });
+            this._$stage.css({ backgroundColor: this._options.backgroundColor });
         }
         this.createBorder();
         
@@ -192,7 +192,7 @@ class Rotator {
 
         //init timer
         if (!isNone(this._options.timer)) {
-            const settings = { position:this._options.timerPosition, click:$.proxy(this.togglePlay, this) };
+            const settings = { position: this._options.timerPosition, click: $.proxy(this.togglePlay, this) };
             if (this._options.timer === 'bar') {
                 this._timer = new BarTimer(this, settings);
             }
@@ -217,21 +217,21 @@ class Rotator {
         }, this));
         
         if (this._$rotator.brHasBorder()) {
-            this._$rotator.toggleClass('br-flat-shadow', this._hasShadow).add(this._$screen).css({ overflow:'hidden' });
+            this._$rotator.toggleClass('br-flat-shadow', this._hasShadow).add(this._$screen).css({ overflow: 'hidden' });
         }
         else if (this._hasShadow && SUPPORT.transform3d && SUPPORT.preserve3d) {
-            $('<div/>', { 'class':'br-3d-shadow' }).prependTo(this._$rotator);
+            $('<div/>', { 'class': 'br-3d-shadow' }).prependTo(this._$rotator);
         }
     }
     
     //create border wrapper
     createBorderWrapper() {
-        let $wrapper = $('<div/>', { 'class':'br-wrapper' }).brCopyBorder(this._$rotator);
-        this._$rotator.css({ border:'none', borderRadius:0 }).removeClass('br-flat-shadow').wrap($wrapper);
+        let $wrapper = $('<div/>', { 'class': 'br-wrapper' }).brCopyBorder(this._$rotator);
+        this._$rotator.css({ border: 'none', borderRadius: 0 }).removeClass('br-flat-shadow').wrap($wrapper);
         $wrapper = this._$rotator.parent();
 
         if ($wrapper.brHasBorder()) {
-            $wrapper.toggleClass('br-flat-shadow', this._hasShadow).css({ overflow:'hidden' });
+            $wrapper.toggleClass('br-flat-shadow', this._hasShadow).css({ overflow: 'hidden' });
         }
         else if (this._hasShadow && this._orientation === 'horizontal' && this._cpPosition.y === 'bottom') {
             this._$rotator.find('>.br-3d-shadow').remove();
@@ -244,8 +244,8 @@ class Rotator {
         const effects = ['effect', 'duration', 'easing', 'delay'],
             kenBurns = ['kbEffect', 'kbDuration', 'kbEasing'],
             props = ['columns', 'rows', 'interval', 'direction', 'order', 'alternate', 'autoReverse', 
-                        'depth', 'shapeColor', 'shapeShading', 'shapeDepth',
-                        'imagePosition'].concat(effects).concat(kenBurns);
+                'depth', 'shapeColor', 'shapeShading', 'shapeDepth',
+                'imagePosition'].concat(effects).concat(kenBurns);
         
         this._$items.each($.proxy(function(n, el) {
             let $item = $(el).data('ready', false),
@@ -254,7 +254,7 @@ class Rotator {
 
             if ($link.length && $link.find('>img').length) {
                 if (!$img.length || $link.index() < $img.index()) {
-                    $item.data({ link:$link.attr('href'), target:$link.attr('target') });
+                    $item.data({ link: $link.attr('href'), target: $link.attr('target') });
                     $img = $link.find('>img').unwrap();
                 }
             }
@@ -267,15 +267,15 @@ class Rotator {
             //set tooltip
             if (this._options.tooltip === 'image') {
                 $img.data('tooltip', $img.data('tooltip') || $img.data('thumb'));
-                $item.prepend($('<img/>', { alt:'', 'class':'tooltip', src:$img.data('tooltip') }));
+                $item.prepend($('<img/>', { alt: '', 'class': 'tooltip', src: $img.data('tooltip') }));
             }
             else if (this._options.tooltip === 'text') {
-                $item.data({ tooltip:$item.find('>.tooltip').html() || $img.attr('title') });
+                $item.data({ tooltip: $item.find('>.tooltip').html() || $img.attr('title') });
             }
             
             //add link
             if ($item.data('link')) {
-                $('<a/>', { id:`br-link-${ n}`, 'class':'br-link', href:$item.data('link'), target:$item.data('target') }).appendTo(this._$linkWrapper);
+                $('<a/>', { id: `br-link-${ n}`, 'class': 'br-link', href: $item.data('link'), target: $item.data('target') }).appendTo(this._$linkWrapper);
             }
             
             //set data
@@ -284,7 +284,7 @@ class Rotator {
                 $item.data(val, getValue($item.data(val), this._options[val]));
             }, this));
             
-            $item.data({ easing:getEasing($item.data('easing'), this._cssTransition), kbEasing:getEasing($item.data('kbEasing'), true) });
+            $item.data({ easing: getEasing($item.data('easing'), this._cssTransition), kbEasing: getEasing($item.data('kbEasing'), true) });
 
             this.initLayer($item);
 
@@ -313,10 +313,10 @@ class Rotator {
                 rules = this._sheet.rules || this._sheet.cssRules;
 
             this._sheet.insertRule(`@${ PREFIX }keyframes ` + `br-${ this._uid }-${ $item.index()}` + ` { ${ 
-                                        FROM_KEYFRAME  
-                                        }50% { ${ getTransformProperty(`translateZ(${ depth }px)`) } } ${  
-                                        TO_KEYFRAME  
-                                    }} `, rules.length);
+                FROM_KEYFRAME  
+            }50% { ${ getTransformProperty(`translateZ(${ depth }px)`) } } ${  
+                TO_KEYFRAME  
+            }} `, rules.length);
         }
         catch (error) {
             throw new Error(`Failed to inject keyframes: ${error.message}`);
@@ -325,7 +325,7 @@ class Rotator {
 
     //init control panel
     initCPanel() {
-        this._$cpanel = $('<div/>', { 'class':'br-cpanel' });
+        this._$cpanel = $('<div/>', { 'class': 'br-cpanel' });
         this._cpPosition = getPosition(this._options.cpanelPosition);
 
         if (this._options.cpanelOrientation === 'vertical') {
@@ -365,24 +365,24 @@ class Rotator {
             this.initButtonGroup();
 
             if (this._orientation === 'vertical') {
-                this._$cpanel.data({ pos:'top', coord:'y', dim:'height', outerDim:'outerHeight' });
+                this._$cpanel.data({ pos: 'top', coord: 'y', dim: 'height', outerDim: 'outerHeight' });
 
                 //set size
                 const maxWidth = Math.max.apply(null, $el.map(function() { return $(this).outerWidth(true); }).get());
                 $el.each(function() {
-                    $(this).css({ left:(maxWidth - $(this).outerWidth(true))/2 });
+                    $(this).css({ left: (maxWidth - $(this).outerWidth(true))/2 });
                 });
-                this._$cpanel.css({ width:maxWidth });
+                this._$cpanel.css({ width: maxWidth });
                 
                 //check offset
                 this.setNavOffset();
             }
             else {
-                this._$cpanel.data({ pos:'left', coord:'x', dim:'width', outerDim:'outerWidth' });
+                this._$cpanel.data({ pos: 'left', coord: 'x', dim: 'width', outerDim: 'outerWidth' });
 
                 //set size
                 const maxHeight = Math.max.apply(null, $el.map(function() { return $(this).outerHeight(true); }).get());
-                this._$cpanel.css({ height:maxHeight });
+                this._$cpanel.css({ height: maxHeight });
             }
             
             const data = this._$cpanel.data(),
@@ -439,8 +439,8 @@ class Rotator {
                 prop = {};
             prop[`margin-${ this._cpPosition.x}`] = `+=${ margin}`;
             if ($container.find(selector).length) {
-                $container.find(selector).find('>.br-nav-thumb').css(prop).data({ margin:margin }).end()
-                            .width($container.find(selector).children().brTotalWidth(true));
+                $container.find(selector).find('>.br-nav-thumb').css(prop).data({ margin: margin }).end()
+                    .width($container.find(selector).children().brTotalWidth(true));
             }
             else {
                 $container.find(`>.br-side-${ direction}`).css(prop);
@@ -482,8 +482,8 @@ class Rotator {
         if (SUPPORT.transform3d && SUPPORT.preserve3d) {
             const $face = $('<div/>').toggleClass('white', this._$extPanel.hasClass('white'));
             $('<div/>', {
-                'class':'br-stage-bg',
-                html:$('<div/>').append($face),
+                'class': 'br-stage-bg',
+                html: $('<div/>').append($face),
             }).prependTo(this._$stage);
             
             if (this._orientation === 'vertical') {
@@ -510,8 +510,8 @@ class Rotator {
 
         this.createCPanelBg();
         this._$stage.css(`padding-${ pos}`, getNonNegInt(this._options.cpanelGap, 0));
-        this._$rotator.css(`margin-${ pos}`, size).css({ overflow:'visible' });
-        this._$extPanel.css({ left:0, width:'100%', height:size }).css(pos, -size);
+        this._$rotator.css(`margin-${ pos}`, size).css({ overflow: 'visible' });
+        this._$extPanel.css({ left: 0, width: '100%', height: size }).css(pos, -size);
         this.createBorderWrapper();
     }
     
@@ -521,8 +521,8 @@ class Rotator {
             size = this._$cpWrapper.width();
 
         this.createCPanelBg();
-        this._$rotator.css(`margin-${ pos}`, size).css({ overflow:'visible' });
-        this._$extPanel.css({ top:0, width:size, height:'100%' }).css(pos, -size);
+        this._$rotator.css(`margin-${ pos}`, size).css({ overflow: 'visible' });
+        this._$extPanel.css({ top: 0, width: size, height: '100%' }).css(pos, -size);
         this.createBorderWrapper();
     }
     
@@ -533,29 +533,29 @@ class Rotator {
         //init play button
         if (this._options.playButton) {
             $playButton = $('<div/>', {
-                'class':'br-play-button',
-                title:this._rotate ? this._options.pauseText : this._options.playText,
-                html:'<div/>',
+                'class': 'br-play-button',
+                title: this._rotate ? this._options.pauseText : this._options.playText,
+                html: '<div/>',
             }).toggleClass('br-pause', this._rotate)
-            .on(`click${ this._namespace}`, $.proxy(this.togglePlay, this))
-            .appendTo(this._$cpanel);
+                .on(`click${ this._namespace}`, $.proxy(this.togglePlay, this))
+                .appendTo(this._$cpanel);
         }
         
         //init navigation buttons
         if (this._options.navButtons === true || this._options.navButtons === 'small') {
             $prevButton = $('<div/>', {
-                'class':'br-prev-button',
-                title:this._options.prevText,
-                html:'<div/>',
+                'class': 'br-prev-button',
+                title: this._options.prevText,
+                html: '<div/>',
             }).toggleClass('br-up', this._orientation === 'vertical')
-            .on(`click${ this._namespace}`, $.proxy(this.prevSlide, this));
+                .on(`click${ this._namespace}`, $.proxy(this.prevSlide, this));
 
             $nextButton = $('<div/>', {
-                'class':'br-next-button',
-                title:this._options.nextText,
-                html:'<div/>',
+                'class': 'br-next-button',
+                title: this._options.nextText,
+                html: '<div/>',
             }).toggleClass('br-down', this._orientation === 'vertical')
-            .on(`click${ this._namespace}`, $.proxy(this.nextSlide, this));
+                .on(`click${ this._namespace}`, $.proxy(this.nextSlide, this));
 
             if ($playButton) {
                 $playButton.before($prevButton).after($nextButton);
@@ -566,26 +566,26 @@ class Rotator {
         }
         
         this._$cpanel.children(':not(.br-thumbnails)')
-                    .css({ width:this._options.buttonWidth, height:this._options.buttonHeight, margin:this._options.buttonMargin })
-                    .toggleClass('white', this._isWhite || this._$rotator.hasClass('white-button'))
-                    .addTransitionClass('br-color-transition');
+            .css({ width: this._options.buttonWidth, height: this._options.buttonHeight, margin: this._options.buttonMargin })
+            .toggleClass('white', this._isWhite || this._$rotator.hasClass('white-button'))
+            .addTransitionClass('br-color-transition');
     }
     
     //init side buttons
     initSideButtons() {
         if (this._options.navButtons === 'large') {
-            const $wrapper = $('<div/>', { 'class':'br-nav-wrapper' }).appendTo(this._$screen);
+            const $wrapper = $('<div/>', { 'class': 'br-nav-wrapper' }).appendTo(this._$screen);
 
             const $prevButton = $('<div/>', {
-                'class':'br-side-prev',
-                title:this._options.prevText,
-                html:'<div/>',
+                'class': 'br-side-prev',
+                title: this._options.prevText,
+                html: '<div/>',
             }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this));
 
             const $nextButton = $('<div/>', {
-                'class':'br-side-next',
-                title:this._options.nextText,
-                html:'<div/>',
+                'class': 'br-side-next',
+                title: this._options.nextText,
+                html: '<div/>',
             }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this));
 
             const $buttons = $prevButton.add($nextButton).appendTo($wrapper).find('>div').addTransitionClass('br-element-transition');
@@ -602,21 +602,21 @@ class Rotator {
             this._$outmost = this._$rotator.wrap('<div class="br-outer-navs"></div>').parent();
             
             const $prevNav = $('<div/>', {
-                'class':'br-outer-prev',
-                title:this._options.prevText,
-                html:'<div/>',
+                'class': 'br-outer-prev',
+                title: this._options.prevText,
+                html: '<div/>',
             }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this)).appendTo(this._$outmost);
 
             const $nextNav = $('<div/>', {
-                'class':'br-outer-next',
-                title:this._options.nextText,
-                html:'<div/>',
+                'class': 'br-outer-next',
+                title: this._options.nextText,
+                html: '<div/>',
             }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this)).appendTo(this._$outmost);
 
             const margin = getNonNegInt(this._options.sideButtonMargin, 0);
             if (margin > 0) {
-                $prevNav.css({ paddingRight:margin }).css({ left:-$prevNav.outerWidth() }).find('>div').css({ marginLeft:`-=${ margin/2}` });
-                $nextNav.css({ paddingLeft:margin }).css({ right:-$nextNav.outerWidth() }).find('>div').css({ marginLeft:`+=${ margin/2}` });
+                $prevNav.css({ paddingRight: margin }).css({ left: -$prevNav.outerWidth() }).find('>div').css({ marginLeft: `-=${ margin/2}` });
+                $nextNav.css({ paddingLeft: margin }).css({ right: -$nextNav.outerWidth() }).find('>div').css({ marginLeft: `+=${ margin/2}` });
             }
 
             if (this._options.navButtonsOnHover) {
@@ -629,8 +629,8 @@ class Rotator {
     initNavThumbs() {
         if (!IS_TOUCH && this._options.navThumbs && $.inArray(this._options.navButtons, ['large', 'outside', 'outer']) > -1) {
             let $prevNav, $nextNav,
-                $prevWrapper = $('<div/>', { 'class':'br-prev-wrapper', data:{ pos:'left' } }),
-                $nextWrapper = $('<div/>', { 'class':'br-next-wrapper', data:{ pos:'right' } });
+                $prevWrapper = $('<div/>', { 'class': 'br-prev-wrapper', data: { pos: 'left' } }),
+                $nextWrapper = $('<div/>', { 'class': 'br-next-wrapper', data: { pos: 'right' } });
             
             //init wrappers
             if (this._options.navButtons === 'large') {
@@ -638,8 +638,8 @@ class Rotator {
                 $nextWrapper = this._$screen.find('>.br-nav-wrapper>.br-side-next').wrap($nextWrapper).parent();
             }
             else {
-                $prevNav = this._$outmost.find('>.br-outer-prev').data({ wrapper:$prevWrapper });
-                $nextNav = this._$outmost.find('>.br-outer-next').data({ wrapper:$nextWrapper });
+                $prevNav = this._$outmost.find('>.br-outer-prev').data({ wrapper: $prevWrapper });
+                $nextNav = this._$outmost.find('>.br-outer-next').data({ wrapper: $nextWrapper });
                 $prevNav.add($nextNav).each($.proxy(function(n, el) {
                     const $wrapper = $(el).data('wrapper'),
                         pos = $wrapper.data('pos');
@@ -648,8 +648,8 @@ class Rotator {
             }
             
             //init thumbs
-            let $prevThumb = $('<div/>', { 'class':'br-nav-thumb' }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this)).prependTo($prevWrapper),
-                $nextThumb = $('<div/>', { 'class':'br-nav-thumb' }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this)).appendTo($nextWrapper),
+            let $prevThumb = $('<div/>', { 'class': 'br-nav-thumb' }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this)).prependTo($prevWrapper),
+                $nextThumb = $('<div/>', { 'class': 'br-nav-thumb' }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this)).appendTo($nextWrapper),
                 content = '';
             
             this._$items.each(function(n, el) {
@@ -665,10 +665,10 @@ class Rotator {
 
             const $wrappers = $prevWrapper.add($nextWrapper);
             $wrappers.each($.proxy(function(n, el) {
-                const $thumb = $(el).find('>.br-nav-thumb').css({ width:this._options.navThumbWidth, height:this._options.navThumbHeight }),
+                const $thumb = $(el).find('>.br-nav-thumb').css({ width: this._options.navThumbWidth, height: this._options.navThumbHeight }),
                     $imgs = $thumb.children().addTransitionClass('br-opacity-transition');
                 
-                $(el).height($thumb.outerHeight(true)).css({ marginTop:-$(el).outerHeight()/2, width:$(el).children().brTotalWidth(true) });
+                $(el).height($thumb.outerHeight(true)).css({ marginTop: -$(el).outerHeight()/2, width: $(el).children().brTotalWidth(true) });
                 this.loadNextThumb($imgs.toArray(), false);
             }, this)).toggleClass('white', this._isWhite || this._$rotator.hasClass('white-nav-thumb'));
                 
@@ -679,17 +679,17 @@ class Rotator {
                         pos = $(el).data('pos');
                     
                     $(el).css(pos, -$thumb.outerWidth(true))
-                            .on(`mouseenter${ this._namespace}`, { pos:pos }, $.proxy(this.showNavWrapper, this))
-                            .on(`mouseleave${ this._namespace}`, { pos:pos }, this.hideNavWrapper);
+                        .on(`mouseenter${ this._namespace}`, { pos: pos }, $.proxy(this.showNavWrapper, this))
+                        .on(`mouseleave${ this._namespace}`, { pos: pos }, this.hideNavWrapper);
                 }, this));
             }
             else {
                 $wrappers.addClass('br-shrink').addTransitionClass('br-all-transition')
-                        .on(`mouseenter${ this._namespace}`, function() { $(this).addClass('br-hover-on'); })
-                        .on(`mouseleave${ this._namespace}`, function() { $(this).removeClass('br-hover-on').addClass('br-shrink'); });
+                    .on(`mouseenter${ this._namespace}`, function() { $(this).addClass('br-hover-on'); })
+                    .on(`mouseleave${ this._namespace}`, function() { $(this).removeClass('br-hover-on').addClass('br-shrink'); });
 
                 $prevNav.add($nextNav).on(`mouseenter${ this._namespace}`, $.proxy(this.showNavThumb, this))
-                                        .on(`mouseleave${ this._namespace}`, this.hideNavThumb);
+                    .on(`mouseleave${ this._namespace}`, this.hideNavThumb);
             }
 
             this._$rotator.on(`updateNavThumbs${ this._namespace}`, $.proxy(function() {
@@ -717,8 +717,8 @@ class Rotator {
     }
     
     loadNavThumb($img) {
-        $img.siblings().addBack().css({ opacity:0 });
-        $img.reflow().css({ opacity:1 });
+        $img.siblings().addBack().css({ opacity: 0 });
+        $img.reflow().css({ opacity: 1 });
     }
 
     showNavWrapper(e) {
@@ -726,8 +726,8 @@ class Rotator {
             prop = {};
         prop[e.data.pos] = 0;
 
-        $wrapper.animate(prop, { duration:Rotator.ANIMATE_SPEED, queue:false,
-            complete:function() {
+        $wrapper.animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false,
+            complete: function() {
                 $(this).find('>.br-nav-thumb').removeClass('br-transparent');
             },
         }).addClass('br-hover-on');
@@ -741,7 +741,7 @@ class Rotator {
             prop = {};
         prop[e.data.pos] = -$thumb.outerWidth(true) + margin;
 
-        $wrapper.stop(true, true).animate(prop, { duration:Rotator.ANIMATE_SPEED, queue:false }).removeClass('br-hover-on');
+        $wrapper.stop(true, true).animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false }).removeClass('br-hover-on');
         $thumb.addClass('br-transparent');
     }
 
@@ -773,45 +773,45 @@ class Rotator {
     //init thumbnails
     initThumbnails() {
         if (!isNone(this._options.thumbnails)) {
-            this._$thumbPanel = $('<div/>', { 'class':'br-thumbnails' }).prependTo(this._$cpanel);
+            this._$thumbPanel = $('<div/>', { 'class': 'br-thumbnails' }).prependTo(this._$cpanel);
             this._$thumbList = $('<ul/>').prependTo(this._$thumbPanel);
             
             for (let i = 0; i < this._numItems; i++) {
                 const $li = $('<li/>');
                 switch(this._options.thumbnails) {
-                    case 'number':
-                        $li.html(i + 1);
-                        break;
-                    case 'text':
-                        $li.html(this._$items.eq(i).find('>img.br-img').attr('title'));
-                        break;
-                    case 'image':
-                        var $img = (SUPPORT.backgroundSize ? $('<div/>') : $('<img/>', { alt:'' }));
-                        $img.data({ src:this._$items.eq(i).find('>img.br-img').data('thumb') })
-                            .addTransitionClass('br-opacity-transition').wrap('<div class="br-img-wrapper"></div>');
-                        $li.addClass('br-img-thumb').prepend($img.parent());
-                        break;
-                    case 'bullet':
-                        $li.addClass('br-bullet');
-                        break;
+                case 'number':
+                    $li.html(i + 1);
+                    break;
+                case 'text':
+                    $li.html(this._$items.eq(i).find('>img.br-img').attr('title'));
+                    break;
+                case 'image':
+                    var $img = (SUPPORT.backgroundSize ? $('<div/>') : $('<img/>', { alt: '' }));
+                    $img.data({ src: this._$items.eq(i).find('>img.br-img').data('thumb') })
+                        .addTransitionClass('br-opacity-transition').wrap('<div class="br-img-wrapper"></div>');
+                    $li.addClass('br-img-thumb').prepend($img.parent());
+                    break;
+                case 'bullet':
+                    $li.addClass('br-bullet');
+                    break;
                 }
                 this._$thumbList.append($li);
             }
             this._$thumbs = this._$thumbList.children();
             this._$thumbs.toggleClass('white', this._isWhite || this._$rotator.hasClass('white-thumb'))
-                            .addTransitionClass('br-color-transition')
-                            .on((this._options.selectOnHover ? 'mouseenter' : 'click') + this._namespace, $.proxy(this.selectSlide, this));
+                .addTransitionClass('br-color-transition')
+                .on((this._options.selectOnHover ? 'mouseenter' : 'click') + this._namespace, $.proxy(this.selectSlide, this));
 
             if (this._options.thumbnails !== 'bullet') {
                 if (this._options.thumbnails === 'image') {
                     const $wrappers = this._$thumbs.children();
-                    $wrappers.css({ width:this._options.thumbWidth - ($wrappers.outerWidth(true) - $wrappers.width()), height:this._options.thumbHeight - ($wrappers.outerHeight(true) - $wrappers.height()) });
+                    $wrappers.css({ width: this._options.thumbWidth - ($wrappers.outerWidth(true) - $wrappers.width()), height: this._options.thumbHeight - ($wrappers.outerHeight(true) - $wrappers.height()) });
                     this.loadNextThumb($wrappers.children().toArray(), true);
                 }
-                this._$thumbs.css({ width:this._options.thumbWidth, height:this._options.thumbHeight, margin:this._options.thumbMargin, lineHeight:`${this._options.thumbHeight }px` });
+                this._$thumbs.css({ width: this._options.thumbWidth, height: this._options.thumbHeight, margin: this._options.thumbMargin, lineHeight: `${this._options.thumbHeight }px` });
             }
             
-            this._$thumbList.css(this._orientation === 'vertical' ? { width:this._$thumbs.outerWidth(true) } : { height:this._$thumbs.outerHeight(true) });
+            this._$thumbList.css(this._orientation === 'vertical' ? { width: this._$thumbs.outerWidth(true) } : { height: this._$thumbs.outerHeight(true) });
             
             this._$rotator.on('rotatorChange', $.proxy(function() {
                 this._$thumbs.eq(this._activeIndex).addClass('br-active').siblings().removeClass('br-active');
@@ -826,9 +826,9 @@ class Rotator {
         const	$layers = $item.children(':not(.tooltip, img.br-img)').addClass('br-layer');
         
         $('<div/>', {
-            id:`br-layers-${ $item.index()}`,
-            'class':'br-layer-bin',
-            html:$layers,
+            id: `br-layers-${ $item.index()}`,
+            'class': 'br-layer-bin',
+            html: $layers,
         }).appendTo(this._$layerWrapper);
 
         $layers.each($.proxy(function(n, el) {
@@ -858,7 +858,7 @@ class Rotator {
                 metric[prop] = parseInt($el.css(prop), 10);
             });
 
-            $el.data({ opacity:getFloat($el.css('opacity'), 1), metric:metric });
+            $el.data({ opacity: getFloat($el.css('opacity'), 1), metric: metric });
             $.each(['', 'Out'], $.proxy(function(i, dir) {
                 const props = [`effect${ dir}`, `duration${ dir}`, `easing${ dir}`, `delay${ dir}`];
                 $el.brMapShorthand(`transition${ dir}`, props);
@@ -874,13 +874,13 @@ class Rotator {
     initTooltip() {
         if (!IS_TOUCH && !isNone(this._options.tooltip)) {
             const $inner = $('<div/>', {
-                'class':'br-tooltip-inner',
-                css:{ width:this._options.tooltipWidth, height:this._options.tooltipHeight },
+                'class': 'br-tooltip-inner',
+                css: { width: this._options.tooltipWidth, height: this._options.tooltipHeight },
             });
 
             this._$tooltip = $('<div/>', {
-                'class':`br-tooltip br-tooltip-${ OPPOSITE_SIDE[this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y']]}`,
-                html:$inner.add('<div class="br-tail"/>'),
+                'class': `br-tooltip br-tooltip-${ OPPOSITE_SIDE[this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y']]}`,
+                html: $inner.add('<div class="br-tail"/>'),
             }).toggleClass('white', this._isWhite || this._$rotator.hasClass('white-tooltip')).prependTo($('body'));
             
             if (this._options.tooltip === 'image') {
@@ -893,8 +893,8 @@ class Rotator {
                         $img.brHandleImage($img.attr('src'), {
                             complete: $.proxy(function() {
                                 $img.brFill(this._options.tooltipWidth, this._options.tooltipHeight);
-                                $content.css({ top:$img.css('top'), left:$img.css('left'), width:$img.width(), height:$img.height() })
-                                        .removeClass('br-transparent');
+                                $content.css({ top: $img.css('top'), left: $img.css('left'), width: $img.width(), height: $img.height() })
+                                    .removeClass('br-transparent');
                                 $img.remove();
                                 if (CHROME) {
                                     $thumb.data('tooltip-kb', new KenBurns($content, $(el).data('kb-effect')));
@@ -960,7 +960,7 @@ class Rotator {
         }
         
         this._tooltipId = setTimeout($.proxy(function() {
-            this._$tooltip.css({ opacity:0, top:top, left:left }).show().animate({ opacity:1 }, Rotator.ANIMATE_SPEED, 
+            this._$tooltip.css({ opacity: 0, top: top, left: left }).show().animate({ opacity: 1 }, Rotator.ANIMATE_SPEED, 
                 function() {
                     const kBurns = $thumb.data('tooltip-kb');
                     if (kBurns) {
@@ -1018,7 +1018,7 @@ class Rotator {
         this._backward = true;
         this._activeIndex = (this._activeIndex > 0 ? (this._activeIndex - 1) : (this._numItems - 1));
         if (triggerEvent) {
-            this.triggerEvent('prev', { index:this._activeIndex });
+            this.triggerEvent('prev', { index: this._activeIndex });
         }
         this.loadSlide();
     }
@@ -1032,7 +1032,7 @@ class Rotator {
         this._backward = false;
         this._activeIndex = (this._numItems - 1 > this._activeIndex ? (this._activeIndex + 1) : 0);
         if (triggerEvent) {
-            this.triggerEvent('next', { index:this._activeIndex });
+            this.triggerEvent('next', { index: this._activeIndex });
         }
         this.loadSlide();
     }
@@ -1056,11 +1056,11 @@ class Rotator {
     play() {
         if (!this._rotate) {
             this._rotate = true;
-            this._$cpanel.find('>.br-play-button').addClass('br-pause').attr({ title:this._options.pauseText });
+            this._$cpanel.find('>.br-play-button').addClass('br-pause').attr({ title: this._options.pauseText });
             if (!this._effects.inProgress()) {
                 this.resumeTimer();
             }
-            this.triggerEvent('play', { index:this._activeIndex, delay:this._delay });
+            this.triggerEvent('play', { index: this._activeIndex, delay: this._delay });
         }
     }
 
@@ -1068,11 +1068,11 @@ class Rotator {
     pause() {
         if (this._rotate) {
             this._rotate = false;
-            this._$cpanel.find('>.br-play-button').removeClass('br-pause').attr({ title:this._options.playText });
+            this._$cpanel.find('>.br-play-button').removeClass('br-pause').attr({ title: this._options.playText });
             if (!this._effects.inProgress()) {
                 this.pauseTimer();
             }
-            this.triggerEvent('pause', { index:this._activeIndex, delay:this._delay });
+            this.triggerEvent('pause', { index: this._activeIndex, delay: this._delay });
         }
     }
     
@@ -1090,7 +1090,7 @@ class Rotator {
 
             this._layerIds.push(setTimeout($.proxy(function() {
                 const id = requestAnimationFrame($.proxy(function() {
-                    $layer.css({ opacity:$layer.data('opacity'), margin:0, transform:'none' }).show();
+                    $layer.css({ opacity: $layer.data('opacity'), margin: 0, transform: 'none' }).show();
                     this.animateLayer($layer, false);
                     this.queueLayerOut($layer);
                 }, this));
@@ -1111,7 +1111,7 @@ class Rotator {
         let data = $layer.data(),
             dir = (out ? 'Out' : ''),
             effect = data[`effect${ dir}`],
-            opts = { duration:parseInt(data[`duration${ dir}`], 10), easing:data[`easing${ dir}`], complete:$.noop };
+            opts = { duration: parseInt(data[`duration${ dir}`], 10), easing: data[`easing${ dir}`], complete: $.noop };
 
         if (/^slide/.test(effect)) {
             opts.direction = effect.substring('slide'.length).toLowerCase();
@@ -1150,13 +1150,13 @@ class Rotator {
             }
             else {
                 props = {
-                    from:{ opacity:0 },
-                    to:{ opacity:data.opacity },
+                    from: { opacity: 0 },
+                    to: { opacity: data.opacity },
                 };
             }
 
             if (out) {
-                props = { from:props.to, to:props.from };
+                props = { from: props.to, to: props.from };
             }
 
             $layer.css(props.from).transition(props.to, opts);
@@ -1242,15 +1242,15 @@ class Rotator {
             from[`margin-${ side}`] = offset;
             to[`margin-${ side}`] = 0;
         }
-        return { from:from, to:to };
+        return { from: from, to: to };
     }
 
     //get shift property
     getShiftProps($el, direction) {
         let isHorizontal = (direction === 'left' || direction === 'right'),
             inverse = (direction === 'right' || direction === 'down' ? -1 : 1),
-            from = { opacity:0 },
-            to = { opacity:1 };
+            from = { opacity: 0 },
+            to = { opacity: 1 };
         
         if (this._transform) {
             const translate = `translate${ isHorizontal ? 'X' : 'Y'}`;
@@ -1278,7 +1278,7 @@ class Rotator {
             from[`margin-${ side}`] = inverse * $el[dim]();
             to[`margin-${ side}`] = 0;
         }
-        return { from:from, to:to };
+        return { from: from, to: to };
     }
 
     //deferred load
@@ -1303,9 +1303,9 @@ class Rotator {
                 }, this)).removeData('promise');
 
                 this._promise = $.when.apply(null, promises)
-                                    .always($.proxy(function() { 
-                                        fn.apply(this, args);
-                                    }, this));
+                    .always($.proxy(function() { 
+                        fn.apply(this, args);
+                    }, this));
 
                 setTimeout(function() {
                     $layers.dequeue();
@@ -1327,7 +1327,7 @@ class Rotator {
         this.clearAllLayers(true);
 
         //trigger events
-        const params = { index:this._activeIndex };
+        const params = { index: this._activeIndex };
         this.triggerEvent('change', params);
         if (this._activeIndex === 0) {
             this.triggerEvent('first', params);
@@ -1345,8 +1345,8 @@ class Rotator {
             this._$preloader.show();
             const $img = $item.find('>img.br-img');
             $img.brHandleImage($img.data('src'), {
-                namespace:'display',
-                complete:$.proxy(function() {
+                namespace: 'display',
+                complete: $.proxy(function() {
                     if (!$item.data('ready')) {
                         this.processImage($item);
                     }
@@ -1380,7 +1380,7 @@ class Rotator {
         
         //set ken burns
         if (CHROME || !IS_TOUCH) {
-            this._kBurns = new KenBurns(this._$currItem.find('>img.br-img'), data.kbEffect, { duration:getPosInt(data.kbDuration, data.delay), easing:data.kbEasing });
+            this._kBurns = new KenBurns(this._$currItem.find('>img.br-img'), data.kbEffect, { duration: getPosInt(data.kbDuration, data.delay), easing: data.kbEasing });
         }
 
         //activate
@@ -1396,10 +1396,10 @@ class Rotator {
     //activate current item
     activateItem(isResize) {
         if (!isResize) {
-            this.triggerEvent('changed', { index:this._activeIndex });
+            this.triggerEvent('changed', { index: this._activeIndex });
         }
 
-        this._$currItem.css({ visibility:'visible' }).siblings().css({ visibility:'hidden' });
+        this._$currItem.css({ visibility: 'visible' }).siblings().css({ visibility: 'hidden' });
         this._$linkWrapper.children(`a#br-link-${ this._$currItem.index()}`).show();
 
         if (isResize || this._options.layerSync) {
@@ -1468,11 +1468,11 @@ class Rotator {
                     $thumb.brFill($thumb.parent().width(), $thumb.parent().height());
                 }
                 else {
-                    $thumb.css({ backgroundImage:`url(${ $thumb.data('src') })` });
+                    $thumb.css({ backgroundImage: `url(${ $thumb.data('src') })` });
                 }
 
                 if (fadeIn) {
-                    $thumb.css({ opacity:1 });
+                    $thumb.css({ opacity: 1 });
                 }
                 deferred.resolve();
             },
@@ -1508,7 +1508,7 @@ class Rotator {
         
         if (this._options.responsive) {
             const ratio = this._$stage.width()/this._stageWidth,
-                props = { top:parseInt($img.css('top'), 10), left:parseInt($img.css('left'), 10), width:$img.width(), height:$img.height() };
+                props = { top: parseInt($img.css('top'), 10), left: parseInt($img.css('left'), 10), width: $img.width(), height: $img.height() };
             
             $img.data('metric', props);
             $.each(props, function(name, val) {
@@ -1516,7 +1516,7 @@ class Rotator {
             });
         }
         
-        this.triggerEvent('load', { index:$item.index() });
+        this.triggerEvent('load', { index: $item.index() });
     }
     
     //start timer
@@ -1576,13 +1576,13 @@ class Rotator {
         if (!IS_TOUCH) {
             $el.addClass(hide).addTransitionClass('br-all-transition');
             this._$outmost.on(`mouseenter${ this._namespace}`, function() { 
-                            $el.removeClass(hide); 
-                        })
-                        .on(`mouseleave${ this._namespace}`, $.proxy(function(e) { 
-                            if (!this.onTooltip(e)) {
-                                $el.addClass(hide);
-                            }
-                        }, this));
+                $el.removeClass(hide); 
+            })
+                .on(`mouseleave${ this._namespace}`, $.proxy(function(e) { 
+                    if (!this.onTooltip(e)) {
+                        $el.addClass(hide);
+                    }
+                }, this));
         }
     }
     
@@ -1597,17 +1597,17 @@ class Rotator {
                 pagePos = `page${ capitalize(data.coord)}`;
 
             this._$thumbPanel.on(`mouseenter${ this._namespace}`, function() {
-                                    $(this).addClass('br-hover-on');
-                                })
-                                .on(`mouseleave${ this._namespace}`, function() {
-                                    $(this).removeClass('br-hover-on');
-                                })
-                                .on(`mousemove${ this._namespace}`, $.proxy(function(e) {
-                                    const pct = (e[pagePos] - this._$thumbPanel.offset()[pos])/this._$thumbPanel[dim]();
-                                    const	prop = {};
-                                    prop[pos] = this._$thumbPanel.data('range') * pct;
-                                    this._$thumbList.animate(prop, { duration:Rotator.ANIMATE_SPEED, easing:easing, queue:false });
-                                }, this));
+                $(this).addClass('br-hover-on');
+            })
+                .on(`mouseleave${ this._namespace}`, function() {
+                    $(this).removeClass('br-hover-on');
+                })
+                .on(`mousemove${ this._namespace}`, $.proxy(function(e) {
+                    const pct = (e[pagePos] - this._$thumbPanel.offset()[pos])/this._$thumbPanel[dim]();
+                    const	prop = {};
+                    prop[pos] = this._$thumbPanel.data('range') * pct;
+                    this._$thumbList.animate(prop, { duration: Rotator.ANIMATE_SPEED, easing: easing, queue: false });
+                }, this));
         }
     }
     
@@ -1627,7 +1627,7 @@ class Rotator {
             }
 
             if (!$.isEmptyObject(prop)) {
-                this._$thumbList.animate(prop, { duration:Rotator.ANIMATE_SPEED, queue:false });
+                this._$thumbList.animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false });
             }
         }
     }
@@ -1639,7 +1639,7 @@ class Rotator {
             dim = data.dim;
 
         this._$thumbPanel.css(dim, Math.min(this._$screen[dim]() - this._cpanelMargin - this._buttonSize, this._$thumbList[dim]()))
-                            .data({ range:this._$thumbPanel[dim]() - this._$thumbList[dim]() });
+            .data({ range: this._$thumbPanel[dim]() - this._$thumbList[dim]() });
         this._$thumbList.stop().css(pos, Math.max(this._$thumbPanel.data('range'), this._$thumbList.position()[pos]));
         this._$rotator.find('>.br-ext-cp').css(dim, this._$screen[dim]());
 
@@ -1656,7 +1656,7 @@ class Rotator {
             this._startX = e.originalEvent.touches[0].pageX;
             this._startY = e.originalEvent.touches[0].pageY;
             this._$rotator.on(`touchmove${ this._namespace}`, $.proxy(this.touchMove, this))
-                            .one(`touchend${ this._namespace}`, $.proxy(this.touchEnd, this));
+                .one(`touchend${ this._namespace}`, $.proxy(this.touchEnd, this));
         }
     }
     
@@ -1710,23 +1710,23 @@ class Rotator {
     //keydown
     keyControl(e) {
         switch(e.which) {
-            case 35:
-                this.selectSlide(this._numItems - 1);
-                break;
-            case 36:
-                this.selectSlide(0);
-                break;
-            case 37:
-                this.prevSlide();
-                break;
-            case 39:
-                this.nextSlide();
-                break;
-            case 32:
-                this.togglePlay();
-                break;
-            default:
-                return;
+        case 35:
+            this.selectSlide(this._numItems - 1);
+            break;
+        case 36:
+            this.selectSlide(0);
+            break;
+        case 37:
+            this.prevSlide();
+            break;
+        case 39:
+            this.nextSlide();
+            break;
+        case 32:
+            this.togglePlay();
+            break;
+        default:
+            return;
         }
         e.preventDefault();
     }
@@ -1742,8 +1742,8 @@ class Rotator {
             
             //resize stage
             const ratio = this._$stage.width()/this._stageWidth;
-            this._$stage.css({ height:Math.round(ratio * this._stageHeight) });
-            this._$screen.css({ width:this._$stage.width(), height:this._$stage.height() });
+            this._$stage.css({ height: Math.round(ratio * this._stageHeight) });
+            this._$screen.css({ width: this._$stage.width(), height: this._$stage.height() });
             
             //resize images
             this._$items.each(function(n, item) {
@@ -1828,7 +1828,7 @@ class Rotator {
             }
         }, this));
 
-        this._$rotator.html(this._html).attr({ style:this._style }).removeClass('br-flat-shadow br-no-touch');
+        this._$rotator.html(this._html).attr({ style: this._style }).removeClass('br-flat-shadow br-no-touch');
     }
 };
 

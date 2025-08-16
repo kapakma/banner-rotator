@@ -14,12 +14,12 @@ class PieTimer extends Timer {
 
         this._$spinner = $('<div/>', {
             'class': 'br-spinner', 
-            html:'<div/>',
+            html: '<div/>',
         });
         
         this._$fill = $('<div/>', {
             'class': 'br-pie-fill', 
-            html:'<div/>',
+            html: '<div/>',
         });
         
         this._$mask = $('<div/>', {
@@ -55,9 +55,9 @@ class PieTimer extends Timer {
     stop() {
         this._elapsed = 0;
         this._$el.stopTransition(true);
-        this._$fill.css({ opacity:0 });
-        this._$mask.css({ opacity:1 });
-        this._$spinner.css({ transform:'rotate(0)' });
+        this._$fill.css({ opacity: 0 });
+        this._$mask.css({ opacity: 1 });
+        this._$spinner.css({ transform: 'rotate(0)' });
 
         super.stop();
     }
