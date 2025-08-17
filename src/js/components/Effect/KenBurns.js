@@ -56,7 +56,7 @@ class KenBurns {
         let name = this._effect.substring('random'.length).toUpperCase(),
             effects = KenBurns[name];
 
-        if (!$.isArray(effects)) {
+        if (!Array.isArray(effects)) {
             effects = KenBurns.EFFECTS;
         }
 

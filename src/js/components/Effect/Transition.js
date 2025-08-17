@@ -1,4 +1,4 @@
-import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize, getTransformProperty, getRandomItem, shuffleArray } from "../../util/helpers";
+import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize, getTransformProperty, getRandomItem, shuffleArray, isFunction, isNumeric } from "../../util/helpers";
 import { SUPPORT, PREFIX } from "../../util/support";
 import PRESETS from '../../util/presets';
 
@@ -185,7 +185,7 @@ class Transition {
             size, arr, pct,
             offset = 0;
 
-        if ($.isNumeric(this._depth)) {
+        if (isNumeric(this._depth)) {
             size = this._depth;
             arr = [0, 1, 0];
             pct = ['0%', '50%', '100%'];
@@ -373,7 +373,7 @@ class Transition {
         let setter = `set${ capitalize(fn)}`,
             name = setter + capitalize(dir);
 
-        if (!$.isFunction(this[name])) {
+        if (!isFunction(this[name])) {
             name = setter + capitalize(this._direction);
         }
         return name;

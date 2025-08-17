@@ -1,6 +1,16 @@
 import { SUPPORT, PREFIXES } from "./support";
 import { CUBIC_BEZIER } from "../constants";
 
+//check if value is a function
+export function isFunction(obj) {
+    return (typeof obj === "function");
+}
+
+//check if value is numeric
+export function isNumeric(value) {
+  return !isNaN(Number(value));
+}
+
 //shuffle elements
 export function shuffleElements($el) {
     const items = $el.children().toArray();
@@ -43,7 +53,7 @@ export function getRandomItem(arr) {
 
 //test number within range
 export function withinRange(val, min, max) {
-    return ($.isNumeric(val) && min <= val && val <= max);
+    return (isNumeric(val) && min <= val && val <= max);
 }
 
 //test for none
@@ -53,31 +63,31 @@ export function isNone(val) {
 
 //check if empty string
 export function isEmptyStr(val) {
-    return (typeof val === 'undefined' || $.trim(val) === '');
+    return (typeof val === 'undefined' || val.trim() === '');
 }
 
 //get integer
 export function getInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return ($.isNumeric(val) ? val : defaultVal);
+    return (isNumeric(val) ? val : defaultVal);
 }
 
 //get positive integer
 export function getPosInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return ($.isNumeric(val) && val > 0 ? val : defaultVal);
+    return (isNumeric(val) && val > 0 ? val : defaultVal);
 }
 
 //get non-negative integer
 export function getNonNegInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return ($.isNumeric(val) && val >= 0 ? val : defaultVal);
+    return (isNumeric(val) && val >= 0 ? val : defaultVal);
 }
 
 //get float
 export function getFloat(val, defaultVal) {
     val = parseFloat(val);
-    return ($.isNumeric(val) ? val : defaultVal);
+    return (isNumeric(val) ? val : defaultVal);
 }
 
 //get value
@@ -94,7 +104,7 @@ export function getEnum(val, list, defaultVal) {
 export function isPercent(val) {
     val += '';
     const last = val.length - 1;
-    return val.charAt(last) === '%' && $.isNumeric(val.substring(0, last));
+    return val.charAt(last) === '%' && isNumeric(val.substring(0, last));
 }
 
 //round to
@@ -302,9 +312,4 @@ export function restoreStyle($el, props) {
         const style = $el.data(`style-${ val}`);
         $el.css(val, (typeof style === 'undefined' ? '' : style));
     });
-}
-
-//check if object is function
-export function isFunction(obj) {
-    return (typeof obj === "function");
 }

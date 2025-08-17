@@ -10,6 +10,7 @@ import {
     isEmptyStr, getValue,
     saveStyle, createWrapper,
     restoreStyle, removeWrapper,
+    isFunction,
 } from './util/helpers';
 
 import Rotator from './BannerRotator';
@@ -174,8 +175,8 @@ import Rotator from './BannerRotator';
 
     //bind image handler
     $.fn.brHandleImage = function(src, settings) {
-        let complete = $.isFunction(settings.complete) ? settings.complete : $.noop,
-            error = $.isFunction(settings.error) ? settings.error : $.noop,
+        let complete = isFunction(settings.complete) ? settings.complete : $.noop,
+            error = isFunction(settings.error) ? settings.error : $.noop,
             loadEvent = 'load';
 
         if (!isEmptyStr(settings.namespace)) {
@@ -185,7 +186,7 @@ import Rotator from './BannerRotator';
         return this.each(function(n, img) {
             const $img = $(img);
             if ($img.is('img')) {
-                $img.attr('src', '').one(loadEvent, complete).error(error).attr('src', src);
+                $img.attr('src', '').one(loadEvent, complete).on('error', error).attr('src', src);
                 if (typeof img.readyState !== 'undefined') {
                     if (img.readyState === 'complete') {
                         $img.trigger('load');
@@ -271,11 +272,11 @@ import Rotator from './BannerRotator';
         return this.each(function() {
             const $el = $(this);
             $el.queue(function(){
-                if ($.isFunction(complete)) {
+                if (isFunction(complete)) {
                     $el.one(CSS_ANIMATION_END, complete);
                 }
 
-                if ($.isFunction(always)) {
+                if (isFunction(always)) {
                     $el.one(`${CSS_ANIMATION_END }.always`, always);
                 }
 
@@ -336,11 +337,11 @@ import Rotator from './BannerRotator';
         return this.each(function() {
             const $el = $(this);
             $el.queue(function() {
-                if ($.isFunction(complete)) {
+                if (isFunction(complete)) {
                     $el.one(CSS_TRANSITION_END, complete);
                 }
 
-                if ($.isFunction(always)) {
+                if (isFunction(always)) {
                     $el.one(`${CSS_TRANSITION_END }.always`, always);
                 }
 

@@ -8,7 +8,8 @@ import { FROM_KEYFRAME, TO_KEYFRAME } from './util/keyframes';
 import {
     isAndroid, isChrome, getTransformProperty, capitalize, getNonNegInt,
     withinRange, isEmptyStr, isNone, getValue, getEasing, isPercent, getInt, getFloat,
-    getPosition, debounce, getPosInt, camelToDash, shuffleElements,
+    getPosition, debounce, getPosInt, camelToDash, shuffleElements, isFunction,
+    isNumeric,
 } from './util/helpers';
 
 const IS_TOUCH = 'ontouchstart' in window,
@@ -309,7 +310,7 @@ class Rotator {
     //inject item's keyframes
     injectKeyframes($item) {
         try {
-            const depth = $.isNumeric($item.data('depth')) ? -Math.abs($item.data('depth')) : 0,
+            const depth = isNumeric($item.data('depth')) ? -Math.abs($item.data('depth')) : 0,
                 rules = this._sheet.rules || this._sheet.cssRules;
 
             this._sheet.insertRule(`@${ PREFIX }keyframes ` + `br-${ this._uid }-${ $item.index()}` + ` { ${
@@ -841,7 +842,7 @@ class Rotator {
 
             $.each(SIDES, $.proxy(function(i, side) {
                 const pos = el.style[side];
-                if ($.isNumeric(parseInt(pos, 10))) {
+                if (isNumeric(parseInt(pos, 10))) {
                     if (!isPercent(pos)) {
                         const dim = ($.inArray(side, ['top', 'bottom']) > -1 ? this._stageHeight : this._stageWidth);
                         $el.css(side, `${getInt(pos, 0)/dim * 100 }%`);
@@ -852,8 +853,8 @@ class Rotator {
                 metric[`border-${ side }-width`] = getInt($el.css(`border-${ side }-width`), 0);
             }, this));
 
-            metric.width = $.isNumeric(parseInt(el.style.width, 10)) ? $el.width() : 'auto';
-            metric.height = $.isNumeric(parseInt(el.style.height, 10)) ? $el.height() : 'auto';
+            metric.width = isNumeric(parseInt(el.style.width, 10)) ? $el.width() : 'auto';
+            metric.height = isNumeric(parseInt(el.style.height, 10)) ? $el.height() : 'auto';
             $.each(['fontSize', 'lineHeight', 'letterSpacing'], function(i, prop) {
                 metric[prop] = parseInt($el.css(prop), 10);
             });
@@ -1224,7 +1225,7 @@ class Rotator {
         }
         else {
             side = (isHorizontal ? 'right' : 'bottom');
-            if ($.isNumeric(parseInt($el[0].style[side], 10))) {
+            if (isNumeric(parseInt($el[0].style[side], 10))) {
                 fwd = !fwd;
             }
             else {
@@ -1268,7 +1269,7 @@ class Rotator {
                 dim = 'outerHeight';
             }
 
-            if ($.isNumeric(parseInt($el[0].style[side], 10))) {
+            if (isNumeric(parseInt($el[0].style[side], 10))) {
                 inverse *= -1;
             }
             else {
@@ -1423,7 +1424,7 @@ class Rotator {
                 this.loadNextImage(items, complete);
             }, this));
         }
-        else if ($.isFunction(complete)) {
+        else if (isFunction(complete)) {
             complete.call(this);
         }
     }
@@ -1494,14 +1495,14 @@ class Rotator {
         if (arr.length === 2) {
             $.each(['left', 'top'], function(i, val) {
                 const pos = arr[i];
-                if ($.isNumeric(parseInt(pos, 10))) {
-                    $img.css(val, $.isNumeric(pos) ? parseInt(pos, 10) : pos);
+                if (isNumeric(parseInt(pos, 10))) {
+                    $img.css(val, isNumeric(pos) ? parseInt(pos, 10) : pos);
                 }
             });
         }
         else if ($.inArray(position, ['fill', 'fit', 'stretch', 'center']) > -1) {
             const fn = `br${ capitalize(position)}`;
-            if ($.isFunction($img[fn])) {
+            if (isFunction($img[fn])) {
                 $img[fn](this._stageWidth, this._stageHeight);
             }
         }
@@ -1758,7 +1759,7 @@ class Rotator {
             //resize layers
             this._$layers.each(function(n, layer) {
                 $.each($(layer).data('metric'), function(name, val) {
-                    if ($.isNumeric(val)) {
+                    if (isNumeric(val)) {
                         $(layer).css(name, `${Math.ceil(ratio * val) }px`);
                     }
                 });
@@ -1790,7 +1791,7 @@ class Rotator {
         this._$rotator.trigger(Rotator.PLUGIN + name, data);
 
         const callback = this._options[`on${ name}`];
-        if ($.isFunction(callback)) {
+        if (isFunction(callback)) {
             callback.call(this, data);
         }
     }
