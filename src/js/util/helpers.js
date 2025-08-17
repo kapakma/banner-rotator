@@ -8,7 +8,7 @@ export function isFunction(obj) {
 
 //check if value is numeric
 export function isNumeric(value) {
-  return !isNaN(Number(value));
+    return !isNaN(Number(value));
 }
 
 //shuffle elements

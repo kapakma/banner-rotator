@@ -49,7 +49,6 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'index.html',
-      scriptLoading: 'blocking',
       inject: 'body',
     }),
     new MiniCssExtractPlugin({

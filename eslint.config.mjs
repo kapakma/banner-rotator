@@ -40,7 +40,6 @@ export default defineConfig([
       "no-trailing-spaces": "error",
       "eol-last": ["error", "always"],
       "func-call-spacing": ["error", "never"],
-      "max-len": ["warn", { code: 120 }],
     },
   },
 ]);
