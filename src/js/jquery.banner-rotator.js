@@ -1,7 +1,7 @@
 /**
  * jQuery Banner Rotator v4.1.2
  */
-import '../styles/banner-rotator.css';
+import '../styles/banner-rotator.scss';
 
 import { CUBIC_BEZIER, SIDES } from './constants';
 import { SUPPORT, CSS_ANIMATION_END, CSS_TRANSITION_END } from './util/support';
