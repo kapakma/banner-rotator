@@ -5,12 +5,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.mjs,.cjs",
     "lint:fix": "eslint src --ext .js,.mjs,.cjs --fix",
     "lint:file": "eslint --fix",
-    "clean": "rm -rf dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf dist"
   },
   "repository": {
     "type": "git",
