@@ -1,3 +1,4 @@
+@use 'keyframes';
 .icon-sprite, .br-play-button div, .br-play-button.br-pause div, .br-prev-button div, .br-prev-button.br-up div, .br-next-button div, .br-next-button.br-down div, .br-play-button.white div, .br-no-touch .br-play-button.white:hover div, .br-play-button.white.br-pause div, .br-no-touch .br-play-button.white.br-pause:hover div, .br-prev-button.white div, .br-no-touch .br-prev-button.white:hover div, .br-prev-button.white.br-up div, .br-no-touch .br-prev-button.white.br-up:hover div, .br-next-button.white div, .br-no-touch .br-next-button.white:hover div, .br-next-button.white.br-down div, .br-no-touch .br-next-button.white.br-down:hover div, .br-side-prev div, .br-outer-prev div, .br-side-next div, .br-outer-next div, .br-nav-wrapper .white.br-prev-wrapper:hover .br-side-prev div, .br-nav-wrapper .white.br-next-wrapper:hover .br-side-prev div, .br-nav-wrapper .white.br-prev-wrapper:hover .br-outer-prev div, .br-nav-wrapper .white.br-next-wrapper:hover .br-outer-prev div, .br-nav-wrapper .white.br-prev-wrapper:hover .br-side-next div, .br-nav-wrapper .white.br-next-wrapper:hover .br-side-next div, .br-nav-wrapper .white.br-prev-wrapper:hover .br-outer-next div, .br-nav-wrapper .white.br-next-wrapper:hover .br-outer-next div {
   background-image: url('../assets/icon-sf3d4f583f7.png');
   background-repeat: no-repeat;
@@ -39,7 +40,7 @@
   position: relative;
   border: 0 solid black;
   outline: none;
-  zoom: 1;
+  
 }
 
 .br-stage {
@@ -302,9 +303,6 @@
   white-space: nowrap;
   display: inline-block;
   vertical-align: middle;
-  *vertical-align: auto;
-  *zoom: 1;
-  *display: inline;
   user-select: none;
 }
 
@@ -382,8 +380,6 @@
   white-space: nowrap;
   display: inline-block;
   vertical-align: middle;
-  *zoom: 1;
-  *display: inline;
   border-radius: 4px;
 }
 .br-thumbnails ul li.br-active, .br-active.br-play-button, .br-active.br-prev-button, .br-active.br-next-button {
@@ -419,9 +415,6 @@
   white-space: nowrap;
   display: inline-block;
   vertical-align: middle;
-  *vertical-align: auto;
-  *zoom: 1;
-  *display: inline;
 }
 .br-thumbnails ul {
   position: relative;
@@ -433,9 +426,6 @@
   overflow: visible;
   display: inline-block;
   vertical-align: middle;
-  *vertical-align: auto;
-  *zoom: 1;
-  *display: inline;
   white-space: nowrap;
 }
 .br-thumbnails ul li {
@@ -850,7 +840,7 @@
   position: absolute;
   left: -999999px;
   z-index: 999999;
-  zoom: 1;
+  
   pointer-events: none;
 }
 .br-tooltip .br-tooltip-inner {
