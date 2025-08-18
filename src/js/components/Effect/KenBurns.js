@@ -1,5 +1,5 @@
-import { isNone, getRandomItem, getNonNegInt, getValue, camelToDash } from '../../util/helpers';
-import { SUPPORT } from '../../util/support';
+import { isNone, getRandomItem, getNonNegInt, getValue, camelToDash } from '../../utils/helpers';
+import { SUPPORT } from '../../utils/support';
 
 //KenBurns Class
 class KenBurns {

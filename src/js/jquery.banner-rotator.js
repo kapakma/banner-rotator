@@ -4,14 +4,14 @@
 import '../styles/banner-rotator.scss';
 
 import { CUBIC_BEZIER, SIDES } from './constants';
-import { SUPPORT, CSS_ANIMATION_END, CSS_TRANSITION_END } from './util/support';
+import { SUPPORT, CSS_ANIMATION_END, CSS_TRANSITION_END } from './utils/support';
 import {
     isAndroid, capitalize,
     isEmptyStr, getValue,
     saveStyle, createWrapper,
     restoreStyle, removeWrapper,
     isFunction,
-} from './util/helpers';
+} from './utils/helpers';
 
 import Rotator from './BannerRotator';
 

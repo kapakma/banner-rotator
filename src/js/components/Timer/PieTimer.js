@@ -1,5 +1,5 @@
 import Timer from "./Timer";
-import { getEnum } from "../../util/helpers.js";
+import { getEnum } from "../../utils/helpers.js";
 
 //Pie Timer Class
 class PieTimer extends Timer {

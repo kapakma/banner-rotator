@@ -1,6 +1,6 @@
-import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize, getTransformProperty, getRandomItem, shuffleArray, isFunction, isNumeric } from "../../util/helpers";
-import { SUPPORT, PREFIX } from "../../util/support";
-import PRESETS from '../../util/presets';
+import { getKeys, roundTo, degreesToRadians, getPosInt, getNonNegInt, capitalize, getTransformProperty, getRandomItem, shuffleArray, isFunction, isNumeric } from "../../utils/helpers";
+import { SUPPORT, PREFIX } from "../../utils/support";
+import PRESETS from '../../utils/presets';
 
 //Transition Class
 class Transition {

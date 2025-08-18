@@ -1,4 +1,4 @@
-import { isFunction } from '../../util/helpers';
+import { isFunction } from '../../utils/helpers';
 
 //Timer Class
 class Timer {

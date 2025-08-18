@@ -2,15 +2,15 @@ import BarTimer from './components/Timer/BarTimer';
 import PieTimer from './components/Timer/PieTimer';
 import KenBurns from './components/Effect/KenBurns';
 import Transition from './components/Effect/Transition';
-import { PREFIX, SUPPORT } from './util/support';
+import { PREFIX, SUPPORT } from './utils/support';
 import { SIDES, OPPOSITE_SIDE, OPPOSITE_LAYER } from './constants';
-import { FROM_KEYFRAME, TO_KEYFRAME } from './util/keyframes';
+import { FROM_KEYFRAME, TO_KEYFRAME } from './utils/keyframes';
 import {
     isAndroid, isChrome, getTransformProperty, capitalize, getNonNegInt,
     withinRange, isEmptyStr, isNone, getValue, getEasing, isPercent, getInt, getFloat,
     getPosition, debounce, getPosInt, camelToDash, shuffleElements, isFunction,
     isNumeric,
-} from './util/helpers';
+} from './utils/helpers';
 
 const IS_TOUCH = 'ontouchstart' in window,
     ANDROID2 = isAndroid(2.9),
