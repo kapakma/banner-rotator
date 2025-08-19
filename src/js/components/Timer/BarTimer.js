@@ -1,4 +1,4 @@
-import Timer from "./Timer";
+import Timer from './Timer';
 
 //Bar Timer Class
 class BarTimer extends Timer {
@@ -6,7 +6,8 @@ class BarTimer extends Timer {
         super(context, opts);
 
         this._$bar = $('<div/>');
-        this._$timer.addClass('br-bar-timer')
+        this._$timer
+            .addClass('br-bar-timer')
             .addClass(/bottom/i.test(opts.position) ? 'br-bottom' : 'br-top')
             .append(this._$bar);
     }
@@ -31,8 +32,8 @@ class BarTimer extends Timer {
 
     pause() {
         this._$bar.stopTransition(true);
-        this._elapsed += (Date.now() - this._startTime);
-        this._$bar.width(`${this._elapsed/this._delay * 101 }%`);
+        this._elapsed += Date.now() - this._startTime;
+        this._$bar.width(`${(this._elapsed / this._delay) * 101}%`);
 
         super.pause();
     }

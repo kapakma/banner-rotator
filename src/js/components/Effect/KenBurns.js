@@ -1,4 +1,10 @@
-import { isNone, getRandomItem, getNonNegInt, getValue, camelToDash } from '../../utils/helpers';
+import {
+    isNone,
+    getRandomItem,
+    getNonNegInt,
+    getValue,
+    camelToDash,
+} from '../../utils/helpers';
 import { SUPPORT } from '../../utils/support';
 
 //KenBurns Class
@@ -13,8 +19,7 @@ class KenBurns {
 
             if (/^random/.test(this._effect)) {
                 this._effect = this.getRandom();
-            }
-            else {
+            } else {
                 this._effect = camelToDash(this._effect);
             }
 
@@ -23,7 +28,7 @@ class KenBurns {
                 opts.direction = 'reverse';
             }
 
-            this._effect = `br-${ this._effect}`;
+            this._effect = `br-${this._effect}`;
             this._options = {
                 duration: getNonNegInt(opts.duration, 5000),
                 easing: getValue(opts.easing, 'linear'),
@@ -64,17 +69,26 @@ class KenBurns {
     }
 }
 
-(function() {
-    KenBurns.PAN = ['up', 'down', 'left', 'right', 'up-left', 'up-right', 'down-left', 'down-right'];
+(function () {
+    KenBurns.PAN = [
+        'up',
+        'down',
+        'left',
+        'right',
+        'up-left',
+        'up-right',
+        'down-left',
+        'down-right',
+    ];
 
     KenBurns.ZOOMIN = ['zoom-in'];
 
     KenBurns.ZOOMOUT = ['zoom-out'];
 
-    $.each(KenBurns.PAN, function(i, val) {
-        KenBurns.PAN[i] = `pan-${ val}`;
-        KenBurns.ZOOMIN.push(`zoom-in-${ val}`);
-        KenBurns.ZOOMOUT.push(`zoom-out-${ val}`);
+    $.each(KenBurns.PAN, function (i, val) {
+        KenBurns.PAN[i] = `pan-${val}`;
+        KenBurns.ZOOMIN.push(`zoom-in-${val}`);
+        KenBurns.ZOOMOUT.push(`zoom-out-${val}`);
     });
 
     KenBurns.ZOOM = KenBurns.ZOOMIN.concat(KenBurns.ZOOMOUT);
@@ -96,6 +110,6 @@ class KenBurns {
         'zoom-out-down-left': 'zoom-in-up-right',
         'zoom-out-down-right': 'zoom-in-up-left',
     };
-}());
+})();
 
 export default KenBurns;

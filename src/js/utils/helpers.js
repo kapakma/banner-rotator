@@ -1,9 +1,9 @@
-import { SUPPORT, PREFIXES } from "./support";
-import { CUBIC_BEZIER } from "../constants";
+import { SUPPORT, PREFIXES } from './support';
+import { CUBIC_BEZIER } from '../constants';
 
 //check if value is a function
 export function isFunction(obj) {
-    return (typeof obj === "function");
+    return typeof obj === 'function';
 }
 
 //check if value is numeric
@@ -39,8 +39,7 @@ export function getEasing(easing, css) {
         if (!(easing in CUBIC_BEZIER)) {
             return 'ease';
         }
-    }
-    else if (!(easing in $.easing)) {
+    } else if (!(easing in $.easing)) {
         return 'swing';
     }
     return easing;
@@ -53,51 +52,51 @@ export function getRandomItem(arr) {
 
 //test number within range
 export function withinRange(val, min, max) {
-    return (isNumeric(val) && min <= val && val <= max);
+    return isNumeric(val) && min <= val && val <= max;
 }
 
 //test for none
 export function isNone(val) {
-    return (typeof val === 'undefined' || val === false || val === 'none');
+    return typeof val === 'undefined' || val === false || val === 'none';
 }
 
 //check if empty string
 export function isEmptyStr(val) {
-    return (typeof val === 'undefined' || val.trim() === '');
+    return typeof val === 'undefined' || val.trim() === '';
 }
 
 //get integer
 export function getInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return (isNumeric(val) ? val : defaultVal);
+    return isNumeric(val) ? val : defaultVal;
 }
 
 //get positive integer
 export function getPosInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return (isNumeric(val) && val > 0 ? val : defaultVal);
+    return isNumeric(val) && val > 0 ? val : defaultVal;
 }
 
 //get non-negative integer
 export function getNonNegInt(val, defaultVal) {
     val = parseInt(val, 10);
-    return (isNumeric(val) && val >= 0 ? val : defaultVal);
+    return isNumeric(val) && val >= 0 ? val : defaultVal;
 }
 
 //get float
 export function getFloat(val, defaultVal) {
     val = parseFloat(val);
-    return (isNumeric(val) ? val : defaultVal);
+    return isNumeric(val) ? val : defaultVal;
 }
 
 //get value
 export function getValue(val, defaultVal) {
-    return (typeof val !== 'undefined' ? val : defaultVal);
+    return typeof val !== 'undefined' ? val : defaultVal;
 }
 
 //get enum value
 export function getEnum(val, list, defaultVal) {
-    return ($.inArray(val, list) > -1 ? val : defaultVal);
+    return $.inArray(val, list) > -1 ? val : defaultVal;
 }
 
 //check for percent
@@ -110,7 +109,7 @@ export function isPercent(val) {
 //round to
 export function roundTo(val, digits) {
     const num = Math.pow(10, digits);
-    return Math.round(val * num)/num;
+    return Math.round(val * num) / num;
 }
 
 //check for image file
@@ -126,8 +125,7 @@ export function styleSupport(prop) {
 
     if (prop in style) {
         supported = prop;
-    }
-    else {
+    } else {
         const capProp = capitalize(prop),
             prefixes = ['Moz', 'Webkit', 'O', 'ms'];
 
@@ -151,7 +149,11 @@ export function isAndroid(version) {
         ua = navigator.userAgent.toLowerCase(),
         index = ua.indexOf(android);
 
-    return (index > -1 && (typeof version === 'undefined' || parseFloat(ua.substring(index + android.length)) <= version));
+    return (
+        index > -1 &&
+        (typeof version === 'undefined' ||
+            parseFloat(ua.substring(index + android.length)) <= version)
+    );
 }
 
 //is chrome check
@@ -161,14 +163,17 @@ export function isChrome() {
 
 //convert camel case to dash
 export function camelToDash(str) {
-    return (`${str }`).replace(/([A-Za-z])([A-Z])/g, '$1-$2').toLowerCase();
+    return `${str}`.replace(/([A-Za-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 //convert dash to camel case
 export function dashToCamel(str) {
-    return (`${str }`).replace(/([A-Za-z])(-)([A-Za-z])/g, function(match, p1, p2, p3) {
-        return (p1 + p3.toUpperCase());
-    });
+    return `${str}`.replace(
+        /([A-Za-z])(-)([A-Za-z])/g,
+        function (match, p1, p2, p3) {
+            return p1 + p3.toUpperCase();
+        }
+    );
 }
 
 //check css property support
@@ -182,7 +187,7 @@ export function propertySupport(prop, val) {
         support;
 
     el.style[dashProp] = val;
-    support = (`${el.style[dashProp] }`).indexOf(val) > -1;
+    support = `${el.style[dashProp]}`.indexOf(val) > -1;
     el = null;
 
     return support;
@@ -195,13 +200,16 @@ export function filterSupport() {
         cssText = prefixes.join('filter:blur(2px); ');
 
     el.style.cssText = cssText;
-    return !!el.style.length && (document.documentMode === undefined || document.documentMode > 9);
+    return (
+        !!el.style.length &&
+        (document.documentMode === undefined || document.documentMode > 9)
+    );
 }
 
 //shuffle array
 export function shuffleArray(arr) {
     let i = arr.length;
-    while(--i > 0) {
+    while (--i > 0) {
         const ri = Math.floor(Math.random() * (i + 1)),
             temp = arr[i];
         arr[i] = arr[ri];
@@ -217,21 +225,21 @@ export function capitalize(str) {
 
 //convert degrees to radians
 export function degreesToRadians(degrees) {
-    return (degrees * Math.PI/180);
+    return (degrees * Math.PI) / 180;
 }
 
 //get transform property
 export function getTransformProperty(transform) {
-    return PREFIXES.concat(['', '']).join(`transform:${ transform };`);
+    return PREFIXES.concat(['', '']).join(`transform:${transform};`);
 }
 
 //debounce
 export function debounce(fn, wait, immediate) {
     let timeout;
-    return function() {
+    return function () {
         const context = this,
             args = arguments;
-        const later = function() {
+        const later = function () {
             timeout = null;
             if (!immediate) {
                 fn.apply(context, args);
@@ -248,17 +256,21 @@ export function debounce(fn, wait, immediate) {
 
 //get object keys
 export function getKeys(obj) {
-    return $.map(obj, function(val, key) {
+    return $.map(obj, function (val, key) {
         return key;
     });
 }
 
 //add effect presets
 export function addPresets(presets, effects, directions, orders) {
-    $.each(effects, function(i, effect) {
-        $.each(directions, function(j, direction) {
-            $.each(orders, function(k, order) {
-                presets.push({ effect: effect, direction: direction, order: order });
+    $.each(effects, function (i, effect) {
+        $.each(directions, function (j, direction) {
+            $.each(orders, function (k, order) {
+                presets.push({
+                    effect: effect,
+                    direction: direction,
+                    order: order,
+                });
             });
         });
     });
@@ -268,10 +280,10 @@ export function addPresets(presets, effects, directions, orders) {
 export function createWrapper($el) {
     const size = { width: $el.width(), height: $el.height() },
         $wrapper = $('<div/>', {
-            'class': 'br-effect-wrapper',
+            class: 'br-effect-wrapper',
             css: {
                 position: $el.css('position'),
-                'float': $el.css('float'),
+                float: $el.css('float'),
                 width: $el.outerWidth(true),
                 height: $el.outerHeight(true),
                 'z-index': $el.css('z-index'),
@@ -282,14 +294,16 @@ export function createWrapper($el) {
             },
         });
 
-    $el.wrap($wrapper).css({
-        display: 'block',
-        position: 'relative',
-        top: 0,
-        bottom: 'auto',
-        left: 0,
-        right: 'auto',
-    }).css(size);
+    $el.wrap($wrapper)
+        .css({
+            display: 'block',
+            position: 'relative',
+            top: 0,
+            bottom: 'auto',
+            left: 0,
+            right: 'auto',
+        })
+        .css(size);
 }
 
 //remove wrapper
@@ -301,15 +315,15 @@ export function removeWrapper($el) {
 
 //save element style
 export function saveStyle($el, props) {
-    $.each(props, function(i, val) {
-        $el.data(`style-${ val}`, $el[0].style[val]);
+    $.each(props, function (i, val) {
+        $el.data(`style-${val}`, $el[0].style[val]);
     });
 }
 
 //restore element style
 export function restoreStyle($el, props) {
-    $.each(props, function(i, val) {
-        const style = $el.data(`style-${ val}`);
-        $el.css(val, (typeof style === 'undefined' ? '' : style));
+    $.each(props, function (i, val) {
+        const style = $el.data(`style-${val}`);
+        $el.css(val, typeof style === 'undefined' ? '' : style);
     });
 }

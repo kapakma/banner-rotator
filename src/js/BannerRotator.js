@@ -6,9 +6,25 @@ import { PREFIX, SUPPORT } from './utils/support';
 import { SIDES, OPPOSITE_SIDE, OPPOSITE_LAYER } from './constants';
 import { FROM_KEYFRAME, TO_KEYFRAME } from './utils/keyframes';
 import {
-    isAndroid, isChrome, getTransformProperty, capitalize, getNonNegInt,
-    withinRange, isEmptyStr, isNone, getValue, getEasing, isPercent, getInt, getFloat,
-    getPosition, debounce, getPosInt, camelToDash, shuffleElements, isFunction,
+    isAndroid,
+    isChrome,
+    getTransformProperty,
+    capitalize,
+    getNonNegInt,
+    withinRange,
+    isEmptyStr,
+    isNone,
+    getValue,
+    getEasing,
+    isPercent,
+    getInt,
+    getFloat,
+    getPosition,
+    debounce,
+    getPosInt,
+    camelToDash,
+    shuffleElements,
+    isFunction,
     isNumeric,
 } from './utils/helpers';
 
@@ -25,7 +41,10 @@ class Rotator {
         this._stageHeight = this._options.height;
         this._rotate = this._options.autoPlay;
 
-        this._cssTransition = (SUPPORT.transition && !ANDROID2 ? this._options.cssTransition : false);
+        this._cssTransition =
+            SUPPORT.transition && !ANDROID2
+                ? this._options.cssTransition
+                : false;
         this._transform = SUPPORT.transform && this._cssTransition;
 
         if (!this._cssTransition) {
@@ -41,7 +60,7 @@ class Rotator {
         this._delay = 0;
         this._$rotator = $(el);
         this._$outmost = this._$rotator;
-        this._namespace = `.${ Rotator.PLUGIN }.${ this._uid}`;
+        this._namespace = `.${Rotator.PLUGIN}.${this._uid}`;
         this._isWhite = this._$rotator.hasClass('white');
         this._hasShadow = this._$rotator.hasClass('shadow');
         this._html = this._$rotator.html();
@@ -52,7 +71,9 @@ class Rotator {
 
     //init banner rotator
     init() {
-        this._$rotator.attr('tabindex', -1).toggleClass('br-no-touch', !IS_TOUCH);
+        this._$rotator
+            .attr('tabindex', -1)
+            .toggleClass('br-no-touch', !IS_TOUCH);
         if (!this._$rotator.hasClass('banner-rotator')) {
             this._$rotator.addClass('banner-rotator');
         }
@@ -70,10 +91,11 @@ class Rotator {
 
         if (this._options.startIndex === 'random') {
             this._activeIndex = Math.floor(Math.random() * this._numItems);
-        }
-        else {
+        } else {
             const index = getNonNegInt(this._options.startIndex, 0);
-            this._activeIndex = withinRange(index, 0, this._numItems - 1) ? index : 0;
+            this._activeIndex = withinRange(index, 0, this._numItems - 1)
+                ? index
+                : 0;
         }
 
         //init components
@@ -85,34 +107,54 @@ class Rotator {
         this.initCPanel();
 
         if (this._options.hideControl) {
-            this._$controls = this._$screen.find('>.br-nav-wrapper').add(this._$rotator.find('>.br-cpanel-wrapper'));
+            this._$controls = this._$screen
+                .find('>.br-nav-wrapper')
+                .add(this._$rotator.find('>.br-cpanel-wrapper'));
             if (this._$outmost.hasClass('br-outer-navs')) {
-                this._$controls = this._$controls.add(this._$outmost.children(':not(.banner-rotator, .br-wrapper)'));
+                this._$controls = this._$controls.add(
+                    this._$outmost.children(
+                        ':not(.banner-rotator, .br-wrapper)'
+                    )
+                );
             }
             this._$controls.addTransitionClass('br-opacity-transition');
         }
 
         if (this._options.responsive) {
             this.resize();
-            $(window).on(`resize${ this._namespace}`, debounce($.proxy(this.resize, this), 50));
-        }
-        else {
-            let $outer = this._$rotator.css({ width: this._stageWidth, height: this._stageHeight });
-            $.each(['.br-wrapper', '.br-outer-navs'], function(i, selector) {
+            $(window).on(
+                `resize${this._namespace}`,
+                debounce($.proxy(this.resize, this), 50)
+            );
+        } else {
+            let $outer = this._$rotator.css({
+                width: this._stageWidth,
+                height: this._stageHeight,
+            });
+            $.each(['.br-wrapper', '.br-outer-navs'], function (i, selector) {
                 const $el = $outer.parent(selector);
                 if ($el.length) {
-                    $el.css({ width: $outer.outerWidth(true), height: $outer.outerHeight(true) });
+                    $el.css({
+                        width: $outer.outerWidth(true),
+                        height: $outer.outerHeight(true),
+                    });
                     $outer = $el;
                 }
             });
         }
 
         if (this._options.mousewheel) {
-            this._$rotator.on(`mousewheel${ this._namespace } DOMMouseScroll${ this._namespace}`, $.proxy(this.mousescroll, this));
+            this._$rotator.on(
+                `mousewheel${this._namespace} DOMMouseScroll${this._namespace}`,
+                $.proxy(this.mousescroll, this)
+            );
         }
 
         if (this._options.keyboard) {
-            this._$rotator.on(`keydown${ this._namespace}`, $.proxy(this.keyControl, this));
+            this._$rotator.on(
+                `keydown${this._namespace}`,
+                $.proxy(this.keyControl, this)
+            );
         }
 
         if (IS_TOUCH) {
@@ -120,17 +162,19 @@ class Rotator {
                 if (this._options.swipeDirection === 'reverse') {
                     this.swipeFwd = this.prevSlide;
                     this.swipeBack = this.nextSlide;
-                }
-                else {
+                } else {
                     this.swipeFwd = this.nextSlide;
                     this.swipeBack = this.prevSlide;
                 }
-                this._$rotator.on(`touchstart${ this._namespace}`, $.proxy(this.touchStart, this));
+                this._$rotator.on(
+                    `touchstart${this._namespace}`,
+                    $.proxy(this.touchStart, this)
+                );
             }
-        }
-        else if (this._options.pauseOnHover) {
-            this._$outmost.on(`mouseenter${ this._namespace}`, $.proxy(this.pause, this))
-                .on(`mouseleave${ this._namespace}`, $.proxy(this.play, this));
+        } else if (this._options.pauseOnHover) {
+            this._$outmost
+                .on(`mouseenter${this._namespace}`, $.proxy(this.pause, this))
+                .on(`mouseleave${this._namespace}`, $.proxy(this.play, this));
         }
 
         if (this._options.playOnce) {
@@ -141,8 +185,7 @@ class Rotator {
 
         if (this._options.preload) {
             this.setPreload();
-        }
-        else {
+        } else {
             this.loadNextImage(this._$items.toArray());
             this.loadSlide();
         }
@@ -153,51 +196,79 @@ class Rotator {
 
         let $hidden = this._$rotator.children();
         if (this._$outmost.hasClass('br-outer-navs')) {
-            $hidden = $hidden.add(this._$outmost.children(':not(.banner-rotator, .br-wrapper)'));
+            $hidden = $hidden.add(
+                this._$outmost.children(':not(.banner-rotator, .br-wrapper)')
+            );
         }
         $hidden.addClass('br-hidden');
 
-        const $overlay = $('<div/>', { 'class': 'br-load-screen' }).appendTo(this._$rotator);
-        this._$progressBar = $('<div/>', { 'class': 'br-progress-bar', html: '<div/>' }).appendTo($overlay);
+        const $overlay = $('<div/>', { class: 'br-load-screen' }).appendTo(
+            this._$rotator
+        );
+        this._$progressBar = $('<div/>', {
+            class: 'br-progress-bar',
+            html: '<div/>',
+        }).appendTo($overlay);
 
-        this.loadNextImage(this._$items.toArray(), function() {
-            setTimeout($.proxy(function() {
-                $hidden.removeClass('br-hidden');
-                $overlay.fadeOut(Rotator.ANIMATE_SPEED, function() {
-                    $(this).remove();
-                });
-                this.loadSlide();
-            }, this), 600);
+        this.loadNextImage(this._$items.toArray(), function () {
+            setTimeout(
+                $.proxy(function () {
+                    $hidden.removeClass('br-hidden');
+                    $overlay.fadeOut(Rotator.ANIMATE_SPEED, function () {
+                        $(this).remove();
+                    });
+                    this.loadSlide();
+                }, this),
+                600
+            );
         });
     }
 
     //init stage
     initStage() {
-        this._$screen = this._$list.wrap('<div class="br-screen"></div>').parent();
-        this._$stage = this._$screen.wrap('<div class="br-stage"></div>').parent();
+        this._$screen = this._$list
+            .wrap('<div class="br-screen"></div>')
+            .parent();
+        this._$stage = this._$screen
+            .wrap('<div class="br-stage"></div>')
+            .parent();
 
         if (this._options.backgroundColor) {
-            this._$stage.css({ backgroundColor: this._options.backgroundColor });
+            this._$stage.css({
+                backgroundColor: this._options.backgroundColor,
+            });
         }
         this.createBorder();
 
         //init screen
         this._effects = new Transition(this);
-        this._$screen.append('<div class="br-preloader"></div><div class="br-links"></div><div class="br-layers"></div>');
+        this._$screen.append(
+            '<div class="br-preloader"></div><div class="br-links"></div><div class="br-layers"></div>'
+        );
         this._$preloader = this._$screen.find('>.br-preloader');
         this._$linkWrapper = this._$screen.find('>.br-links');
         this._$layerWrapper = this._$screen.find('>.br-layers');
         if (this._options.pauseOnInteraction) {
-            this._$linkWrapper.on(`click${ this._namespace}`, '>a', $.proxy(this.pause, this));
+            this._$linkWrapper.on(
+                `click${this._namespace}`,
+                '>a',
+                $.proxy(this.pause, this)
+            );
         }
 
         //init timer
         if (!isNone(this._options.timer)) {
-            const settings = { position: this._options.timerPosition, click: $.proxy(this.togglePlay, this) };
+            const settings = {
+                position: this._options.timerPosition,
+                click: $.proxy(this.togglePlay, this),
+            };
             if (this._options.timer === 'bar') {
                 this._timer = new BarTimer(this, settings);
-            }
-            else if (this._options.timer === 'pie' && SUPPORT.animation && this._transform) {
+            } else if (
+                this._options.timer === 'pie' &&
+                SUPPORT.animation &&
+                this._transform
+            ) {
                 this._timer = new PieTimer(this, settings);
             }
         }
@@ -209,32 +280,51 @@ class Rotator {
     //create border
     createBorder() {
         //set border options
-        $.each(['width', 'style', 'color', 'radius'], $.proxy(function(i, name) {
-            name = `border${ capitalize(name)}`;
-            const	opt = this._options[name];
-            if (!isEmptyStr(opt)) {
-                this._$rotator.css(name, opt);
-            }
-        }, this));
+        $.each(
+            ['width', 'style', 'color', 'radius'],
+            $.proxy(function (i, name) {
+                name = `border${capitalize(name)}`;
+                const opt = this._options[name];
+                if (!isEmptyStr(opt)) {
+                    this._$rotator.css(name, opt);
+                }
+            }, this)
+        );
 
         if (this._$rotator.brHasBorder()) {
-            this._$rotator.toggleClass('br-flat-shadow', this._hasShadow).add(this._$screen).css({ overflow: 'hidden' });
-        }
-        else if (this._hasShadow && SUPPORT.transform3d && SUPPORT.preserve3d) {
-            $('<div/>', { 'class': 'br-3d-shadow' }).prependTo(this._$rotator);
+            this._$rotator
+                .toggleClass('br-flat-shadow', this._hasShadow)
+                .add(this._$screen)
+                .css({ overflow: 'hidden' });
+        } else if (
+            this._hasShadow &&
+            SUPPORT.transform3d &&
+            SUPPORT.preserve3d
+        ) {
+            $('<div/>', { class: 'br-3d-shadow' }).prependTo(this._$rotator);
         }
     }
 
     //create border wrapper
     createBorderWrapper() {
-        let $wrapper = $('<div/>', { 'class': 'br-wrapper' }).brCopyBorder(this._$rotator);
-        this._$rotator.css({ border: 'none', borderRadius: 0 }).removeClass('br-flat-shadow').wrap($wrapper);
+        let $wrapper = $('<div/>', { class: 'br-wrapper' }).brCopyBorder(
+            this._$rotator
+        );
+        this._$rotator
+            .css({ border: 'none', borderRadius: 0 })
+            .removeClass('br-flat-shadow')
+            .wrap($wrapper);
         $wrapper = this._$rotator.parent();
 
         if ($wrapper.brHasBorder()) {
-            $wrapper.toggleClass('br-flat-shadow', this._hasShadow).css({ overflow: 'hidden' });
-        }
-        else if (this._hasShadow && this._orientation === 'horizontal' && this._cpPosition.y === 'bottom') {
+            $wrapper
+                .toggleClass('br-flat-shadow', this._hasShadow)
+                .css({ overflow: 'hidden' });
+        } else if (
+            this._hasShadow &&
+            this._orientation === 'horizontal' &&
+            this._cpPosition.y === 'bottom'
+        ) {
             this._$rotator.find('>.br-3d-shadow').remove();
             this._$extPanel.addClass('br-flat-shadow');
         }
@@ -244,53 +334,105 @@ class Rotator {
     initItems() {
         const effects = ['effect', 'duration', 'easing', 'delay'],
             kenBurns = ['kbEffect', 'kbDuration', 'kbEasing'],
-            props = ['columns', 'rows', 'interval', 'direction', 'order', 'alternate', 'autoReverse',
-                'depth', 'shapeColor', 'shapeShading', 'shapeDepth',
-                'imagePosition'].concat(effects).concat(kenBurns);
+            props = [
+                'columns',
+                'rows',
+                'interval',
+                'direction',
+                'order',
+                'alternate',
+                'autoReverse',
+                'depth',
+                'shapeColor',
+                'shapeShading',
+                'shapeDepth',
+                'imagePosition',
+            ]
+                .concat(effects)
+                .concat(kenBurns);
 
-        this._$items.each($.proxy(function(n, el) {
-            let $item = $(el).data('ready', false),
-                $img = $item.children('img').first(),
-                $link = $item.children('a').first();
+        this._$items.each(
+            $.proxy(function (n, el) {
+                let $item = $(el).data('ready', false),
+                    $img = $item.children('img').first(),
+                    $link = $item.children('a').first();
 
-            if ($link.length && $link.find('>img').length) {
-                if (!$img.length || $link.index() < $img.index()) {
-                    $item.data({ link: $link.attr('href'), target: $link.attr('target') });
-                    $img = $link.find('>img').unwrap();
+                if ($link.length && $link.find('>img').length) {
+                    if (!$img.length || $link.index() < $img.index()) {
+                        $item.data({
+                            link: $link.attr('href'),
+                            target: $link.attr('target'),
+                        });
+                        $img = $link.find('>img').unwrap();
+                    }
                 }
-            }
 
-            $img.addClass('br-img').data('src', $img.data('src') || $img.attr('src'));
-            $.each(['thumb', 'nav-thumb'], function(i, val) {
-                $img.data(val, $img.data(val) || $img.data('src'));
-            });
+                $img.addClass('br-img').data(
+                    'src',
+                    $img.data('src') || $img.attr('src')
+                );
+                $.each(['thumb', 'nav-thumb'], function (i, val) {
+                    $img.data(val, $img.data(val) || $img.data('src'));
+                });
 
-            //set tooltip
-            if (this._options.tooltip === 'image') {
-                $img.data('tooltip', $img.data('tooltip') || $img.data('thumb'));
-                $item.prepend($('<img/>', { alt: '', 'class': 'tooltip', src: $img.data('tooltip') }));
-            }
-            else if (this._options.tooltip === 'text') {
-                $item.data({ tooltip: $item.find('>.tooltip').html() || $img.attr('title') });
-            }
+                //set tooltip
+                if (this._options.tooltip === 'image') {
+                    $img.data(
+                        'tooltip',
+                        $img.data('tooltip') || $img.data('thumb')
+                    );
+                    $item.prepend(
+                        $('<img/>', {
+                            alt: '',
+                            class: 'tooltip',
+                            src: $img.data('tooltip'),
+                        })
+                    );
+                } else if (this._options.tooltip === 'text') {
+                    $item.data({
+                        tooltip:
+                            $item.find('>.tooltip').html() ||
+                            $img.attr('title'),
+                    });
+                }
 
-            //add link
-            if ($item.data('link')) {
-                $('<a/>', { id: `br-link-${ n}`, 'class': 'br-link', href: $item.data('link'), target: $item.data('target') }).appendTo(this._$linkWrapper);
-            }
+                //add link
+                if ($item.data('link')) {
+                    $('<a/>', {
+                        id: `br-link-${n}`,
+                        class: 'br-link',
+                        href: $item.data('link'),
+                        target: $item.data('target'),
+                    }).appendTo(this._$linkWrapper);
+                }
 
-            //set data
-            $item.brMapShorthand('transition', effects).brMapShorthand('ken-burns', kenBurns);
-            $.each(props, $.proxy(function(i, val) {
-                $item.data(val, getValue($item.data(val), this._options[val]));
-            }, this));
+                //set data
+                $item
+                    .brMapShorthand('transition', effects)
+                    .brMapShorthand('ken-burns', kenBurns);
+                $.each(
+                    props,
+                    $.proxy(function (i, val) {
+                        $item.data(
+                            val,
+                            getValue($item.data(val), this._options[val])
+                        );
+                    }, this)
+                );
 
-            $item.data({ easing: getEasing($item.data('easing'), this._cssTransition), kbEasing: getEasing($item.data('kbEasing'), true) });
+                $item.data({
+                    easing: getEasing(
+                        $item.data('easing'),
+                        this._cssTransition
+                    ),
+                    kbEasing: getEasing($item.data('kbEasing'), true),
+                });
 
-            this.initLayer($item);
+                this.initLayer($item);
 
-            this.injectKeyframes($item);
-        }, this));
+                this.injectKeyframes($item);
+            }, this)
+        );
 
         //init layers
         this._$layers = this._$layerWrapper.find('.br-layer');
@@ -310,23 +452,29 @@ class Rotator {
     //inject item's keyframes
     injectKeyframes($item) {
         try {
-            const depth = isNumeric($item.data('depth')) ? -Math.abs($item.data('depth')) : 0,
+            const depth = isNumeric($item.data('depth'))
+                    ? -Math.abs($item.data('depth'))
+                    : 0,
                 rules = this._sheet.rules || this._sheet.cssRules;
 
-            this._sheet.insertRule(`@${ PREFIX }keyframes ` + `br-${ this._uid }-${ $item.index()}` + ` { ${
-                FROM_KEYFRAME
-            }50% { ${ getTransformProperty(`translateZ(${ depth }px)`) } } ${
-                TO_KEYFRAME
-            }} `, rules.length);
-        }
-        catch (error) {
+            this._sheet.insertRule(
+                `@${PREFIX}keyframes ` +
+                    `br-${this._uid}-${$item.index()}` +
+                    ` { ${
+                        FROM_KEYFRAME
+                    }50% { ${getTransformProperty(`translateZ(${depth}px)`)} } ${
+                        TO_KEYFRAME
+                    }} `,
+                rules.length
+            );
+        } catch (error) {
             throw new Error(`Failed to inject keyframes: ${error.message}`);
         }
     }
 
     //init control panel
     initCPanel() {
-        this._$cpanel = $('<div/>', { 'class': 'br-cpanel' });
+        this._$cpanel = $('<div/>', { class: 'br-cpanel' });
         this._cpPosition = getPosition(this._options.cpanelPosition);
 
         if (this._options.cpanelOrientation === 'vertical') {
@@ -334,27 +482,32 @@ class Rotator {
             if (this._cpPosition.x === 'center') {
                 this._cpPosition.x = 'left';
             }
-        }
-        else {
+        } else {
             this._orientation = 'horizontal';
             if (this._cpPosition.y === 'center') {
                 this._cpPosition.y = 'bottom';
             }
         }
 
-        this._$cpanel.addClass(`br-${ this._orientation}`);
+        this._$cpanel.addClass(`br-${this._orientation}`);
 
         if (this._options.cpanelOutside) {
             this._$cpanel.prependTo(this._$rotator);
-        }
-        else {
+        } else {
             this._$cpanel.appendTo(this._$rotator);
         }
 
-        if (this._options.groupButtons && this._options.thumbnails !== 'bullet') {
-            const size = (this._orientation === 'vertical' ? 'Width' : 'Height');
+        if (
+            this._options.groupButtons &&
+            this._options.thumbnails !== 'bullet'
+        ) {
+            const size = this._orientation === 'vertical' ? 'Width' : 'Height';
             this._$cpanel.addClass('br-button-group');
-            this._options[`thumb${ size}`] = this._options[`button${ size}`] = Math.max(this._options[`thumb${ size}`], this._options[`button${ size}`]);
+            this._options[`thumb${size}`] = this._options[`button${size}`] =
+                Math.max(
+                    this._options[`thumb${size}`],
+                    this._options[`button${size}`]
+                );
         }
 
         this.initThumbnails();
@@ -362,27 +515,54 @@ class Rotator {
 
         const $el = this._$cpanel.children();
         if ($el.length) {
-            this._$cpWrapper = this._$cpanel.wrap('<div class="br-cpanel-wrapper"></div>').parent();
+            this._$cpWrapper = this._$cpanel
+                .wrap('<div class="br-cpanel-wrapper"></div>')
+                .parent();
             this.initButtonGroup();
 
             if (this._orientation === 'vertical') {
-                this._$cpanel.data({ pos: 'top', coord: 'y', dim: 'height', outerDim: 'outerHeight' });
+                this._$cpanel.data({
+                    pos: 'top',
+                    coord: 'y',
+                    dim: 'height',
+                    outerDim: 'outerHeight',
+                });
 
                 //set size
-                const maxWidth = Math.max.apply(null, $el.map(function() { return $(this).outerWidth(true); }).get());
-                $el.each(function() {
-                    $(this).css({ left: (maxWidth - $(this).outerWidth(true))/2 });
+                const maxWidth = Math.max.apply(
+                    null,
+                    $el
+                        .map(function () {
+                            return $(this).outerWidth(true);
+                        })
+                        .get()
+                );
+                $el.each(function () {
+                    $(this).css({
+                        left: (maxWidth - $(this).outerWidth(true)) / 2,
+                    });
                 });
                 this._$cpanel.css({ width: maxWidth });
 
                 //check offset
                 this.setNavOffset();
-            }
-            else {
-                this._$cpanel.data({ pos: 'left', coord: 'x', dim: 'width', outerDim: 'outerWidth' });
+            } else {
+                this._$cpanel.data({
+                    pos: 'left',
+                    coord: 'x',
+                    dim: 'width',
+                    outerDim: 'outerWidth',
+                });
 
                 //set size
-                const maxHeight = Math.max.apply(null, $el.map(function() { return $(this).outerHeight(true); }).get());
+                const maxHeight = Math.max.apply(
+                    null,
+                    $el
+                        .map(function () {
+                            return $(this).outerHeight(true);
+                        })
+                        .get()
+                );
                 this._$cpanel.css({ height: maxHeight });
             }
 
@@ -393,60 +573,74 @@ class Rotator {
             //position control panel
             if (this._cpPosition[data.coord] === 'center') {
                 this._$cpWrapper.css(data.pos, '50%');
-                this._$cpanel.css(data.pos, -this._$cpanel[outerDim](true)/2);
-            }
-            else {
+                this._$cpanel.css(data.pos, -this._$cpanel[outerDim](true) / 2);
+            } else {
                 this._$cpWrapper.css(this._cpPosition[data.coord], 0);
             }
 
             //set inner or outer
             if (this._options.cpanelOutside) {
-                this[`setOuter${ capitalize(this._orientation) }CPanel`]();
-            }
-            else {
+                this[`setOuter${capitalize(this._orientation)}CPanel`]();
+            } else {
                 this.setInnerCPanel();
             }
 
             //check overflow
             if (!isNone(this._options.thumbnails)) {
-                this._buttonSize = $el.not('.br-thumbnails')[`brTotal${ capitalize(dim)}`](true);
-                this._cpanelMargin = this._$cpanel[outerDim](true) - this._$cpanel[dim]();
+                this._buttonSize = $el
+                    .not('.br-thumbnails')
+                    [`brTotal${capitalize(dim)}`](true);
+                this._cpanelMargin =
+                    this._$cpanel[outerDim](true) - this._$cpanel[dim]();
 
                 if (this._options.responsive) {
-                    this._$rotator.on(`resizeCPanel${ this._namespace}`, $.proxy(this.resizeCPanel, this));
+                    this._$rotator.on(
+                        `resizeCPanel${this._namespace}`,
+                        $.proxy(this.resizeCPanel, this)
+                    );
                     this.addThumbScroll();
-                }
-                else if (this._$cpanel[outerDim](true) > this[`_stage${ capitalize(dim)}`]) {
+                } else if (
+                    this._$cpanel[outerDim](true) >
+                    this[`_stage${capitalize(dim)}`]
+                ) {
                     this.resizeCPanel();
                     this.addThumbScroll();
                 }
             }
-        }
-        else {
+        } else {
             this._$cpanel.remove();
         }
     }
 
     setNavOffset() {
         const margin = this._$cpWrapper.width(),
-            direction = (this._cpPosition.x === 'left' ? 'prev' : 'next'),
-            selector = `>.br-${ direction }-wrapper`;
+            direction = this._cpPosition.x === 'left' ? 'prev' : 'next',
+            selector = `>.br-${direction}-wrapper`;
 
         if (this._$outmost.hasClass('br-outer-navs')) {
-            this._$outmost.find(selector).css(this._cpPosition.x, `+=${ margin}`);
-        }
-        else if (this._options.navButtons === 'large' && !this._options.cpanelOutside) {
+            this._$outmost
+                .find(selector)
+                .css(this._cpPosition.x, `+=${margin}`);
+        } else if (
+            this._options.navButtons === 'large' &&
+            !this._options.cpanelOutside
+        ) {
             const $container = this._$screen.find('>.br-nav-wrapper'),
                 prop = {};
-            prop[`margin-${ this._cpPosition.x}`] = `+=${ margin}`;
+            prop[`margin-${this._cpPosition.x}`] = `+=${margin}`;
             if ($container.find(selector).length) {
-                $container.find(selector).find('>.br-nav-thumb').css(prop).data({ margin: margin }).end()
-                    .width($container.find(selector).children().brTotalWidth(true));
+                $container
+                    .find(selector)
+                    .find('>.br-nav-thumb')
+                    .css(prop)
+                    .data({ margin: margin })
+                    .end()
+                    .width(
+                        $container.find(selector).children().brTotalWidth(true)
+                    );
+            } else {
+                $container.find(`>.br-side-${direction}`).css(prop);
             }
-            else {
-                $container.find(`>.br-side-${ direction}`).css(prop);
-            }
-
         }
     }
 
@@ -468,7 +662,10 @@ class Rotator {
 
     //set inner cpanel
     setInnerCPanel() {
-        this._$cpWrapper.css(this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y'], 0);
+        this._$cpWrapper.css(
+            this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y'],
+            0
+        );
 
         if (this._options.cpanelOnHover) {
             this.addOnHover(this._$cpanel, 'br-transparent');
@@ -477,29 +674,38 @@ class Rotator {
 
     //create outer cpanel background
     createCPanelBg() {
-        this._$extPanel = this._$cpWrapper.wrap('<div class="br-ext-cp"></div>').parent();
-        this._$extPanel.toggleClass('white', this._isWhite || this._$rotator.hasClass('white-cpanel'));
+        this._$extPanel = this._$cpWrapper
+            .wrap('<div class="br-ext-cp"></div>')
+            .parent();
+        this._$extPanel.toggleClass(
+            'white',
+            this._isWhite || this._$rotator.hasClass('white-cpanel')
+        );
 
         if (SUPPORT.transform3d && SUPPORT.preserve3d) {
-            const $face = $('<div/>').toggleClass('white', this._$extPanel.hasClass('white'));
+            const $face = $('<div/>').toggleClass(
+                'white',
+                this._$extPanel.hasClass('white')
+            );
             $('<div/>', {
-                'class': 'br-stage-bg',
+                class: 'br-stage-bg',
                 html: $('<div/>').append($face),
             }).prependTo(this._$stage);
 
             if (this._orientation === 'vertical') {
-                $face.addClass(`br-face-${ this._cpPosition.x}`);
+                $face.addClass(`br-face-${this._cpPosition.x}`);
                 if (this._options.responsive) {
-                    this._$rotator.on(`resizeCPanel${ this._namespace}`, function() {
-                        $face.width($face.height());
-                    });
-                }
-                else {
+                    this._$rotator.on(
+                        `resizeCPanel${this._namespace}`,
+                        function () {
+                            $face.width($face.height());
+                        }
+                    );
+                } else {
                     $face.width(this._stageHeight);
                 }
-            }
-            else {
-                $face.addClass(`br-face-${ this._cpPosition.y}`);
+            } else {
+                $face.addClass(`br-face-${this._cpPosition.y}`);
             }
         }
     }
@@ -510,9 +716,14 @@ class Rotator {
             size = this._$cpWrapper.height();
 
         this.createCPanelBg();
-        this._$stage.css(`padding-${ pos}`, getNonNegInt(this._options.cpanelGap, 0));
-        this._$rotator.css(`margin-${ pos}`, size).css({ overflow: 'visible' });
-        this._$extPanel.css({ left: 0, width: '100%', height: size }).css(pos, -size);
+        this._$stage.css(
+            `padding-${pos}`,
+            getNonNegInt(this._options.cpanelGap, 0)
+        );
+        this._$rotator.css(`margin-${pos}`, size).css({ overflow: 'visible' });
+        this._$extPanel
+            .css({ left: 0, width: '100%', height: size })
+            .css(pos, -size);
         this.createBorderWrapper();
     }
 
@@ -522,8 +733,10 @@ class Rotator {
             size = this._$cpWrapper.width();
 
         this.createCPanelBg();
-        this._$rotator.css(`margin-${ pos}`, size).css({ overflow: 'visible' });
-        this._$extPanel.css({ top: 0, width: size, height: '100%' }).css(pos, -size);
+        this._$rotator.css(`margin-${pos}`, size).css({ overflow: 'visible' });
+        this._$extPanel
+            .css({ top: 0, width: size, height: '100%' })
+            .css(pos, -size);
         this.createBorderWrapper();
     }
 
@@ -534,62 +747,83 @@ class Rotator {
         //init play button
         if (this._options.playButton) {
             $playButton = $('<div/>', {
-                'class': 'br-play-button',
-                title: this._rotate ? this._options.pauseText : this._options.playText,
+                class: 'br-play-button',
+                title: this._rotate
+                    ? this._options.pauseText
+                    : this._options.playText,
                 html: '<div/>',
-            }).toggleClass('br-pause', this._rotate)
-                .on(`click${ this._namespace}`, $.proxy(this.togglePlay, this))
+            })
+                .toggleClass('br-pause', this._rotate)
+                .on(`click${this._namespace}`, $.proxy(this.togglePlay, this))
                 .appendTo(this._$cpanel);
         }
 
         //init navigation buttons
-        if (this._options.navButtons === true || this._options.navButtons === 'small') {
+        if (
+            this._options.navButtons === true ||
+            this._options.navButtons === 'small'
+        ) {
             $prevButton = $('<div/>', {
-                'class': 'br-prev-button',
+                class: 'br-prev-button',
                 title: this._options.prevText,
                 html: '<div/>',
-            }).toggleClass('br-up', this._orientation === 'vertical')
-                .on(`click${ this._namespace}`, $.proxy(this.prevSlide, this));
+            })
+                .toggleClass('br-up', this._orientation === 'vertical')
+                .on(`click${this._namespace}`, $.proxy(this.prevSlide, this));
 
             $nextButton = $('<div/>', {
-                'class': 'br-next-button',
+                class: 'br-next-button',
                 title: this._options.nextText,
                 html: '<div/>',
-            }).toggleClass('br-down', this._orientation === 'vertical')
-                .on(`click${ this._namespace}`, $.proxy(this.nextSlide, this));
+            })
+                .toggleClass('br-down', this._orientation === 'vertical')
+                .on(`click${this._namespace}`, $.proxy(this.nextSlide, this));
 
             if ($playButton) {
                 $playButton.before($prevButton).after($nextButton);
-            }
-            else {
+            } else {
                 this._$cpanel.prepend($prevButton).append($nextButton);
             }
         }
 
-        this._$cpanel.children(':not(.br-thumbnails)')
-            .css({ width: this._options.buttonWidth, height: this._options.buttonHeight, margin: this._options.buttonMargin })
-            .toggleClass('white', this._isWhite || this._$rotator.hasClass('white-button'))
+        this._$cpanel
+            .children(':not(.br-thumbnails)')
+            .css({
+                width: this._options.buttonWidth,
+                height: this._options.buttonHeight,
+                margin: this._options.buttonMargin,
+            })
+            .toggleClass(
+                'white',
+                this._isWhite || this._$rotator.hasClass('white-button')
+            )
             .addTransitionClass('br-color-transition');
     }
 
     //init side buttons
     initSideButtons() {
         if (this._options.navButtons === 'large') {
-            const $wrapper = $('<div/>', { 'class': 'br-nav-wrapper' }).appendTo(this._$screen);
+            const $wrapper = $('<div/>', { class: 'br-nav-wrapper' }).appendTo(
+                this._$screen
+            );
 
             const $prevButton = $('<div/>', {
-                'class': 'br-side-prev',
+                class: 'br-side-prev',
                 title: this._options.prevText,
                 html: '<div/>',
-            }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this));
+            }).on(`click${this._namespace}`, $.proxy(this.prevSlide, this));
 
             const $nextButton = $('<div/>', {
-                'class': 'br-side-next',
+                class: 'br-side-next',
                 title: this._options.nextText,
                 html: '<div/>',
-            }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this));
+            }).on(`click${this._namespace}`, $.proxy(this.nextSlide, this));
 
-            const $buttons = $prevButton.add($nextButton).appendTo($wrapper).find('>div').addTransitionClass('br-element-transition');
+            const $buttons = $prevButton
+                .add($nextButton)
+                .appendTo($wrapper)
+                .find('>div')
+                .addTransitionClass('br-element-transition');
 
             if (this._options.navButtonsOnHover) {
                 this.addOnHover($buttons, 'br-shrink');
@@ -600,24 +834,38 @@ class Rotator {
     //init outer buttons
     initOuterButtons() {
         if ($.inArray(this._options.navButtons, ['outside', 'outer']) > -1) {
-            this._$outmost = this._$rotator.wrap('<div class="br-outer-navs"></div>').parent();
+            this._$outmost = this._$rotator
+                .wrap('<div class="br-outer-navs"></div>')
+                .parent();
 
             const $prevNav = $('<div/>', {
-                'class': 'br-outer-prev',
+                class: 'br-outer-prev',
                 title: this._options.prevText,
                 html: '<div/>',
-            }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this)).appendTo(this._$outmost);
+            })
+                .on(`click${this._namespace}`, $.proxy(this.prevSlide, this))
+                .appendTo(this._$outmost);
 
             const $nextNav = $('<div/>', {
-                'class': 'br-outer-next',
+                class: 'br-outer-next',
                 title: this._options.nextText,
                 html: '<div/>',
-            }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this)).appendTo(this._$outmost);
+            })
+                .on(`click${this._namespace}`, $.proxy(this.nextSlide, this))
+                .appendTo(this._$outmost);
 
             const margin = getNonNegInt(this._options.sideButtonMargin, 0);
             if (margin > 0) {
-                $prevNav.css({ paddingRight: margin }).css({ left: -$prevNav.outerWidth() }).find('>div').css({ marginLeft: `-=${ margin/2}` });
-                $nextNav.css({ paddingLeft: margin }).css({ right: -$nextNav.outerWidth() }).find('>div').css({ marginLeft: `+=${ margin/2}` });
+                $prevNav
+                    .css({ paddingRight: margin })
+                    .css({ left: -$prevNav.outerWidth() })
+                    .find('>div')
+                    .css({ marginLeft: `-=${margin / 2}` });
+                $nextNav
+                    .css({ paddingLeft: margin })
+                    .css({ right: -$nextNav.outerWidth() })
+                    .find('>div')
+                    .css({ marginLeft: `+=${margin / 2}` });
             }
 
             if (this._options.navButtonsOnHover) {
@@ -628,92 +876,187 @@ class Rotator {
 
     //init nav thumbs
     initNavThumbs() {
-        if (!IS_TOUCH && this._options.navThumbs && $.inArray(this._options.navButtons, ['large', 'outside', 'outer']) > -1) {
-            let $prevNav, $nextNav,
-                $prevWrapper = $('<div/>', { 'class': 'br-prev-wrapper', data: { pos: 'left' } }),
-                $nextWrapper = $('<div/>', { 'class': 'br-next-wrapper', data: { pos: 'right' } });
+        if (
+            !IS_TOUCH &&
+            this._options.navThumbs &&
+            $.inArray(this._options.navButtons, ['large', 'outside', 'outer']) >
+                -1
+        ) {
+            let $prevNav,
+                $nextNav,
+                $prevWrapper = $('<div/>', {
+                    class: 'br-prev-wrapper',
+                    data: { pos: 'left' },
+                }),
+                $nextWrapper = $('<div/>', {
+                    class: 'br-next-wrapper',
+                    data: { pos: 'right' },
+                });
 
             //init wrappers
             if (this._options.navButtons === 'large') {
-                $prevWrapper = this._$screen.find('>.br-nav-wrapper>.br-side-prev').wrap($prevWrapper).parent();
-                $nextWrapper = this._$screen.find('>.br-nav-wrapper>.br-side-next').wrap($nextWrapper).parent();
-            }
-            else {
-                $prevNav = this._$outmost.find('>.br-outer-prev').data({ wrapper: $prevWrapper });
-                $nextNav = this._$outmost.find('>.br-outer-next').data({ wrapper: $nextWrapper });
-                $prevNav.add($nextNav).each($.proxy(function(n, el) {
-                    const $wrapper = $(el).data('wrapper'),
-                        pos = $wrapper.data('pos');
-                    $wrapper.insertAfter($(el)).css(pos, `+=${ parseInt(this._$rotator.css(`border-${ pos }-width`), 10)}`);
-                }, this));
+                $prevWrapper = this._$screen
+                    .find('>.br-nav-wrapper>.br-side-prev')
+                    .wrap($prevWrapper)
+                    .parent();
+                $nextWrapper = this._$screen
+                    .find('>.br-nav-wrapper>.br-side-next')
+                    .wrap($nextWrapper)
+                    .parent();
+            } else {
+                $prevNav = this._$outmost
+                    .find('>.br-outer-prev')
+                    .data({ wrapper: $prevWrapper });
+                $nextNav = this._$outmost
+                    .find('>.br-outer-next')
+                    .data({ wrapper: $nextWrapper });
+                $prevNav.add($nextNav).each(
+                    $.proxy(function (n, el) {
+                        const $wrapper = $(el).data('wrapper'),
+                            pos = $wrapper.data('pos');
+                        $wrapper
+                            .insertAfter($(el))
+                            .css(
+                                pos,
+                                `+=${parseInt(this._$rotator.css(`border-${pos}-width`), 10)}`
+                            );
+                    }, this)
+                );
             }
 
             //init thumbs
-            let $prevThumb = $('<div/>', { 'class': 'br-nav-thumb' }).on(`click${ this._namespace}`, $.proxy(this.prevSlide, this)).prependTo($prevWrapper),
-                $nextThumb = $('<div/>', { 'class': 'br-nav-thumb' }).on(`click${ this._namespace}`, $.proxy(this.nextSlide, this)).appendTo($nextWrapper),
+            let $prevThumb = $('<div/>', { class: 'br-nav-thumb' })
+                    .on(
+                        `click${this._namespace}`,
+                        $.proxy(this.prevSlide, this)
+                    )
+                    .prependTo($prevWrapper),
+                $nextThumb = $('<div/>', { class: 'br-nav-thumb' })
+                    .on(
+                        `click${this._namespace}`,
+                        $.proxy(this.nextSlide, this)
+                    )
+                    .appendTo($nextWrapper),
                 content = '';
 
-            this._$items.each(function(n, el) {
+            this._$items.each(function (n, el) {
                 const src = $(el).find('>img.br-img').data('nav-thumb');
                 if (SUPPORT.backgroundSize) {
-                    content += `<div data-src="${ src }"></div>`;
-                }
-                else {
-                    content += `<img data-src="${ src }"/>`;
+                    content += `<div data-src="${src}"></div>`;
+                } else {
+                    content += `<img data-src="${src}"/>`;
                 }
             });
             $prevThumb.add($nextThumb).html(content);
 
             const $wrappers = $prevWrapper.add($nextWrapper);
-            $wrappers.each($.proxy(function(n, el) {
-                const $thumb = $(el).find('>.br-nav-thumb').css({ width: this._options.navThumbWidth, height: this._options.navThumbHeight }),
-                    $imgs = $thumb.children().addTransitionClass('br-opacity-transition');
+            $wrappers
+                .each(
+                    $.proxy(function (n, el) {
+                        const $thumb = $(el)
+                                .find('>.br-nav-thumb')
+                                .css({
+                                    width: this._options.navThumbWidth,
+                                    height: this._options.navThumbHeight,
+                                }),
+                            $imgs = $thumb
+                                .children()
+                                .addTransitionClass('br-opacity-transition');
 
-                $(el).height($thumb.outerHeight(true)).css({ marginTop: -$(el).outerHeight()/2, width: $(el).children().brTotalWidth(true) });
-                this.loadNextThumb($imgs.toArray(), false);
-            }, this)).toggleClass('white', this._isWhite || this._$rotator.hasClass('white-nav-thumb'));
+                        $(el)
+                            .height($thumb.outerHeight(true))
+                            .css({
+                                marginTop: -$(el).outerHeight() / 2,
+                                width: $(el).children().brTotalWidth(true),
+                            });
+                        this.loadNextThumb($imgs.toArray(), false);
+                    }, this)
+                )
+                .toggleClass(
+                    'white',
+                    this._isWhite || this._$rotator.hasClass('white-nav-thumb')
+                );
 
             //bind event handlers
             if (this._options.navButtons === 'large') {
-                $wrappers.each($.proxy(function(n, el) {
-                    const $thumb = $(el).find('>.br-nav-thumb').addClass('br-transparent').addTransitionClass('br-opacity-transition'),
-                        pos = $(el).data('pos');
+                $wrappers.each(
+                    $.proxy(function (n, el) {
+                        const $thumb = $(el)
+                                .find('>.br-nav-thumb')
+                                .addClass('br-transparent')
+                                .addTransitionClass('br-opacity-transition'),
+                            pos = $(el).data('pos');
 
-                    $(el).css(pos, -$thumb.outerWidth(true))
-                        .on(`mouseenter${ this._namespace}`, { pos: pos }, $.proxy(this.showNavWrapper, this))
-                        .on(`mouseleave${ this._namespace}`, { pos: pos }, this.hideNavWrapper);
-                }, this));
+                        $(el)
+                            .css(pos, -$thumb.outerWidth(true))
+                            .on(
+                                `mouseenter${this._namespace}`,
+                                { pos: pos },
+                                $.proxy(this.showNavWrapper, this)
+                            )
+                            .on(
+                                `mouseleave${this._namespace}`,
+                                { pos: pos },
+                                this.hideNavWrapper
+                            );
+                    }, this)
+                );
+            } else {
+                $wrappers
+                    .addClass('br-shrink')
+                    .addTransitionClass('br-all-transition')
+                    .on(`mouseenter${this._namespace}`, function () {
+                        $(this).addClass('br-hover-on');
+                    })
+                    .on(`mouseleave${this._namespace}`, function () {
+                        $(this)
+                            .removeClass('br-hover-on')
+                            .addClass('br-shrink');
+                    });
+
+                $prevNav
+                    .add($nextNav)
+                    .on(
+                        `mouseenter${this._namespace}`,
+                        $.proxy(this.showNavThumb, this)
+                    )
+                    .on(`mouseleave${this._namespace}`, this.hideNavThumb);
             }
-            else {
-                $wrappers.addClass('br-shrink').addTransitionClass('br-all-transition')
-                    .on(`mouseenter${ this._namespace}`, function() { $(this).addClass('br-hover-on'); })
-                    .on(`mouseleave${ this._namespace}`, function() { $(this).removeClass('br-hover-on').addClass('br-shrink'); });
 
-                $prevNav.add($nextNav).on(`mouseenter${ this._namespace}`, $.proxy(this.showNavThumb, this))
-                    .on(`mouseleave${ this._namespace}`, this.hideNavThumb);
-            }
+            this._$rotator.on(
+                `updateNavThumbs${this._namespace}`,
+                $.proxy(function () {
+                    const $prevItem = this._$currItem.brPrev(),
+                        $nextItem = this._$currItem.brNext(),
+                        $prevImg = $prevThumb.children().eq($prevItem.index()),
+                        $nextImg = $nextThumb.children().eq($nextItem.index());
 
-            this._$rotator.on(`updateNavThumbs${ this._namespace}`, $.proxy(function() {
-                const $prevItem = this._$currItem.brPrev(),
-                    $nextItem = this._$currItem.brNext(),
-                    $prevImg = $prevThumb.children().eq($prevItem.index()),
-                    $nextImg = $nextThumb.children().eq($nextItem.index());
+                    this.loadNavThumb($prevImg);
+                    this.loadNavThumb($nextImg);
 
-                this.loadNavThumb($prevImg);
-                this.loadNavThumb($nextImg);
+                    if (CHROME) {
+                        $prevWrapper.data(
+                            'thumb-kb',
+                            new KenBurns($prevImg, $prevItem.data('kb-effect'))
+                        );
+                        if (
+                            $prevWrapper.add($prevNav).hasClass('br-hover-on')
+                        ) {
+                            this.startNavKB($prevWrapper);
+                        }
 
-                if (CHROME) {
-                    $prevWrapper.data('thumb-kb', new KenBurns($prevImg, $prevItem.data('kb-effect')));
-                    if ($prevWrapper.add($prevNav).hasClass('br-hover-on')) {
-                        this.startNavKB($prevWrapper);
+                        $nextWrapper.data(
+                            'thumb-kb',
+                            new KenBurns($nextImg, $nextItem.data('kb-effect'))
+                        );
+                        if (
+                            $nextWrapper.add($nextNav).hasClass('br-hover-on')
+                        ) {
+                            this.startNavKB($nextWrapper);
+                        }
                     }
-
-                    $nextWrapper.data('thumb-kb', new KenBurns($nextImg, $nextItem.data('kb-effect')));
-                    if ($nextWrapper.add($nextNav).hasClass('br-hover-on')) {
-                        this.startNavKB($nextWrapper);
-                    }
-                }
-            }, this));
+                }, this)
+            );
         }
     }
 
@@ -727,11 +1070,17 @@ class Rotator {
             prop = {};
         prop[e.data.pos] = 0;
 
-        $wrapper.animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false,
-            complete: function() {
-                $(this).find('>.br-nav-thumb').removeClass('br-transparent');
-            },
-        }).addClass('br-hover-on');
+        $wrapper
+            .animate(prop, {
+                duration: Rotator.ANIMATE_SPEED,
+                queue: false,
+                complete: function () {
+                    $(this)
+                        .find('>.br-nav-thumb')
+                        .removeClass('br-transparent');
+                },
+            })
+            .addClass('br-hover-on');
         this.startNavKB($wrapper);
     }
 
@@ -742,7 +1091,10 @@ class Rotator {
             prop = {};
         prop[e.data.pos] = -$thumb.outerWidth(true) + margin;
 
-        $wrapper.stop(true, true).animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false }).removeClass('br-hover-on');
+        $wrapper
+            .stop(true, true)
+            .animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false })
+            .removeClass('br-hover-on');
         $thumb.addClass('br-transparent');
     }
 
@@ -757,7 +1109,7 @@ class Rotator {
         const $nav = $(e.currentTarget).removeClass('br-hover-on'),
             $wrapper = $nav.data('wrapper');
 
-        setTimeout(function() {
+        setTimeout(function () {
             if (!$wrapper.hasClass('br-hover-on')) {
                 $wrapper.addClass('br-shrink');
             }
@@ -774,49 +1126,92 @@ class Rotator {
     //init thumbnails
     initThumbnails() {
         if (!isNone(this._options.thumbnails)) {
-            this._$thumbPanel = $('<div/>', { 'class': 'br-thumbnails' }).prependTo(this._$cpanel);
+            this._$thumbPanel = $('<div/>', {
+                class: 'br-thumbnails',
+            }).prependTo(this._$cpanel);
             this._$thumbList = $('<ul/>').prependTo(this._$thumbPanel);
 
             for (let i = 0; i < this._numItems; i++) {
                 const $li = $('<li/>');
-                switch(this._options.thumbnails) {
-                case 'number':
-                    $li.html(i + 1);
-                    break;
-                case 'text':
-                    $li.html(this._$items.eq(i).find('>img.br-img').attr('title'));
-                    break;
-                case 'image':
-                    var $img = (SUPPORT.backgroundSize ? $('<div/>') : $('<img/>', { alt: '' }));
-                    $img.data({ src: this._$items.eq(i).find('>img.br-img').data('thumb') })
-                        .addTransitionClass('br-opacity-transition').wrap('<div class="br-img-wrapper"></div>');
-                    $li.addClass('br-img-thumb').prepend($img.parent());
-                    break;
-                case 'bullet':
-                    $li.addClass('br-bullet');
-                    break;
+                switch (this._options.thumbnails) {
+                    case 'number':
+                        $li.html(i + 1);
+                        break;
+                    case 'text':
+                        $li.html(
+                            this._$items.eq(i).find('>img.br-img').attr('title')
+                        );
+                        break;
+                    case 'image':
+                        var $img = SUPPORT.backgroundSize
+                            ? $('<div/>')
+                            : $('<img/>', { alt: '' });
+                        $img.data({
+                            src: this._$items
+                                .eq(i)
+                                .find('>img.br-img')
+                                .data('thumb'),
+                        })
+                            .addTransitionClass('br-opacity-transition')
+                            .wrap('<div class="br-img-wrapper"></div>');
+                        $li.addClass('br-img-thumb').prepend($img.parent());
+                        break;
+                    case 'bullet':
+                        $li.addClass('br-bullet');
+                        break;
                 }
                 this._$thumbList.append($li);
             }
             this._$thumbs = this._$thumbList.children();
-            this._$thumbs.toggleClass('white', this._isWhite || this._$rotator.hasClass('white-thumb'))
+            this._$thumbs
+                .toggleClass(
+                    'white',
+                    this._isWhite || this._$rotator.hasClass('white-thumb')
+                )
                 .addTransitionClass('br-color-transition')
-                .on((this._options.selectOnHover ? 'mouseenter' : 'click') + this._namespace, $.proxy(this.selectSlide, this));
+                .on(
+                    (this._options.selectOnHover ? 'mouseenter' : 'click') +
+                        this._namespace,
+                    $.proxy(this.selectSlide, this)
+                );
 
             if (this._options.thumbnails !== 'bullet') {
                 if (this._options.thumbnails === 'image') {
                     const $wrappers = this._$thumbs.children();
-                    $wrappers.css({ width: this._options.thumbWidth - ($wrappers.outerWidth(true) - $wrappers.width()), height: this._options.thumbHeight - ($wrappers.outerHeight(true) - $wrappers.height()) });
+                    $wrappers.css({
+                        width:
+                            this._options.thumbWidth -
+                            ($wrappers.outerWidth(true) - $wrappers.width()),
+                        height:
+                            this._options.thumbHeight -
+                            ($wrappers.outerHeight(true) - $wrappers.height()),
+                    });
                     this.loadNextThumb($wrappers.children().toArray(), true);
                 }
-                this._$thumbs.css({ width: this._options.thumbWidth, height: this._options.thumbHeight, margin: this._options.thumbMargin, lineHeight: `${this._options.thumbHeight }px` });
+                this._$thumbs.css({
+                    width: this._options.thumbWidth,
+                    height: this._options.thumbHeight,
+                    margin: this._options.thumbMargin,
+                    lineHeight: `${this._options.thumbHeight}px`,
+                });
             }
 
-            this._$thumbList.css(this._orientation === 'vertical' ? { width: this._$thumbs.outerWidth(true) } : { height: this._$thumbs.outerHeight(true) });
+            this._$thumbList.css(
+                this._orientation === 'vertical'
+                    ? { width: this._$thumbs.outerWidth(true) }
+                    : { height: this._$thumbs.outerHeight(true) }
+            );
 
-            this._$rotator.on('rotatorChange', $.proxy(function() {
-                this._$thumbs.eq(this._activeIndex).addClass('br-active').siblings().removeClass('br-active');
-            }, this));
+            this._$rotator.on(
+                'rotatorChange',
+                $.proxy(function () {
+                    this._$thumbs
+                        .eq(this._activeIndex)
+                        .addClass('br-active')
+                        .siblings()
+                        .removeClass('br-active');
+                }, this)
+            );
 
             this.initTooltip();
         }
@@ -824,151 +1219,272 @@ class Rotator {
 
     //init layer
     initLayer($item) {
-        const	$layers = $item.children(':not(.tooltip, img.br-img)').addClass('br-layer');
+        const $layers = $item
+            .children(':not(.tooltip, img.br-img)')
+            .addClass('br-layer');
 
         $('<div/>', {
-            id: `br-layers-${ $item.index()}`,
-            'class': 'br-layer-bin',
+            id: `br-layers-${$item.index()}`,
+            class: 'br-layer-bin',
             html: $layers,
         }).appendTo(this._$layerWrapper);
 
-        $layers.each($.proxy(function(n, el) {
-            const $el = $(el),
-                metric = {};
+        $layers.each(
+            $.proxy(function (n, el) {
+                const $el = $(el),
+                    metric = {};
 
-            if (el.style.width === 'auto' && el.style.height === 'auto') {
-                $el.css('white-space', 'nowrap');
-            }
-
-            $.each(SIDES, $.proxy(function(i, side) {
-                const pos = el.style[side];
-                if (isNumeric(parseInt(pos, 10))) {
-                    if (!isPercent(pos)) {
-                        const dim = ($.inArray(side, ['top', 'bottom']) > -1 ? this._stageHeight : this._stageWidth);
-                        $el.css(side, `${getInt(pos, 0)/dim * 100 }%`);
-                    }
-                    $el.css(OPPOSITE_SIDE[side], 'auto');
+                if (el.style.width === 'auto' && el.style.height === 'auto') {
+                    $el.css('white-space', 'nowrap');
                 }
-                metric[`padding-${ side}`] = getInt($el.css(`padding-${ side}`), 0);
-                metric[`border-${ side }-width`] = getInt($el.css(`border-${ side }-width`), 0);
-            }, this));
 
-            metric.width = isNumeric(parseInt(el.style.width, 10)) ? $el.width() : 'auto';
-            metric.height = isNumeric(parseInt(el.style.height, 10)) ? $el.height() : 'auto';
-            $.each(['fontSize', 'lineHeight', 'letterSpacing'], function(i, prop) {
-                metric[prop] = parseInt($el.css(prop), 10);
-            });
+                $.each(
+                    SIDES,
+                    $.proxy(function (i, side) {
+                        const pos = el.style[side];
+                        if (isNumeric(parseInt(pos, 10))) {
+                            if (!isPercent(pos)) {
+                                const dim =
+                                    $.inArray(side, ['top', 'bottom']) > -1
+                                        ? this._stageHeight
+                                        : this._stageWidth;
+                                $el.css(
+                                    side,
+                                    `${(getInt(pos, 0) / dim) * 100}%`
+                                );
+                            }
+                            $el.css(OPPOSITE_SIDE[side], 'auto');
+                        }
+                        metric[`padding-${side}`] = getInt(
+                            $el.css(`padding-${side}`),
+                            0
+                        );
+                        metric[`border-${side}-width`] = getInt(
+                            $el.css(`border-${side}-width`),
+                            0
+                        );
+                    }, this)
+                );
 
-            $el.data({ opacity: getFloat($el.css('opacity'), 1), metric: metric });
-            $.each(['', 'Out'], $.proxy(function(i, dir) {
-                const props = [`effect${ dir}`, `duration${ dir}`, `easing${ dir}`, `delay${ dir}`];
-                $el.brMapShorthand(`transition${ dir}`, props);
-                $.each(props, $.proxy(function(j, prop) {
-                    $el.data(prop, getValue($el.data(prop), this._options[`layer${ capitalize(prop)}`]));
-                }, this));
-                $el.data(`easing${ dir}`, getEasing($el.data(`easing${ dir}`), this._cssTransition));
-            }, this));
-        }, this));
+                metric.width = isNumeric(parseInt(el.style.width, 10))
+                    ? $el.width()
+                    : 'auto';
+                metric.height = isNumeric(parseInt(el.style.height, 10))
+                    ? $el.height()
+                    : 'auto';
+                $.each(
+                    ['fontSize', 'lineHeight', 'letterSpacing'],
+                    function (i, prop) {
+                        metric[prop] = parseInt($el.css(prop), 10);
+                    }
+                );
+
+                $el.data({
+                    opacity: getFloat($el.css('opacity'), 1),
+                    metric: metric,
+                });
+                $.each(
+                    ['', 'Out'],
+                    $.proxy(function (i, dir) {
+                        const props = [
+                            `effect${dir}`,
+                            `duration${dir}`,
+                            `easing${dir}`,
+                            `delay${dir}`,
+                        ];
+                        $el.brMapShorthand(`transition${dir}`, props);
+                        $.each(
+                            props,
+                            $.proxy(function (j, prop) {
+                                $el.data(
+                                    prop,
+                                    getValue(
+                                        $el.data(prop),
+                                        this._options[
+                                            `layer${capitalize(prop)}`
+                                        ]
+                                    )
+                                );
+                            }, this)
+                        );
+                        $el.data(
+                            `easing${dir}`,
+                            getEasing(
+                                $el.data(`easing${dir}`),
+                                this._cssTransition
+                            )
+                        );
+                    }, this)
+                );
+            }, this)
+        );
     }
 
     //init tooltip
     initTooltip() {
         if (!IS_TOUCH && !isNone(this._options.tooltip)) {
             const $inner = $('<div/>', {
-                'class': 'br-tooltip-inner',
-                css: { width: this._options.tooltipWidth, height: this._options.tooltipHeight },
+                class: 'br-tooltip-inner',
+                css: {
+                    width: this._options.tooltipWidth,
+                    height: this._options.tooltipHeight,
+                },
             });
 
             this._$tooltip = $('<div/>', {
-                'class': `br-tooltip br-tooltip-${ OPPOSITE_SIDE[this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y']]}`,
+                class: `br-tooltip br-tooltip-${OPPOSITE_SIDE[this._cpPosition[this._orientation === 'vertical' ? 'x' : 'y']]}`,
                 html: $inner.add('<div class="br-tail"/>'),
-            }).toggleClass('white', this._isWhite || this._$rotator.hasClass('white-tooltip')).prependTo($('body'));
+            })
+                .toggleClass(
+                    'white',
+                    this._isWhite || this._$rotator.hasClass('white-tooltip')
+                )
+                .prependTo($('body'));
 
             if (this._options.tooltip === 'image') {
-                this._$items.each($.proxy(function(n, el) {
-                    const $thumb = this._$thumbs.eq(n),
-                        $img = $(el).find('>img.tooltip');
+                this._$items.each(
+                    $.proxy(function (n, el) {
+                        const $thumb = this._$thumbs.eq(n),
+                            $img = $(el).find('>img.tooltip');
 
-                    if ($img.length && $img.attr('src')) {
-                        const $content = $img.clone().removeClass().addClass('br-transparent').appendTo($inner);
-                        $img.brHandleImage($img.attr('src'), {
-                            complete: $.proxy(function() {
-                                $img.brFill(this._options.tooltipWidth, this._options.tooltipHeight);
-                                $content.css({ top: $img.css('top'), left: $img.css('left'), width: $img.width(), height: $img.height() })
-                                    .removeClass('br-transparent');
-                                $img.remove();
-                                if (CHROME) {
-                                    $thumb.data('tooltip-kb', new KenBurns($content, $(el).data('kb-effect')));
-                                }
-                            }, this),
-                        });
+                        if ($img.length && $img.attr('src')) {
+                            const $content = $img
+                                .clone()
+                                .removeClass()
+                                .addClass('br-transparent')
+                                .appendTo($inner);
+                            $img.brHandleImage($img.attr('src'), {
+                                complete: $.proxy(function () {
+                                    $img.brFill(
+                                        this._options.tooltipWidth,
+                                        this._options.tooltipHeight
+                                    );
+                                    $content
+                                        .css({
+                                            top: $img.css('top'),
+                                            left: $img.css('left'),
+                                            width: $img.width(),
+                                            height: $img.height(),
+                                        })
+                                        .removeClass('br-transparent');
+                                    $img.remove();
+                                    if (CHROME) {
+                                        $thumb.data(
+                                            'tooltip-kb',
+                                            new KenBurns(
+                                                $content,
+                                                $(el).data('kb-effect')
+                                            )
+                                        );
+                                    }
+                                }, this),
+                            });
 
-                        $thumb.on(`mouseenter${ this._namespace}`, $.proxy(function(e) {
-                            this._$tooltip.stop(true, true);
-                            $content.show().siblings().hide();
-                            this.displayTooltip($(e.currentTarget));
-                        }, this)).on(`mouseleave${ this._namespace}`, $.proxy(this.hideTooltip, this));
-                    }
-                }, this));
-            }
-            else {
-                this._$items.each($.proxy(function(n, el) {
-                    const caption = $(el).data('tooltip');
-                    if (!isEmptyStr(caption)) {
-                        this._$thumbs.eq(n).on(`mouseenter${ this._namespace}`, $.proxy(function(e) {
-                            this._$tooltip.stop(true, true);
-                            $inner.html(caption);
-                            this.displayTooltip($(e.currentTarget));
-                        }, this)).on(`mouseleave${ this._namespace}`, $.proxy(this.hideTooltip, this));
-                    }
-                }, this));
+                            $thumb
+                                .on(
+                                    `mouseenter${this._namespace}`,
+                                    $.proxy(function (e) {
+                                        this._$tooltip.stop(true, true);
+                                        $content.show().siblings().hide();
+                                        this.displayTooltip($(e.currentTarget));
+                                    }, this)
+                                )
+                                .on(
+                                    `mouseleave${this._namespace}`,
+                                    $.proxy(this.hideTooltip, this)
+                                );
+                        }
+                    }, this)
+                );
+            } else {
+                this._$items.each(
+                    $.proxy(function (n, el) {
+                        const caption = $(el).data('tooltip');
+                        if (!isEmptyStr(caption)) {
+                            this._$thumbs
+                                .eq(n)
+                                .on(
+                                    `mouseenter${this._namespace}`,
+                                    $.proxy(function (e) {
+                                        this._$tooltip.stop(true, true);
+                                        $inner.html(caption);
+                                        this.displayTooltip($(e.currentTarget));
+                                    }, this)
+                                )
+                                .on(
+                                    `mouseleave${this._namespace}`,
+                                    $.proxy(this.hideTooltip, this)
+                                );
+                        }
+                    }, this)
+                );
             }
 
             if (!SUPPORT.pointerEvents && document.elementFromPoint) {
-                this._$tooltip.on(`mouseleave${ this._namespace}`, $.proxy(function(e) {
-                    if (!$(document.elementFromPoint(e.clientX, e.clientY)).closest('.banner-rotator').is(this._$rotator)) {
-                        this._$outmost.trigger(`mouseleave${ this._namespace}`);
-                    }
-                }, this));
+                this._$tooltip.on(
+                    `mouseleave${this._namespace}`,
+                    $.proxy(function (e) {
+                        if (
+                            !$(document.elementFromPoint(e.clientX, e.clientY))
+                                .closest('.banner-rotator')
+                                .is(this._$rotator)
+                        ) {
+                            this._$outmost.trigger(
+                                `mouseleave${this._namespace}`
+                            );
+                        }
+                    }, this)
+                );
             }
         }
     }
 
     //display tooltip
     displayTooltip($thumb) {
-        let $base = (this._options.cpanelOutside ? this._$extPanel : $thumb),
-            top, left;
+        let $base = this._options.cpanelOutside ? this._$extPanel : $thumb,
+            top,
+            left;
 
         if (this._orientation === 'vertical') {
             left = $base.offset().left;
             if (this._cpPosition.x === 'left') {
                 left += $base.width();
-            }
-            else {
+            } else {
                 left -= this._$tooltip.outerWidth();
             }
-            top = $thumb.offset().top - (this._$tooltip.height() - $thumb.height())/2;
-        }
-        else {
+            top =
+                $thumb.offset().top -
+                (this._$tooltip.height() - $thumb.height()) / 2;
+        } else {
             top = $base.offset().top;
             if (this._cpPosition.y === 'top') {
                 top += $base.height();
-            }
-            else {
+            } else {
                 top -= this._$tooltip.outerHeight();
             }
-            left = $thumb.offset().left - (this._$tooltip.width() - $thumb.width())/2;
+            left =
+                $thumb.offset().left -
+                (this._$tooltip.width() - $thumb.width()) / 2;
         }
 
-        this._tooltipId = setTimeout($.proxy(function() {
-            this._$tooltip.css({ opacity: 0, top: top, left: left }).show().animate({ opacity: 1 }, Rotator.ANIMATE_SPEED,
-                function() {
-                    const kBurns = $thumb.data('tooltip-kb');
-                    if (kBurns) {
-                        kBurns.start();
-                    }
-                });
-        }, this), this._options.tooltipDelay);
+        this._tooltipId = setTimeout(
+            $.proxy(function () {
+                this._$tooltip
+                    .css({ opacity: 0, top: top, left: left })
+                    .show()
+                    .animate(
+                        { opacity: 1 },
+                        Rotator.ANIMATE_SPEED,
+                        function () {
+                            const kBurns = $thumb.data('tooltip-kb');
+                            if (kBurns) {
+                                kBurns.start();
+                            }
+                        }
+                    );
+            }, this),
+            this._options.tooltipDelay
+        );
     }
 
     //hide tooltip
@@ -989,8 +1505,7 @@ class Rotator {
         if (!this._effects.inProgress()) {
             if (this._options.layerOutSync) {
                 this.deferredLoad(fn, args);
-            }
-            else {
+            } else {
                 fn.apply(this, args);
             }
         }
@@ -998,8 +1513,14 @@ class Rotator {
 
     //select slide
     selectSlide(e) {
-        const index = (typeof e === 'number' ? parseInt(e, 10) : $(e.currentTarget).index());
-        if (withinRange(index, 0, this._numItems - 1) && index !== this._activeIndex) {
+        const index =
+            typeof e === 'number'
+                ? parseInt(e, 10)
+                : $(e.currentTarget).index();
+        if (
+            withinRange(index, 0, this._numItems - 1) &&
+            index !== this._activeIndex
+        ) {
             this.navigateTo(true, this.select, [index]);
         }
     }
@@ -1017,7 +1538,8 @@ class Rotator {
 
     prev(triggerEvent) {
         this._backward = true;
-        this._activeIndex = (this._activeIndex > 0 ? (this._activeIndex - 1) : (this._numItems - 1));
+        this._activeIndex =
+            this._activeIndex > 0 ? this._activeIndex - 1 : this._numItems - 1;
         if (triggerEvent) {
             this.triggerEvent('prev', { index: this._activeIndex });
         }
@@ -1031,7 +1553,8 @@ class Rotator {
 
     next(triggerEvent) {
         this._backward = false;
-        this._activeIndex = (this._numItems - 1 > this._activeIndex ? (this._activeIndex + 1) : 0);
+        this._activeIndex =
+            this._numItems - 1 > this._activeIndex ? this._activeIndex + 1 : 0;
         if (triggerEvent) {
             this.triggerEvent('next', { index: this._activeIndex });
         }
@@ -1047,8 +1570,7 @@ class Rotator {
     togglePlay() {
         if (this._rotate) {
             this.pause();
-        }
-        else {
+        } else {
             this.play();
         }
     }
@@ -1057,11 +1579,17 @@ class Rotator {
     play() {
         if (!this._rotate) {
             this._rotate = true;
-            this._$cpanel.find('>.br-play-button').addClass('br-pause').attr({ title: this._options.pauseText });
+            this._$cpanel
+                .find('>.br-play-button')
+                .addClass('br-pause')
+                .attr({ title: this._options.pauseText });
             if (!this._effects.inProgress()) {
                 this.resumeTimer();
             }
-            this.triggerEvent('play', { index: this._activeIndex, delay: this._delay });
+            this.triggerEvent('play', {
+                index: this._activeIndex,
+                delay: this._delay,
+            });
         }
     }
 
@@ -1069,11 +1597,17 @@ class Rotator {
     pause() {
         if (this._rotate) {
             this._rotate = false;
-            this._$cpanel.find('>.br-play-button').removeClass('br-pause').attr({ title: this._options.playText });
+            this._$cpanel
+                .find('>.br-play-button')
+                .removeClass('br-pause')
+                .attr({ title: this._options.playText });
             if (!this._effects.inProgress()) {
                 this.pauseTimer();
             }
-            this.triggerEvent('pause', { index: this._activeIndex, delay: this._delay });
+            this.triggerEvent('pause', {
+                index: this._activeIndex,
+                delay: this._delay,
+            });
         }
     }
 
@@ -1083,21 +1617,41 @@ class Rotator {
         this._layerIds = [];
         this._requestIds = [];
 
-        const $wrapper = this._$layerWrapper.find(`>#br-layers-${ this._$currItem.index()}`);
-        $wrapper.addClass('br-active-layers').siblings().removeClass('br-active-layers');
-        $wrapper.children().each($.proxy(function(n, el) {
-            const $layer = $(el),
-                delay = getNonNegInt($layer.data('delay'), 0);
+        const $wrapper = this._$layerWrapper.find(
+            `>#br-layers-${this._$currItem.index()}`
+        );
+        $wrapper
+            .addClass('br-active-layers')
+            .siblings()
+            .removeClass('br-active-layers');
+        $wrapper.children().each(
+            $.proxy(function (n, el) {
+                const $layer = $(el),
+                    delay = getNonNegInt($layer.data('delay'), 0);
 
-            this._layerIds.push(setTimeout($.proxy(function() {
-                const id = requestAnimationFrame($.proxy(function() {
-                    $layer.css({ opacity: $layer.data('opacity'), margin: 0, transform: 'none' }).show();
-                    this.animateLayer($layer, false);
-                    this.queueLayerOut($layer);
-                }, this));
-                this._requestIds.push(id);
-            }, this), delay));
-        }, this));
+                this._layerIds.push(
+                    setTimeout(
+                        $.proxy(function () {
+                            const id = requestAnimationFrame(
+                                $.proxy(function () {
+                                    $layer
+                                        .css({
+                                            opacity: $layer.data('opacity'),
+                                            margin: 0,
+                                            transform: 'none',
+                                        })
+                                        .show();
+                                    this.animateLayer($layer, false);
+                                    this.queueLayerOut($layer);
+                                }, this)
+                            );
+                            this._requestIds.push(id);
+                        }, this),
+                        delay
+                    )
+                );
+            }, this)
+        );
     }
 
     //hide layer
@@ -1110,13 +1664,17 @@ class Rotator {
     //animate layer
     animateLayer($layer, out) {
         let data = $layer.data(),
-            dir = (out ? 'Out' : ''),
-            effect = data[`effect${ dir}`],
-            opts = { duration: parseInt(data[`duration${ dir}`], 10), easing: data[`easing${ dir}`], complete: $.noop };
+            dir = out ? 'Out' : '',
+            effect = data[`effect${dir}`],
+            opts = {
+                duration: parseInt(data[`duration${dir}`], 10),
+                easing: data[`easing${dir}`],
+                complete: $.noop,
+            };
 
         if (/^slide/.test(effect)) {
             opts.direction = effect.substring('slide'.length).toLowerCase();
-            opts.mode = (out ? 'hide' : 'show');
+            opts.mode = out ? 'hide' : 'show';
             opts.transform = this._transform;
             $layer.brSlideEffect(opts);
             return;
@@ -1127,29 +1685,33 @@ class Rotator {
                 effect = OPPOSITE_LAYER[effect];
             }
 
-            opts.complete = function() {
+            opts.complete = function () {
                 $layer.hide();
             };
         }
 
-        if (/^(blur|flip|spin|zoom)/.test(effect) && SUPPORT.animation && this._transform) {
-            let animationName = `br-layer-${ camelToDash(effect)}`;
+        if (
+            /^(blur|flip|spin|zoom)/.test(effect) &&
+            SUPPORT.animation &&
+            this._transform
+        ) {
+            let animationName = `br-layer-${camelToDash(effect)}`;
             if (out) {
                 animationName += '-out';
             }
             $layer.animation(animationName, opts);
-        }
-        else {
+        } else {
             let props;
             if (/^(move|shift)/.test(effect)) {
                 const match = effect.match(/^(move|shift)/);
-                props = this[`get${ capitalize(match[0]) }Props`]($layer, effect.substring(match[0].length).toLowerCase());
-            }
-            else if (effect === 'none') {
+                props = this[`get${capitalize(match[0])}Props`](
+                    $layer,
+                    effect.substring(match[0].length).toLowerCase()
+                );
+            } else if (effect === 'none') {
                 opts.complete.call(this);
                 return;
-            }
-            else {
+            } else {
                 props = {
                     from: { opacity: 0 },
                     to: { opacity: data.opacity },
@@ -1167,21 +1729,28 @@ class Rotator {
     queueLayerOut($layer) {
         const delay = getNonNegInt($layer.data('delayOut'), 0);
         if (delay > 0) {
-            $layer.promise().done($.proxy(function() {
-                this._layerIds.push(setTimeout($.proxy(function() {
-                    this.hideLayer($layer);
-                }, this), delay));
-            }, this));
+            $layer.promise().done(
+                $.proxy(function () {
+                    this._layerIds.push(
+                        setTimeout(
+                            $.proxy(function () {
+                                this.hideLayer($layer);
+                            }, this),
+                            delay
+                        )
+                    );
+                }, this)
+            );
         }
     }
 
     //stop layers
     stopLayers(stop) {
-        while(this._layerIds.length) {
+        while (this._layerIds.length) {
             clearTimeout(this._layerIds.pop());
         }
 
-        while(this._requestIds.length) {
+        while (this._requestIds.length) {
             cancelAnimationFrame(this._requestIds.pop());
         }
 
@@ -1195,89 +1764,89 @@ class Rotator {
         this.stopLayers(true);
         const $layers = this._$layers.filter(':visible');
         if (transition) {
-            $layers.each($.proxy(function(n, el) {
-                this.hideLayer($(el));
-            }, this));
-        }
-        else {
+            $layers.each(
+                $.proxy(function (n, el) {
+                    this.hideLayer($(el));
+                }, this)
+            );
+        } else {
             $layers.hide();
         }
     }
 
     //get move property
     getMoveProps($el, direction) {
-        let isHorizontal = (direction === 'left' || direction === 'right'),
+        let isHorizontal = direction === 'left' || direction === 'right',
             dim = isHorizontal ? 'outerWidth' : 'outerHeight',
-            fwd = (direction === 'right' || direction === 'down'),
+            fwd = direction === 'right' || direction === 'down',
             from = {},
             to = {},
-            pos, translate, side;
+            pos,
+            translate,
+            side;
 
         if (this._transform) {
             if (isHorizontal) {
                 pos = $el.position().left;
                 translate = 'translateX';
-            }
-            else {
+            } else {
                 pos = $el.position().top;
                 translate = 'translateY';
             }
-        }
-        else {
-            side = (isHorizontal ? 'right' : 'bottom');
+        } else {
+            side = isHorizontal ? 'right' : 'bottom';
             if (isNumeric(parseInt($el[0].style[side], 10))) {
                 fwd = !fwd;
-            }
-            else {
+            } else {
                 side = OPPOSITE_SIDE[side];
             }
-            pos = Math.round(parseFloat($el[0].style[side])/100 * this._$screen[dim]());
+            pos = Math.round(
+                (parseFloat($el[0].style[side]) / 100) * this._$screen[dim]()
+            );
         }
 
-        const offset = (fwd ? -(pos + $el[dim]() + 1) : (this._$screen[dim]() - pos) + 1);
+        const offset = fwd
+            ? -(pos + $el[dim]() + 1)
+            : this._$screen[dim]() - pos + 1;
         if (this._transform) {
-            from.transform = `${translate }(${ offset }px)`;
-            to.transform = `${translate }(0px)`;
-        }
-        else {
-            from[`margin-${ side}`] = offset;
-            to[`margin-${ side}`] = 0;
+            from.transform = `${translate}(${offset}px)`;
+            to.transform = `${translate}(0px)`;
+        } else {
+            from[`margin-${side}`] = offset;
+            to[`margin-${side}`] = 0;
         }
         return { from: from, to: to };
     }
 
     //get shift property
     getShiftProps($el, direction) {
-        let isHorizontal = (direction === 'left' || direction === 'right'),
-            inverse = (direction === 'right' || direction === 'down' ? -1 : 1),
+        let isHorizontal = direction === 'left' || direction === 'right',
+            inverse = direction === 'right' || direction === 'down' ? -1 : 1,
             from = { opacity: 0 },
             to = { opacity: 1 };
 
         if (this._transform) {
-            const translate = `translate${ isHorizontal ? 'X' : 'Y'}`;
-            from.transform = `${translate }(${ inverse * 100 }%)`;
-            to.transform = `${translate }(0)`;
-        }
-        else {
+            const translate = `translate${isHorizontal ? 'X' : 'Y'}`;
+            from.transform = `${translate}(${inverse * 100}%)`;
+            to.transform = `${translate}(0)`;
+        } else {
             let side, dim;
             if (isHorizontal) {
                 side = 'right';
                 dim = 'outerWidth';
-            }
-            else {
+            } else {
                 side = 'bottom';
                 dim = 'outerHeight';
             }
 
             if (isNumeric(parseInt($el[0].style[side], 10))) {
                 inverse *= -1;
-            }
-            else {
+            } else {
                 side = OPPOSITE_SIDE[side];
             }
 
-            from[`margin-${ side}`] = inverse * $el[dim]();
-            to[`margin-${ side}`] = 0;
+            from[`margin-${side}`] = inverse * $el[dim]();
+            to[`margin-${side}`] = 0;
         }
         return { from: from, to: to };
     }
@@ -1294,25 +1863,29 @@ class Rotator {
                 let promises = [],
                     max = 0;
 
-                $layers.each($.proxy(function(n, el) {
-                    const promise = $(el).data('promise');
-                    if (!promise || promise.state() !== 'pending') {
-                        this.hideLayer($(el));
-                    }
-                    promises.push($(el).data('promise'));
-                    max = Math.max(max, $(el).data('duration-out'));
-                }, this)).removeData('promise');
+                $layers
+                    .each(
+                        $.proxy(function (n, el) {
+                            const promise = $(el).data('promise');
+                            if (!promise || promise.state() !== 'pending') {
+                                this.hideLayer($(el));
+                            }
+                            promises.push($(el).data('promise'));
+                            max = Math.max(max, $(el).data('duration-out'));
+                        }, this)
+                    )
+                    .removeData('promise');
 
-                this._promise = $.when.apply(null, promises)
-                    .always($.proxy(function() {
+                this._promise = $.when.apply(null, promises).always(
+                    $.proxy(function () {
                         fn.apply(this, args);
-                    }, this));
+                    }, this)
+                );
 
-                setTimeout(function() {
+                setTimeout(function () {
                     $layers.dequeue();
                 }, max + 100);
-            }
-            else {
+            } else {
                 fn.apply(this, args);
             }
         }
@@ -1341,13 +1914,12 @@ class Rotator {
         const $item = this._$items.eq(this._activeIndex);
         if ($item.data('ready')) {
             this.displayContent($item);
-        }
-        else {
+        } else {
             this._$preloader.show();
             const $img = $item.find('>img.br-img');
             $img.brHandleImage($img.data('src'), {
                 namespace: 'display',
-                complete: $.proxy(function() {
+                complete: $.proxy(function () {
                     if (!$item.data('ready')) {
                         this.processImage($item);
                     }
@@ -1366,7 +1938,7 @@ class Rotator {
         const data = this._$currItem.data();
 
         //update nav thumbs
-        this._$rotator.trigger(`updateNavThumbs${ this._namespace}`);
+        this._$rotator.trigger(`updateNavThumbs${this._namespace}`);
 
         //control sync
         if (this._options.hideControl) {
@@ -1381,15 +1953,27 @@ class Rotator {
 
         //set ken burns
         if (CHROME || !IS_TOUCH) {
-            this._kBurns = new KenBurns(this._$currItem.find('>img.br-img'), data.kbEffect, { duration: getPosInt(data.kbDuration, data.delay), easing: data.kbEasing });
+            this._kBurns = new KenBurns(
+                this._$currItem.find('>img.br-img'),
+                data.kbEffect,
+                {
+                    duration: getPosInt(data.kbDuration, data.delay),
+                    easing: data.kbEasing,
+                }
+            );
         }
 
         //activate
-        const effectOff = (!this._options.effectOnInteraction && this._interact) || (!this._options.effectOnStart && !this._$prevItem);
-        if (effectOff || ($.inArray(data.effect, Transition.EFFECTS) < 0 && data.effect !== 'random')) {
+        const effectOff =
+            (!this._options.effectOnInteraction && this._interact) ||
+            (!this._options.effectOnStart && !this._$prevItem);
+        if (
+            effectOff ||
+            ($.inArray(data.effect, Transition.EFFECTS) < 0 &&
+                data.effect !== 'random')
+        ) {
             this.activateItem(false);
-        }
-        else {
+        } else {
             this._effects.start(data);
         }
     }
@@ -1400,8 +1984,13 @@ class Rotator {
             this.triggerEvent('changed', { index: this._activeIndex });
         }
 
-        this._$currItem.css({ visibility: 'visible' }).siblings().css({ visibility: 'hidden' });
-        this._$linkWrapper.children(`a#br-link-${ this._$currItem.index()}`).show();
+        this._$currItem
+            .css({ visibility: 'visible' })
+            .siblings()
+            .css({ visibility: 'hidden' });
+        this._$linkWrapper
+            .children(`a#br-link-${this._$currItem.index()}`)
+            .show();
 
         if (isResize || this._options.layerSync) {
             this.displayLayers();
@@ -1417,14 +2006,19 @@ class Rotator {
     //load next image
     loadNextImage(items, complete) {
         if (items.length) {
-            this.loadImage($(items.shift())).always($.proxy(function() {
-                if (this._$progressBar) {
-                    this._$progressBar.children().width(`${(this._numItems - items.length)/this._numItems * 100 }%`);
-                }
-                this.loadNextImage(items, complete);
-            }, this));
-        }
-        else if (isFunction(complete)) {
+            this.loadImage($(items.shift())).always(
+                $.proxy(function () {
+                    if (this._$progressBar) {
+                        this._$progressBar
+                            .children()
+                            .width(
+                                `${((this._numItems - items.length) / this._numItems) * 100}%`
+                            );
+                    }
+                    this.loadNextImage(items, complete);
+                }, this)
+            );
+        } else if (isFunction(complete)) {
             complete.call(this);
         }
     }
@@ -1435,13 +2029,13 @@ class Rotator {
             $img = $item.find('>img.br-img');
 
         $img.brHandleImage($img.data('src'), {
-            complete: $.proxy(function() {
+            complete: $.proxy(function () {
                 if (!$item.data('ready')) {
                     this.processImage($item);
                 }
                 deferred.resolve();
             }, this),
-            error: function() {
+            error: function () {
                 deferred.reject();
             },
         });
@@ -1452,24 +2046,30 @@ class Rotator {
     //load next thumb
     loadNextThumb(thumbs, fadeIn) {
         if (thumbs.length) {
-            this.loadThumb($(thumbs.shift()), fadeIn).always($.proxy(function() {
-                this.loadNextThumb(thumbs, fadeIn);
-            }, this));
+            this.loadThumb($(thumbs.shift()), fadeIn).always(
+                $.proxy(function () {
+                    this.loadNextThumb(thumbs, fadeIn);
+                }, this)
+            );
         }
     }
 
     //load thumb
     loadThumb($thumb, fadeIn) {
         const deferred = $.Deferred(),
-            $img = ($thumb.is('img') ? $thumb : $('<img/>'));
+            $img = $thumb.is('img') ? $thumb : $('<img/>');
 
         $img.brHandleImage($thumb.data('src'), {
-            complete: function() {
+            complete: function () {
                 if ($thumb.is('img')) {
-                    $thumb.brFill($thumb.parent().width(), $thumb.parent().height());
-                }
-                else {
-                    $thumb.css({ backgroundImage: `url(${ $thumb.data('src') })` });
+                    $thumb.brFill(
+                        $thumb.parent().width(),
+                        $thumb.parent().height()
+                    );
+                } else {
+                    $thumb.css({
+                        backgroundImage: `url(${$thumb.data('src')})`,
+                    });
                 }
 
                 if (fadeIn) {
@@ -1477,7 +2077,7 @@ class Rotator {
                 }
                 deferred.resolve();
             },
-            error: function() {
+            error: function () {
                 deferred.reject();
             },
         });
@@ -1490,29 +2090,35 @@ class Rotator {
         $item.data('ready', true);
         const $img = $item.find('>img.br-img'),
             position = $item.data('imagePosition'),
-            arr = (`${position }`).split(' ', 2);
+            arr = `${position}`.split(' ', 2);
 
         if (arr.length === 2) {
-            $.each(['left', 'top'], function(i, val) {
+            $.each(['left', 'top'], function (i, val) {
                 const pos = arr[i];
                 if (isNumeric(parseInt(pos, 10))) {
                     $img.css(val, isNumeric(pos) ? parseInt(pos, 10) : pos);
                 }
             });
-        }
-        else if ($.inArray(position, ['fill', 'fit', 'stretch', 'center']) > -1) {
-            const fn = `br${ capitalize(position)}`;
+        } else if (
+            $.inArray(position, ['fill', 'fit', 'stretch', 'center']) > -1
+        ) {
+            const fn = `br${capitalize(position)}`;
             if (isFunction($img[fn])) {
                 $img[fn](this._stageWidth, this._stageHeight);
             }
         }
 
         if (this._options.responsive) {
-            const ratio = this._$stage.width()/this._stageWidth,
-                props = { top: parseInt($img.css('top'), 10), left: parseInt($img.css('left'), 10), width: $img.width(), height: $img.height() };
+            const ratio = this._$stage.width() / this._stageWidth,
+                props = {
+                    top: parseInt($img.css('top'), 10),
+                    left: parseInt($img.css('left'), 10),
+                    width: $img.width(),
+                    height: $img.height(),
+                };
 
             $img.data('metric', props);
-            $.each(props, function(name, val) {
+            $.each(props, function (name, val) {
                 $img.css(name, Math.round(ratio * val));
             });
         }
@@ -1522,7 +2128,10 @@ class Rotator {
 
     //start timer
     startTimer() {
-        this._delay = getPosInt(this._$currItem.data('delay'), $.fn.bannerRotator.defaults.delay);
+        this._delay = getPosInt(
+            this._$currItem.data('delay'),
+            $.fn.bannerRotator.defaults.delay
+        );
         this.resumeTimer();
     }
 
@@ -1530,7 +2139,10 @@ class Rotator {
     resumeTimer() {
         if (this._rotate && this._delay > 0) {
             this._start = $.now();
-            this._timeout = setTimeout($.proxy(this.rotateSlide, this), this._delay);
+            this._timeout = setTimeout(
+                $.proxy(this.rotateSlide, this),
+                this._delay
+            );
 
             if (this._kBurns) {
                 this._kBurns.start();
@@ -1559,7 +2171,7 @@ class Rotator {
     //pause timer
     pauseTimer() {
         if (this._start) {
-            this._delay -= ($.now() - this._start);
+            this._delay -= $.now() - this._start;
         }
         clearTimeout(this._timeout);
 
@@ -1576,14 +2188,18 @@ class Rotator {
     addOnHover($el, hide) {
         if (!IS_TOUCH) {
             $el.addClass(hide).addTransitionClass('br-all-transition');
-            this._$outmost.on(`mouseenter${ this._namespace}`, function() {
-                $el.removeClass(hide);
-            })
-                .on(`mouseleave${ this._namespace}`, $.proxy(function(e) {
-                    if (!this.onTooltip(e)) {
-                        $el.addClass(hide);
-                    }
-                }, this));
+            this._$outmost
+                .on(`mouseenter${this._namespace}`, function () {
+                    $el.removeClass(hide);
+                })
+                .on(
+                    `mouseleave${this._namespace}`,
+                    $.proxy(function (e) {
+                        if (!this.onTooltip(e)) {
+                            $el.addClass(hide);
+                        }
+                    }, this)
+                );
         }
     }
 
@@ -1595,20 +2211,30 @@ class Rotator {
                 data = this._$cpanel.data(),
                 pos = data.pos,
                 dim = data.dim,
-                pagePos = `page${ capitalize(data.coord)}`;
+                pagePos = `page${capitalize(data.coord)}`;
 
-            this._$thumbPanel.on(`mouseenter${ this._namespace}`, function() {
-                $(this).addClass('br-hover-on');
-            })
-                .on(`mouseleave${ this._namespace}`, function() {
+            this._$thumbPanel
+                .on(`mouseenter${this._namespace}`, function () {
+                    $(this).addClass('br-hover-on');
+                })
+                .on(`mouseleave${this._namespace}`, function () {
                     $(this).removeClass('br-hover-on');
                 })
-                .on(`mousemove${ this._namespace}`, $.proxy(function(e) {
-                    const pct = (e[pagePos] - this._$thumbPanel.offset()[pos])/this._$thumbPanel[dim]();
-                    const	prop = {};
-                    prop[pos] = this._$thumbPanel.data('range') * pct;
-                    this._$thumbList.animate(prop, { duration: Rotator.ANIMATE_SPEED, easing: easing, queue: false });
-                }, this));
+                .on(
+                    `mousemove${this._namespace}`,
+                    $.proxy(function (e) {
+                        const pct =
+                            (e[pagePos] - this._$thumbPanel.offset()[pos]) /
+                            this._$thumbPanel[dim]();
+                        const prop = {};
+                        prop[pos] = this._$thumbPanel.data('range') * pct;
+                        this._$thumbList.animate(prop, {
+                            duration: Rotator.ANIMATE_SPEED,
+                            easing: easing,
+                            queue: false,
+                        });
+                    }, this)
+                );
         }
     }
 
@@ -1621,14 +2247,23 @@ class Rotator {
                 prop = {};
 
             if (thumb < panel) {
-                prop[data.pos] = -this._activeIndex * this._$thumbs[data.outerDim](true);
-            }
-            else if (thumb + this._$thumbs[data.dim]() > panel + this._$thumbPanel[data.dim]()) {
-                prop[data.pos] = (this._numItems - 1 - this._activeIndex) * this._$thumbs[data.outerDim](true) + this._$thumbPanel.data('range');
+                prop[data.pos] =
+                    -this._activeIndex * this._$thumbs[data.outerDim](true);
+            } else if (
+                thumb + this._$thumbs[data.dim]() >
+                panel + this._$thumbPanel[data.dim]()
+            ) {
+                prop[data.pos] =
+                    (this._numItems - 1 - this._activeIndex) *
+                        this._$thumbs[data.outerDim](true) +
+                    this._$thumbPanel.data('range');
             }
 
             if (!$.isEmptyObject(prop)) {
-                this._$thumbList.animate(prop, { duration: Rotator.ANIMATE_SPEED, queue: false });
+                this._$thumbList.animate(prop, {
+                    duration: Rotator.ANIMATE_SPEED,
+                    queue: false,
+                });
             }
         }
     }
@@ -1639,13 +2274,32 @@ class Rotator {
             pos = data.pos,
             dim = data.dim;
 
-        this._$thumbPanel.css(dim, Math.min(this._$screen[dim]() - this._cpanelMargin - this._buttonSize, this._$thumbList[dim]()))
-            .data({ range: this._$thumbPanel[dim]() - this._$thumbList[dim]() });
-        this._$thumbList.stop().css(pos, Math.max(this._$thumbPanel.data('range'), this._$thumbList.position()[pos]));
+        this._$thumbPanel
+            .css(
+                dim,
+                Math.min(
+                    this._$screen[dim]() -
+                        this._cpanelMargin -
+                        this._buttonSize,
+                    this._$thumbList[dim]()
+                )
+            )
+            .data({
+                range: this._$thumbPanel[dim]() - this._$thumbList[dim](),
+            });
+        this._$thumbList
+            .stop()
+            .css(
+                pos,
+                Math.max(
+                    this._$thumbPanel.data('range'),
+                    this._$thumbList.position()[pos]
+                )
+            );
         this._$rotator.find('>.br-ext-cp').css(dim, this._$screen[dim]());
 
         if (this._cpPosition[data.coord] === 'center') {
-            this._$cpanel.css(pos, -this._$cpanel[data.outerDim](true)/2);
+            this._$cpanel.css(pos, -this._$cpanel[data.outerDim](true) / 2);
         }
     }
 
@@ -1656,8 +2310,15 @@ class Rotator {
             this._swipeStart = new Date();
             this._startX = e.originalEvent.touches[0].pageX;
             this._startY = e.originalEvent.touches[0].pageY;
-            this._$rotator.on(`touchmove${ this._namespace}`, $.proxy(this.touchMove, this))
-                .one(`touchend${ this._namespace}`, $.proxy(this.touchEnd, this));
+            this._$rotator
+                .on(
+                    `touchmove${this._namespace}`,
+                    $.proxy(this.touchMove, this)
+                )
+                .one(
+                    `touchend${this._namespace}`,
+                    $.proxy(this.touchEnd, this)
+                );
         }
     }
 
@@ -1669,8 +2330,7 @@ class Rotator {
         if (this._options.swipe === 'vertical') {
             this._swipeMove = yDist;
             this._isSwipe = Math.abs(this._swipeMove) > Math.abs(xDist);
-        }
-        else {
+        } else {
             this._swipeMove = xDist;
             this._isSwipe = Math.abs(this._swipeMove) > Math.abs(yDist);
         }
@@ -1682,14 +2342,13 @@ class Rotator {
 
     //touch end
     touchEnd() {
-        this._$rotator.off(`touchmove${ this._namespace}`);
+        this._$rotator.off(`touchmove${this._namespace}`);
 
         if (this._isSwipe) {
             if (Math.abs(this._swipeMove) > 50) {
                 if (this._swipeMove < 0) {
                     this.swipeBack();
-                }
-                else {
+                } else {
                     this.swipeFwd();
                 }
             }
@@ -1699,35 +2358,36 @@ class Rotator {
     //mousewheel scroll
     mousescroll(e) {
         e.preventDefault();
-        const delta = (e.originalEvent.wheelDelta ? e.originalEvent.wheelDelta : -e.originalEvent.detail);
+        const delta = e.originalEvent.wheelDelta
+            ? e.originalEvent.wheelDelta
+            : -e.originalEvent.detail;
         if (delta > 0) {
             this.prevSlide();
-        }
-        else {
+        } else {
             this.nextSlide();
         }
     }
 
     //keydown
     keyControl(e) {
-        switch(e.which) {
-        case 35:
-            this.selectSlide(this._numItems - 1);
-            break;
-        case 36:
-            this.selectSlide(0);
-            break;
-        case 37:
-            this.prevSlide();
-            break;
-        case 39:
-            this.nextSlide();
-            break;
-        case 32:
-            this.togglePlay();
-            break;
-        default:
-            return;
+        switch (e.which) {
+            case 35:
+                this.selectSlide(this._numItems - 1);
+                break;
+            case 36:
+                this.selectSlide(0);
+                break;
+            case 37:
+                this.prevSlide();
+                break;
+            case 39:
+                this.nextSlide();
+                break;
+            case 32:
+                this.togglePlay();
+                break;
+            default:
+                return;
         }
         e.preventDefault();
     }
@@ -1742,31 +2402,34 @@ class Rotator {
             this._effects.clear();
 
             //resize stage
-            const ratio = this._$stage.width()/this._stageWidth;
+            const ratio = this._$stage.width() / this._stageWidth;
             this._$stage.css({ height: Math.round(ratio * this._stageHeight) });
-            this._$screen.css({ width: this._$stage.width(), height: this._$stage.height() });
+            this._$screen.css({
+                width: this._$stage.width(),
+                height: this._$stage.height(),
+            });
 
             //resize images
-            this._$items.each(function(n, item) {
+            this._$items.each(function (n, item) {
                 if ($(item).data('ready')) {
                     const $img = $(item).find('>img.br-img');
-                    $.each($img.data('metric'), function(name, val) {
+                    $.each($img.data('metric'), function (name, val) {
                         $img.css(name, Math.round(ratio * val));
                     });
                 }
             });
 
             //resize layers
-            this._$layers.each(function(n, layer) {
-                $.each($(layer).data('metric'), function(name, val) {
+            this._$layers.each(function (n, layer) {
+                $.each($(layer).data('metric'), function (name, val) {
                     if (isNumeric(val)) {
-                        $(layer).css(name, `${Math.ceil(ratio * val) }px`);
+                        $(layer).css(name, `${Math.ceil(ratio * val)}px`);
                     }
                 });
             });
 
             //resize cpanel
-            this._$rotator.trigger(`resizeCPanel${ this._namespace}`);
+            this._$rotator.trigger(`resizeCPanel${this._namespace}`);
 
             //display current
             if (this._$currItem && this._$currItem.data('ready')) {
@@ -1778,7 +2441,9 @@ class Rotator {
     //check on tooltip
     onTooltip(e) {
         if (!SUPPORT.pointerEvents && document.elementFromPoint) {
-            return $(document.elementFromPoint(e.clientX, e.clientY)).closest('.br-tooltip').is(this._$tooltip);
+            return $(document.elementFromPoint(e.clientX, e.clientY))
+                .closest('.br-tooltip')
+                .is(this._$tooltip);
         }
         return false;
     }
@@ -1790,7 +2455,7 @@ class Rotator {
 
         this._$rotator.trigger(Rotator.PLUGIN + name, data);
 
-        const callback = this._options[`on${ name}`];
+        const callback = this._options[`on${name}`];
         if (isFunction(callback)) {
             callback.call(this, data);
         }
@@ -1813,31 +2478,54 @@ class Rotator {
         $(window).add($(document)).off(this._namespace);
         this._$rotator.find('*').addBack().off(this._namespace).removeData();
 
-        $.each(Rotator.EVENTS, $.proxy(function(i, name) {
-            this._$rotator.off(Rotator.PLUGIN + capitalize(name));
-        }, this));
+        $.each(
+            Rotator.EVENTS,
+            $.proxy(function (i, name) {
+                this._$rotator.off(Rotator.PLUGIN + capitalize(name));
+            }, this)
+        );
 
         //restore elements
         if (this._$tooltip) {
             this._$tooltip.remove();
         }
 
-        $.each(['.br-wrapper', '.br-outer-navs'], $.proxy(function(i, selector) {
-            if (this._$rotator.parent(selector).length) {
-                this._$rotator.parent(selector).children(':not(.banner-rotator)').remove();
-                this._$rotator.unwrap();
-            }
-        }, this));
+        $.each(
+            ['.br-wrapper', '.br-outer-navs'],
+            $.proxy(function (i, selector) {
+                if (this._$rotator.parent(selector).length) {
+                    this._$rotator
+                        .parent(selector)
+                        .children(':not(.banner-rotator)')
+                        .remove();
+                    this._$rotator.unwrap();
+                }
+            }, this)
+        );
 
-        this._$rotator.html(this._html).attr({ style: this._style }).removeClass('br-flat-shadow br-no-touch');
+        this._$rotator
+            .html(this._html)
+            .attr({ style: this._style })
+            .removeClass('br-flat-shadow br-no-touch');
     }
-};
+}
 
 Rotator.uid = 0;
 
 Rotator.PLUGIN = 'rotator';
 
-Rotator.EVENTS = ['create', 'first', 'last', 'prev', 'next', 'play', 'pause', 'change', 'changed', 'load'];
+Rotator.EVENTS = [
+    'create',
+    'first',
+    'last',
+    'prev',
+    'next',
+    'play',
+    'pause',
+    'change',
+    'changed',
+    'load',
+];
 
 Rotator.ANIMATE_SPEED = 500;
 

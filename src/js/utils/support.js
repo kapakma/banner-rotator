@@ -1,4 +1,4 @@
-import { camelToDash, capitalize } from "./helpers";
+import { camelToDash, capitalize } from './helpers';
 
 export const SUPPORT = {};
 export let PREFIX;
@@ -6,47 +6,58 @@ export let PREFIXES;
 export let CSS_TRANSITION_END;
 export let CSS_ANIMATION_END;
 
-(function() {
-    $.each(['transform', 'transition', 'transformStyle', 'animation', 'backgroundSize', 'pointerEvents'], function(i, val) {
-        styleSupport(val);
-    });
+(function () {
+    $.each(
+        [
+            'transform',
+            'transition',
+            'transformStyle',
+            'animation',
+            'backgroundSize',
+            'pointerEvents',
+        ],
+        function (i, val) {
+            styleSupport(val);
+        }
+    );
 
-    SUPPORT.transform3d = propertySupport(SUPPORT.transform, 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)');
+    SUPPORT.transform3d = propertySupport(
+        SUPPORT.transform,
+        'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)'
+    );
     SUPPORT.preserve3d = propertySupport(SUPPORT.transformStyle, 'preserve-3d');
     SUPPORT.cssFilter = filterSupport();
 
-    switch(SUPPORT.transition) {
-    case 'WebkitTransition':
-        CSS_TRANSITION_END = 'webkitTransitionEnd';
-        break;
-    case 'OTransition':
-        CSS_TRANSITION_END = 'otransitionend';
-        break;
-    default:
-        CSS_TRANSITION_END = 'transitionend';
+    switch (SUPPORT.transition) {
+        case 'WebkitTransition':
+            CSS_TRANSITION_END = 'webkitTransitionEnd';
+            break;
+        case 'OTransition':
+            CSS_TRANSITION_END = 'otransitionend';
+            break;
+        default:
+            CSS_TRANSITION_END = 'transitionend';
     }
 
-    switch(SUPPORT.animation) {
-    case 'WebkitAnimation':
-        CSS_ANIMATION_END = 'webkitAnimationEnd';
-        break;
-    case 'OAnimation':
-        CSS_ANIMATION_END = 'oanimationend';
-        break;
-    default:
-        CSS_ANIMATION_END = 'animationend';
+    switch (SUPPORT.animation) {
+        case 'WebkitAnimation':
+            CSS_ANIMATION_END = 'webkitAnimationEnd';
+            break;
+        case 'OAnimation':
+            CSS_ANIMATION_END = 'oanimationend';
+            break;
+        default:
+            CSS_ANIMATION_END = 'animationend';
     }
 
     if (SUPPORT.animation && /^(Moz|Webkit|O)/.test(SUPPORT.animation)) {
-        PREFIX = `-${ SUPPORT.animation.replace('Animation', '').toLowerCase() }-`;
+        PREFIX = `-${SUPPORT.animation.replace('Animation', '').toLowerCase()}-`;
         PREFIXES = [PREFIX];
-    }
-    else {
+    } else {
         PREFIX = '';
         PREFIXES = ['-moz-', '-ms-', '-webkit-'];
     }
-}());
-
+})();
 
 //check css property support
 export function propertySupport(prop, val) {
@@ -59,7 +70,7 @@ export function propertySupport(prop, val) {
         support;
 
     el.style[dashProp] = val;
-    support = (`${el.style[dashProp] }`).indexOf(val) > -1;
+    support = `${el.style[dashProp]}`.indexOf(val) > -1;
     el = null;
 
     return support;
@@ -72,7 +83,10 @@ export function filterSupport() {
         cssText = prefixes.join('filter:blur(2px); ');
 
     el.style.cssText = cssText;
-    return !!el.style.length && (document.documentMode === undefined || document.documentMode > 9);
+    return (
+        !!el.style.length &&
+        (document.documentMode === undefined || document.documentMode > 9)
+    );
 }
 
 //check style property support
@@ -83,8 +97,7 @@ export function styleSupport(prop) {
 
     if (prop in style) {
         supported = prop;
-    }
-    else {
+    } else {
         const capProp = capitalize(prop),
             prefixes = ['Moz', 'Webkit', 'O', 'ms'];
 

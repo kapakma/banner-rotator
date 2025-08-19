@@ -6,7 +6,9 @@ class Timer {
         if (context) {
             this._running = false;
             this._complete = true;
-            this._$timer = $('<div/>').appendTo(context._$screen).addTransitionClass('br-element-transition');
+            this._$timer = $('<div/>')
+                .appendTo(context._$screen)
+                .addTransitionClass('br-element-transition');
 
             if (isFunction(opts.click)) {
                 this._$timer.css({ cursor: 'pointer' }).on('click', opts.click);
@@ -45,7 +47,8 @@ class Timer {
     }
 
     addOnHover($parent, namespace) {
-        $parent.on(`mouseenter${namespace}`, this.wake.bind(this))
+        $parent
+            .on(`mouseenter${namespace}`, this.wake.bind(this))
             .on(`mouseleave${namespace}`, this.sleep.bind(this));
     }
 }

@@ -1,5 +1,5 @@
-import Timer from "./Timer";
-import { getEnum } from "../../utils/helpers.js";
+import Timer from './Timer';
+import { getEnum } from '../../utils/helpers.js';
 
 //Pie Timer Class
 class PieTimer extends Timer {
@@ -13,17 +13,17 @@ class PieTimer extends Timer {
         css[getEnum(positions[1], ['top', 'bottom'], 'top')] = 0;
 
         this._$spinner = $('<div/>', {
-            'class': 'br-spinner',
+            class: 'br-spinner',
             html: '<div/>',
         });
 
         this._$fill = $('<div/>', {
-            'class': 'br-pie-fill',
+            class: 'br-pie-fill',
             html: '<div/>',
         });
 
         this._$mask = $('<div/>', {
-            'class': 'br-pie-mask',
+            class: 'br-pie-mask',
         });
 
         this._$el = this._$spinner.add(this._$fill).add(this._$mask);
@@ -37,13 +37,17 @@ class PieTimer extends Timer {
         }
 
         this._startTime = Date.now();
-        this._$spinner.transition({ transform: 'rotate(360deg)' }, delay, 'linear');
+        this._$spinner.transition(
+            { transform: 'rotate(360deg)' },
+            delay,
+            'linear'
+        );
 
-        if (this._elapsed < this._delay/2) {
+        if (this._elapsed < this._delay / 2) {
             const props = {
                 duration: 0,
                 easing: 'linear',
-                delay: this._delay/2 - this._elapsed,
+                delay: this._delay / 2 - this._elapsed,
             };
             this._$fill.transition({ opacity: 1 }, props);
             this._$mask.transition({ opacity: 0 }, props);
@@ -64,11 +68,11 @@ class PieTimer extends Timer {
 
     pause() {
         this._$el.stopTransition(true);
-        this._elapsed += (Date.now() - this._startTime);
+        this._elapsed += Date.now() - this._startTime;
 
-        const degree = (this._elapsed/this._delay * 360);
-        this._$spinner.css({ transform: `rotate(${ degree }deg)` });
-        if (this._elapsed < this._delay/2) {
+        const degree = (this._elapsed / this._delay) * 360;
+        this._$spinner.css({ transform: `rotate(${degree}deg)` });
+        if (this._elapsed < this._delay / 2) {
             this._$fill.css({ opacity: 0 });
             this._$mask.css({ opacity: 1 });
         }
