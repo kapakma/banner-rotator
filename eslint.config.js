@@ -1,13 +1,13 @@
 import js from "@eslint/js";
 import globals from "globals";
 import { defineConfig } from "eslint/config";
+import prettierPlugin from "eslint-plugin-prettier";
 
 export default defineConfig([
   { 
     files: ["**/*.{js,mjs,cjs}"], 
-    plugins: { 
-      js
-    }, 
+    ...js.configs.recommended,
+    plugins: { prettier: prettierPlugin },
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -40,6 +40,7 @@ export default defineConfig([
       "no-trailing-spaces": "error",
       "eol-last": ["error", "always"],
       "func-call-spacing": ["error", "never"],
+      "prettier/prettier": "error",
     },
   },
 ]);
